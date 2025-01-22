@@ -1,12 +1,13 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import { join } from "path";
 
 const config = {
   darkMode: ["class"],
   content: [
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-    "../../apps/web/app/**/*.{ts,tsx}",
+    join(__dirname, "../../packages/ui/src/**/*.{js,jsx,ts,tsx}"),
+    join(__dirname, "../../apps/web/app/**/*.{js,jsx,ts,tsx}"),
+    join(__dirname, "../../apps/web/components/**/*.{js,jsx,ts,tsx}"),
   ],
   prefix: "",
   theme: {
@@ -19,7 +20,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)"],
+        beVNPro: ["var(--font-be-vietnam-pro)"],
       },
       colors: {
         border: "hsl(var(--border))",
