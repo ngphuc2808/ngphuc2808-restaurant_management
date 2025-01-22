@@ -99,7 +99,7 @@ export const CreateOrdersBody = z
       z.object({
         dishId: z.number(),
         quantity: z.number(),
-      })
+      }),
     ),
   })
   .strict();

@@ -135,7 +135,7 @@ export const GetListGuestsRes = z.object({
       tableNumber: z.number().nullable(),
       createdAt: z.date(),
       updatedAt: z.date(),
-    })
+    }),
   ),
   message: z.string(),
 });

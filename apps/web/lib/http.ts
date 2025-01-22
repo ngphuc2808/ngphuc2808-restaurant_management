@@ -61,7 +61,7 @@ const isClient = typeof window !== "undefined";
 const request = async <Response>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   url: string,
-  options?: CustomOptions | undefined
+  options?: CustomOptions | undefined,
 ) => {
   let body: FormData | string | undefined = undefined;
   if (options?.body instanceof FormData) {
@@ -113,7 +113,7 @@ const request = async <Response>(
         data as {
           status: 422;
           payload: EntityErrorPayload;
-        }
+        },
       );
     } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
       if (isClient) {
@@ -141,7 +141,7 @@ const request = async <Response>(
         }
       } else {
         const accessToken = (options?.headers as any)?.Authorization.split(
-          "Bearer "
+          "Bearer ",
         )[1];
         redirect(`/logout?accessToken=${accessToken}`);
       }
@@ -167,27 +167,27 @@ const request = async <Response>(
 const http = {
   get<Response>(
     url: string,
-    options?: Omit<CustomOptions, "body"> | undefined
+    options?: Omit<CustomOptions, "body"> | undefined,
   ) {
     return request<Response>("GET", url, options);
   },
   post<Response>(
     url: string,
     body: any,
-    options?: Omit<CustomOptions, "body"> | undefined
+    options?: Omit<CustomOptions, "body"> | undefined,
   ) {
     return request<Response>("POST", url, { ...options, body });
   },
   put<Response>(
     url: string,
     body: any,
-    options?: Omit<CustomOptions, "body"> | undefined
+    options?: Omit<CustomOptions, "body"> | undefined,
   ) {
     return request<Response>("PUT", url, { ...options, body });
   },
   delete<Response>(
     url: string,
-    options?: Omit<CustomOptions, "body"> | undefined
+    options?: Omit<CustomOptions, "body"> | undefined,
   ) {
     return request<Response>("DELETE", url, { ...options });
   },

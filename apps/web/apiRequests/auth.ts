@@ -14,7 +14,7 @@ const authApiRequests = {
   sLogout: (
     body: LogoutBodyType & {
       accessToken: string;
-    }
+    },
   ) =>
     http.post(
       "/auth/logout",
@@ -25,7 +25,7 @@ const authApiRequests = {
         headers: {
           Authorization: `Bearer ${body.accessToken}`,
         },
-      }
+      },
     ),
   logout: () => http.post("/auth/logout", null, { baseUrl: "/api" }),
 };

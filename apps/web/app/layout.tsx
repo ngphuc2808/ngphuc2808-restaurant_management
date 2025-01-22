@@ -51,7 +51,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          `${font.className} ${font.variable}`
+          `${font.className} ${font.variable}`,
         )}
       >
         <NextTopLoader showSpinner={false} color="hsl(var(--primary))" />
