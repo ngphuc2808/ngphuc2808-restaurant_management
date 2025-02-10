@@ -14,13 +14,13 @@ export async function PUT(request: Request) {
       },
       {
         status: 401,
-      }
+      },
     );
   }
   try {
     const { payload } = await accountApiRequest.sChangePasswordV2(
       accessToken,
-      body
+      body,
     );
 
     const decodedAccessToken = jwt.decode(payload.data.accessToken) as {
@@ -52,7 +52,7 @@ export async function PUT(request: Request) {
       },
       {
         status: error.status ?? 500,
-      }
+      },
     );
   }
 }

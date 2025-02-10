@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       },
       {
         status: 401,
-      }
+      },
     );
   }
   try {
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       },
       {
         status: 401,
-      }
+      },
     );
   }
 }

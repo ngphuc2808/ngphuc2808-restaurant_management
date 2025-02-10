@@ -40,7 +40,7 @@ const NavLinks = () => {
                       {
                         "bg-accent text-accent-foreground": isActive,
                         "text-muted-foreground": !isActive,
-                      }
+                      },
                     )}
                   >
                     <Item.Icon className="h-5 w-5" />
@@ -63,7 +63,7 @@ const NavLinks = () => {
                     "bg-accent text-accent-foreground":
                       pathname === "/manage/setting",
                     "text-muted-foreground": pathname !== "/manage/setting",
-                  }
+                  },
                 )}
               >
                 <Settings className="h-5 w-5" />

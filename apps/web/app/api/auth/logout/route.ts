@@ -15,7 +15,7 @@ export async function POST() {
       },
       {
         status: 200,
-      }
+      },
     );
   }
   try {
@@ -32,7 +32,7 @@ export async function POST() {
       },
       {
         status: 200,
-      }
+      },
     );
   }
 }
