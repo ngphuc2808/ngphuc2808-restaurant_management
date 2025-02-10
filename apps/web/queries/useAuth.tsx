@@ -17,7 +17,7 @@ export const useLoginMutation = (): UseMutationResult<
 export const useLogoutMutation = (): UseMutationResult<
   QueryResponseType<unknown>,
   Error,
-  unknown,
+  void,
   unknown
 > => {
   return useMutation({
