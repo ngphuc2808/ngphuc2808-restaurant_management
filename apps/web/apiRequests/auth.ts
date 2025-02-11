@@ -7,23 +7,26 @@ import {
   RefreshTokenResType,
 } from "@/schemaValidations/auth.schema";
 
+const prefix = "auth";
+
 const authApiRequests = {
   refreshTokenRequest: null as Promise<{
     status: number;
     payload: RefreshTokenResType;
   }> | null,
-  sLogin: (body: LoginBodyType) => http.post<LoginResType>("/auth/login", body),
+  sLogin: (body: LoginBodyType) =>
+    http.post<LoginResType>(`/${prefix}/login`, body),
   login: (body: LoginBodyType) =>
-    http.post<LoginResType>("/auth/login", body, {
+    http.post<LoginResType>(`/${prefix}/login`, body, {
       baseUrl: "/api",
     }),
   sLogout: (
     body: LogoutBodyType & {
       accessToken: string;
-    },
+    }
   ) =>
     http.post(
-      "/auth/logout",
+      `/${prefix}/logout`,
       {
         refreshToken: body.refreshToken,
       },
@@ -31,28 +34,28 @@ const authApiRequests = {
         headers: {
           Authorization: `Bearer ${body.accessToken}`,
         },
-      },
+      }
     ),
-  logout: () => http.post("/auth/logout", null, { baseUrl: "/api" }),
+  logout: () => http.post(`/${prefix}/logout`, null, { baseUrl: "/api" }),
   sRefreshToken: (body: RefreshTokenBodyType) =>
-    http.post<RefreshTokenResType>("/auth/refresh-token", body),
+    http.post<RefreshTokenResType>(`/${prefix}/refresh-token`, body),
   async refreshToken() {
     if (this.refreshTokenRequest) {
       return this.refreshTokenRequest;
     }
     this.refreshTokenRequest = http.post<RefreshTokenResType>(
-      "/auth/refresh-token",
+      `/${prefix}/refresh-token`,
       null,
       {
         baseUrl: "/api",
-      },
+      }
     );
     const result = await this.refreshTokenRequest;
     this.refreshTokenRequest = null;
     return result;
   },
   setTokenToCookie: (body: { accessToken: string; refreshToken: string }) =>
-    http.post("/auth/token", body, { baseUrl: "/api" }),
+    http.post(`/${prefix}/token`, body, { baseUrl: "/api" }),
 };
 
 export default authApiRequests;

@@ -14,13 +14,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@repo/ui/components/ui/dropdown-menu";
+} from "@repo/ui/components/dropdown-menu";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
-import { Button } from "@repo/ui/components/ui/button";
+} from "@repo/ui/components/avatar";
+import { Button } from "@repo/ui/components/button";
 import { useAppContext } from "@/providers/app-provider";
 
 const DropdownAvatar = () => {

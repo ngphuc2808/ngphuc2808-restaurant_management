@@ -13,16 +13,16 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@repo/ui/components/ui/card";
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { Label } from "@repo/ui/components/ui/label";
+} from "@repo/ui/components/card";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import {
   Form,
   FormField,
   FormItem,
   FormMessage,
-} from "@repo/ui/components/ui/form";
+} from "@repo/ui/components/form";
 import { useChangePasswordMutation } from "@/queries/useAccount";
 import {
   handleErrorApi,

@@ -14,21 +14,21 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@repo/ui/components/ui/card";
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { Label } from "@repo/ui/components/ui/label";
+} from "@repo/ui/components/card";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import {
   Form,
   FormField,
   FormItem,
   FormMessage,
-} from "@repo/ui/components/ui/form";
+} from "@repo/ui/components/form";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
+} from "@repo/ui/components/avatar";
 import { toast } from "@repo/ui/hooks/use-toast";
 import { useAccountMe, useUpdateMeMutation } from "@/queries/useAccount";
 import { useUploadMediaMutation } from "@/queries/useMedia";
@@ -46,13 +46,16 @@ const UpdateProfileForm = () => {
     resolver: zodResolver(UpdateMeBody),
     defaultValues: {
       name: "",
-      avatar: "",
+      avatar: undefined,
     },
   });
 
   const avatar = form.watch("avatar");
 
-  const previewAvatar = file ? URL.createObjectURL(file) : avatar || undefined;
+  const previewAvatar = React.useMemo(
+    () => (file ? URL.createObjectURL(file) : avatar || undefined),
+    [file, avatar]
+  );
 
   const reset = () => {
     form.reset();
@@ -141,7 +144,7 @@ const UpdateProfileForm = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + field.name,
+                              "http://localhost:3000/" + field.name
                             );
                           }
                         }}

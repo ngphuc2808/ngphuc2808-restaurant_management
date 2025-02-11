@@ -11,7 +11,7 @@ import {
 import { LoaderCircle } from "lucide-react";
 import { useAppContext } from "@/providers/app-provider";
 
-const LogoutPage = () => {
+const Logout = () => {
   const router = useRouter();
 
   const { mutateAsync } = useLogoutMutation();
@@ -46,9 +46,19 @@ const LogoutPage = () => {
     } else {
       router.push("/");
     }
-  }, [mutateAsync, router]);
+  }, [mutateAsync, router, accessTokenFromUrl, refreshTokenFromUrl, setIsAuth]);
 
-  return <LoaderCircle size={28} className="animate-spin m-auto" />;
+  return null;
+};
+
+const LogoutPage = () => {
+  return (
+    <React.Suspense
+      fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
+    >
+      <Logout />
+    </React.Suspense>
+  );
 };
 
 export default LogoutPage;

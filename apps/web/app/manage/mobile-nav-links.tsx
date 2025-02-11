@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Package2, PanelLeft } from "lucide-react";
 
-import { Button } from "@repo/ui/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "@repo/ui/components/ui/sheet";
+} from "@repo/ui/components/sheet";
 import { cn } from "@repo/ui/lib/utils";
 import menuItems from "@/app/manage/menuItems";
 
@@ -45,7 +45,7 @@ const MobileNavLinks = () => {
                   {
                     "text-foreground": isActive,
                     "text-muted-foreground": !isActive,
-                  },
+                  }
                 )}
               >
                 <Item.Icon className="h-5 w-5" />

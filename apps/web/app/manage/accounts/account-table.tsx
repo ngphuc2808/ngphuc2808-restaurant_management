@@ -1,5 +1,8 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+import React from "react";
+import { LoaderCircle } from "lucide-react";
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
@@ -14,7 +17,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 
 import {
   DropdownMenu,
@@ -23,8 +26,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from "@repo/ui/components/dropdown-menu";
+import { Input } from "@repo/ui/components/input";
 import {
   Table,
   TableBody,
@@ -32,15 +35,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/table";
 import {
-  AccountListResType,
-  AccountType,
-} from "@/schemaValidations/account.schema";
-import AddEmployee from "@/app/manage/accounts/add-employee";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import EditEmployee from "@/app/manage/accounts/edit-employee";
-import { createContext, useContext, useEffect, useState } from "react";
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -50,13 +50,19 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useSearchParams } from "next/navigation";
-import AutoPagination from "@/components/auto-pagination";
+} from "@repo/ui/components/alert-dialog";
+import {
+  AccountListResType,
+  AccountType,
+} from "@/schemaValidations/account.schema";
+import AddEmployee from "@/app/manage/accounts/add-employee";
+import EditEmployee from "@/app/manage/accounts/edit-employee";
+import AutoPagination from "@/components/atoms/auto-pagination";
+import { useGetAccountList } from "@/queries/useAccount";
 
 type AccountItem = AccountListResType["data"][0];
 
-const AccountTableContext = createContext<{
+const AccountTableContext = React.createContext<{
   setEmployeeIdEdit: (value: number) => void;
   employeeIdEdit: number | undefined;
   employeeDelete: AccountItem | null;
@@ -112,7 +118,7 @@ export const columns: ColumnDef<AccountType>[] = [
     enableHiding: false,
     cell: function Actions({ row }) {
       const { setEmployeeIdEdit, setEmployeeDelete } =
-        useContext(AccountTableContext);
+        React.useContext(AccountTableContext);
       const openEditEmployee = () => {
         setEmployeeIdEdit(row.original.id);
       };
@@ -179,27 +185,34 @@ function AlertDialogDeleteAccount({
 }
 // Số lượng item trên 1 trang
 const PAGE_SIZE = 10;
-export default function AccountTable() {
+
+const AccountTable = () => {
   const searchParam = useSearchParams();
   const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
   const pageIndex = page - 1;
   // const params = Object.fromEntries(searchParam.entries())
-  const [employeeIdEdit, setEmployeeIdEdit] = useState<number | undefined>();
-  const [employeeDelete, setEmployeeDelete] = useState<AccountItem | null>(
-    null,
+  const [employeeIdEdit, setEmployeeIdEdit] = React.useState<
+    number | undefined
+  >();
+  const [employeeDelete, setEmployeeDelete] =
+    React.useState<AccountItem | null>(null);
+
+  const accountListQuery = useGetAccountList();
+  const { data, isPending } = accountListQuery;
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
   );
-  const data: any[] = [];
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState({
-    pageIndex, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-    pageSize: PAGE_SIZE, //default page size
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [pagination, setPagination] = React.useState({
+    pageIndex,
+    pageSize: PAGE_SIZE,
   });
 
   const table = useReactTable({
-    data,
+    data: data?.payload.data ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -220,15 +233,19 @@ export default function AccountTable() {
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     table.setPagination({
       pageIndex,
       pageSize: PAGE_SIZE,
     });
   }, [table, pageIndex]);
 
+  if (isPending) {
+    return <LoaderCircle size={28} className="animate-spin m-auto" />;
+  }
+
   return (
-    <AccountTableContext.Provider
+    <AccountTableContext
       value={{
         employeeIdEdit,
         setEmployeeIdEdit,
@@ -271,7 +288,7 @@ export default function AccountTable() {
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
                       </TableHead>
                     );
@@ -280,7 +297,7 @@ export default function AccountTable() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {table.getRowModel().rows?.length > 0 ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
@@ -290,7 +307,7 @@ export default function AccountTable() {
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))}
@@ -313,7 +330,7 @@ export default function AccountTable() {
           <div className="text-xs text-muted-foreground py-4 flex-1 ">
             Hiển thị{" "}
             <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-            <strong>{data.length}</strong> kết quả
+            <strong>{(data?.payload.data ?? []).length}</strong> kết quả
           </div>
           <div>
             <AutoPagination
@@ -324,6 +341,8 @@ export default function AccountTable() {
           </div>
         </div>
       </div>
-    </AccountTableContext.Provider>
+    </AccountTableContext>
   );
-}
+};
+
+export default AccountTable;

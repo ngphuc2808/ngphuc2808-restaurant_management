@@ -9,6 +9,7 @@ import { checkAndRefreshToken } from "@/lib/utils";
 const RefreshToken = () => {
   const pathname = usePathname();
   const router = useRouter();
+
   React.useEffect(() => {
     if (UNAUTHENTICATED_PATH.includes(pathname)) return;
     let interval: any = null;
@@ -27,7 +28,7 @@ const RefreshToken = () => {
             router.push("/login");
           },
         }),
-      TIMEOUT,
+      TIMEOUT
     );
     return () => {
       clearInterval(interval);

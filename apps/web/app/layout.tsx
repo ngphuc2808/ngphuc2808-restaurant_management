@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Toaster } from "@repo/ui/components/ui/toaster";
+import { Toaster } from "@repo/ui/components/toaster";
 import ThemeProvider from "@/providers/theme-provider";
 import AppProvider from "@/providers/app-provider";
 
@@ -51,7 +51,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          `${font.className} ${font.variable}`,
+          `${font.className} ${font.variable}`
         )}
       >
         <NextTopLoader showSpinner={false} color="hsl(var(--primary))" />

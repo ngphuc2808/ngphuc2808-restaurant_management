@@ -17,7 +17,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
   // Đăng nhập rồi thì sẽ không cho vào login nữa
-  if (unAuthPaths.some((path) => pathname.startsWith(path)) && refreshToken) {
+  if (
+    unAuthPaths.some((path) => pathname.startsWith(path)) &&
+    accessToken &&
+    refreshToken
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   // Trường hợp đăng nhập rồi, nhưng access token lại hết hạn

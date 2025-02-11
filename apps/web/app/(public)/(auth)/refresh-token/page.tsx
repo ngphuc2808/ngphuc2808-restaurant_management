@@ -1,19 +1,21 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+import { LoaderCircle } from "lucide-react";
+
 import {
   checkAndRefreshToken,
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
-import { LoaderCircle } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
-export default function RefreshTokenPage() {
+const RefreshToken = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const refreshTokenFromUrl = searchParams.get("refreshToken");
   const redirectPathname = searchParams.get("redirect");
-  useEffect(() => {
+
+  React.useEffect(() => {
     if (
       refreshTokenFromUrl &&
       refreshTokenFromUrl === getRefreshTokenFromLocalStorage()
@@ -28,5 +30,17 @@ export default function RefreshTokenPage() {
     }
   }, [router, refreshTokenFromUrl, redirectPathname]);
 
-  return <LoaderCircle size={28} className="animate-spin m-auto" />;
-}
+  return null;
+};
+
+const RefreshTokenPage = () => {
+  return (
+    <React.Suspense
+      fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
+    >
+      <RefreshToken />
+    </React.Suspense>
+  );
+};
+
+export default RefreshTokenPage;

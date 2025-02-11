@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -7,9 +8,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@repo/ui/components/dialog";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import {
   UpdateEmployeeAccountBody,
   UpdateEmployeeAccountBodyType,
@@ -18,9 +19,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Switch } from "@/components/ui/switch";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@repo/ui/components/form";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
+import { Switch } from "@repo/ui/components/switch";
 
 export default function EditEmployee({
   id,
@@ -98,7 +108,7 @@ export default function EditEmployee({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name,
+                              "http://localhost:3000/" + file.name
                             );
                           }
                         }}

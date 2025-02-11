@@ -1,13 +1,14 @@
+import React from "react";
+import { LoaderCircle } from "lucide-react";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-
+} from "@repo/ui/components/card";
 import AccountTable from "@/app/manage/accounts/account-table";
-import { Suspense } from "react";
 
 export default function Dashboard() {
   return (
@@ -19,9 +20,13 @@ export default function Dashboard() {
             <CardDescription>Quản lý tài khoản nhân viên</CardDescription>
           </CardHeader>
           <CardContent>
-            <Suspense>
+            <React.Suspense
+              fallback={
+                <LoaderCircle size={28} className="animate-spin m-auto" />
+              }
+            >
               <AccountTable />
-            </Suspense>
+            </React.Suspense>
           </CardContent>
         </Card>
       </div>

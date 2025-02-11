@@ -54,13 +54,6 @@ const AppProvider = ({ children }: Props) => {
 
   const [isAuth, setIsAuthState] = React.useState(false);
 
-  React.useEffect(() => {
-    const accessToken = getAccessTokenFromLocalStorage();
-    if (accessToken) {
-      setIsAuthState(true);
-    }
-  }, []);
-
   const setIsAuth = (isAuth: boolean) => {
     if (isAuth) {
       setIsAuthState(true);
@@ -69,6 +62,13 @@ const AppProvider = ({ children }: Props) => {
       removeTokensFromLocalStorage();
     }
   };
+
+  React.useEffect(() => {
+    const accessToken = getAccessTokenFromLocalStorage();
+    if (accessToken) {
+      setIsAuthState(true);
+    }
+  }, []);
 
   return (
     <AppContext value={{ isAuth, setIsAuth }}>

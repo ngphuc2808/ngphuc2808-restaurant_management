@@ -1,5 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import React from "react";
+import { PlusCircle, Upload } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -8,24 +12,38 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@repo/ui/components/dialog";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import {
   CreateEmployeeAccountBody,
   CreateEmployeeAccountBodyType,
 } from "@/schemaValidations/account.schema";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@repo/ui/components/form";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
+import { useAddAccountMutation } from "@/queries/useAccount";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusCircle, Upload } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUploadMediaMutation } from "@/queries/useMedia";
+import { toast } from "@repo/ui/hooks/use-toast";
+import { handleErrorApi } from "@/lib/utils";
 
 export default function AddEmployee() {
-  const [file, setFile] = useState<File | null>(null);
-  const [open, setOpen] = useState(false);
-  const avatarInputRef = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = React.useState<File | null>(null);
+  const [open, setOpen] = React.useState(false);
+  const avatarInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const addAccountMutation = useAddAccountMutation();
+  const uploadMediaMutation = useUploadMediaMutation();
+
   const form = useForm<CreateEmployeeAccountBodyType>({
     resolver: zodResolver(CreateEmployeeAccountBody),
     defaultValues: {
@@ -36,14 +54,57 @@ export default function AddEmployee() {
       confirmPassword: "",
     },
   });
-  const avatar = form.watch("avatar");
+
   const name = form.watch("name");
-  const previewAvatarFromFile = useMemo(() => {
-    if (file) {
-      return URL.createObjectURL(file);
+  const avatar = form.watch("avatar");
+
+  const previewAvatar = React.useMemo(
+    () => (file ? URL.createObjectURL(file) : avatar || undefined),
+    [file, avatar]
+  );
+
+  const reset = () => {
+    form.reset();
+    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
+      URL.revokeObjectURL(previewAvatar);
     }
-    return avatar;
-  }, [file, avatar]);
+    setFile(null);
+    setOpen(false);
+  };
+
+  const onSubmit = async (values: CreateEmployeeAccountBodyType) => {
+    if (addAccountMutation.isPending) return;
+
+    try {
+      let body = values;
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const uploadImageResult =
+          await uploadMediaMutation.mutateAsync(formData);
+        const imageUrl = uploadImageResult.payload.data;
+        body = {
+          ...values,
+          avatar: imageUrl,
+        };
+      }
+      const result = await addAccountMutation.mutateAsync(body);
+
+      if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
+        URL.revokeObjectURL(previewAvatar);
+      }
+
+      toast({
+        description: result.payload.message,
+      });
+      reset();
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    }
+  };
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -67,6 +128,10 @@ export default function AddEmployee() {
             noValidate
             className="grid auto-rows-max items-start gap-4 md:gap-8"
             id="add-employee-form"
+            onSubmit={form.handleSubmit(onSubmit, (error) => {
+              console.log(error);
+            })}
+            onReset={reset}
           >
             <div className="grid gap-4 py-4">
               <FormField
@@ -76,7 +141,7 @@ export default function AddEmployee() {
                   <FormItem>
                     <div className="flex gap-2 items-start justify-start">
                       <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
-                        <AvatarImage src={previewAvatarFromFile} />
+                        <AvatarImage src={previewAvatar} />
                         <AvatarFallback className="rounded-none">
                           {name || "Avatar"}
                         </AvatarFallback>
@@ -90,7 +155,7 @@ export default function AddEmployee() {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name,
+                              "http://localhost:3000/" + file.name
                             );
                           }
                         }}
