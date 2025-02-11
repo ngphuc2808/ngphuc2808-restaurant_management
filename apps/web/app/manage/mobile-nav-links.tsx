@@ -45,7 +45,7 @@ const MobileNavLinks = () => {
                   {
                     "text-foreground": isActive,
                     "text-muted-foreground": !isActive,
-                  }
+                  },
                 )}
               >
                 <Item.Icon className="h-5 w-5" />

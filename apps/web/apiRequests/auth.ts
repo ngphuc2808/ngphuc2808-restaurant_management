@@ -23,7 +23,7 @@ const authApiRequests = {
   sLogout: (
     body: LogoutBodyType & {
       accessToken: string;
-    }
+    },
   ) =>
     http.post(
       `/${prefix}/logout`,
@@ -34,7 +34,7 @@ const authApiRequests = {
         headers: {
           Authorization: `Bearer ${body.accessToken}`,
         },
-      }
+      },
     ),
   logout: () => http.post(`/${prefix}/logout`, null, { baseUrl: "/api" }),
   sRefreshToken: (body: RefreshTokenBodyType) =>
@@ -48,7 +48,7 @@ const authApiRequests = {
       null,
       {
         baseUrl: "/api",
-      }
+      },
     );
     const result = await this.refreshTokenRequest;
     this.refreshTokenRequest = null;

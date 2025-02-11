@@ -52,7 +52,7 @@ const accountApiRequest = {
         queryString.stringify({
           fromDate: queryParams.fromDate?.toISOString(),
           toDate: queryParams.toDate?.toISOString(),
-        })
+        }),
     ),
   createGuest: (body: CreateGuestBodyType) =>
     http.post<CreateGuestResType>(`${prefix}/guests`, body),

@@ -108,7 +108,7 @@ export default function EditEmployee({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name
+                              "http://localhost:3000/" + file.name,
                             );
                           }
                         }}

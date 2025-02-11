@@ -28,7 +28,7 @@ const RefreshToken = () => {
             router.push("/login");
           },
         }),
-      TIMEOUT
+      TIMEOUT,
     );
     return () => {
       clearInterval(interval);
