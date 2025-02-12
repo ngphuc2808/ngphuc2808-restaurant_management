@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
+import { useAppContext } from "@/providers/app-provider";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useAccountMe } from "@/queries/useAccount";
 import { handleErrorApi } from "@/lib/utils";
@@ -21,7 +22,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
-import { useAppContext } from "@/providers/app-provider";
 
 const DropdownAvatar = () => {
   const router = useRouter();

@@ -51,7 +51,7 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import AddTable from "@/app/manage/tables/add-table";
 import EditTable from "@/app/manage/tables/edit-table";
 import AutoPagination from "@/components/molecules/auto-pagination";
-import QRCodeTable from "@/components/molecules/qrcode-table";
+import QRCodeTable from "@/components/atoms/qrcode-table";
 
 type TableItem = TableListResType["data"][0];
 
@@ -74,7 +74,7 @@ export const columns: ColumnDef<TableItem>[] = [
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("number")}</div>
     ),
-    filterFn: (rows, columnId, filterValue) => {
+    filterFn: (rows, _, filterValue) => {
       if (!filterValue) return true;
       return String(filterValue) === String(rows.getValue("number"));
     },
@@ -192,7 +192,7 @@ const AlertDialogDeleteTable = ({
 
 const PAGE_SIZE = 10;
 
-export default function TableTable() {
+const TableTable = () => {
   const searchParam = useSearchParams();
   const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
   const pageIndex = page - 1;
@@ -202,7 +202,7 @@ export default function TableTable() {
   const data = tableListQuery.data?.payload.data ?? [];
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+    []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -278,7 +278,7 @@ export default function TableTable() {
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
                       </TableHead>
                     );
@@ -297,7 +297,7 @@ export default function TableTable() {
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))}
@@ -333,4 +333,6 @@ export default function TableTable() {
       </div>
     </TableTableContext.Provider>
   );
-}
+};
+
+export default TableTable;

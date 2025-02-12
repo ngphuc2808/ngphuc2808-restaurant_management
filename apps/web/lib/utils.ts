@@ -2,10 +2,10 @@ import { UseFormSetError } from "react-hook-form";
 import jwt from "jsonwebtoken";
 
 import { EntityError } from "@/lib/http";
+import { envClientConfig } from "@/config";
+import authApiRequests from "@/apiRequests/auth";
 import { toast } from "@repo/ui/hooks/use-toast";
 import { DishStatus, TableStatus } from "@/constants/type";
-import authApiRequests from "@/apiRequests/auth";
-import { envClientConfig } from "@/config";
 
 export const normalizePath = (path: string) => {
   return path.startsWith("/") ? path.slice(1) : path;
@@ -63,7 +63,7 @@ export const formatCurrency = (number: number) => {
 };
 
 export const getVietnameseDishStatus = (
-  status: (typeof DishStatus)[keyof typeof DishStatus],
+  status: (typeof DishStatus)[keyof typeof DishStatus]
 ) => {
   switch (status) {
     case DishStatus.Available:
@@ -76,7 +76,7 @@ export const getVietnameseDishStatus = (
 };
 
 export const getVietnameseTableStatus = (
-  status: (typeof TableStatus)[keyof typeof TableStatus],
+  status: (typeof TableStatus)[keyof typeof TableStatus]
 ) => {
   switch (status) {
     case TableStatus.Available:

@@ -42,7 +42,7 @@ import {
 import { Switch } from "@repo/ui/components/switch";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 import { toast } from "@repo/ui/hooks/use-toast";
-import QRCodeTable from "@/components/molecules/qrcode-table";
+import QRCodeTable from "@/components/atoms/qrcode-table";
 
 const EditTable = ({
   id,

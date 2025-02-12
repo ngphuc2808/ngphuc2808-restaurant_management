@@ -1,4 +1,5 @@
 import React from "react";
+import { LoaderCircle } from "lucide-react";
 
 import {
   Card,
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import TableTable from "@/app/manage/tables/table-table";
-import { LoaderCircle } from "lucide-react";
 
 const TablesPage = () => {
   return (
