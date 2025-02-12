@@ -72,7 +72,7 @@ const EditEmployee = ({
 
   const previewAvatar = React.useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
-    [file, avatar]
+    [file, avatar],
   );
 
   const reset = () => {
@@ -175,7 +175,7 @@ const EditEmployee = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name
+                              "http://localhost:3000/" + file.name,
                             );
                           }
                         }}
