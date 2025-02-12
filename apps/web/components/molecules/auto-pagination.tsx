@@ -39,7 +39,7 @@ Với range = 2 áp dụng cho khoảng cách đầu, cuối và xung quanh curr
  */
 
 const RANGE = 2;
-export default function AutoPagination({ page, pageSize, pathname }: Props) {
+const AutoPagination = ({ page, pageSize, pathname }: Props) => {
   const renderPagination = () => {
     let dotAfter = false;
     let dotBefore = false;
@@ -115,12 +115,16 @@ export default function AutoPagination({ page, pageSize, pathname }: Props) {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href={{
-              pathname,
-              query: {
-                page: page - 1,
-              },
-            }}
+            href={
+              page === 1
+                ? "#"
+                : {
+                    pathname,
+                    query: {
+                      page: page - 1,
+                    },
+                  }
+            }
             className={cn({
               "cursor-not-allowed": page === 1,
             })}
@@ -132,15 +136,18 @@ export default function AutoPagination({ page, pageSize, pathname }: Props) {
           />
         </PaginationItem>
         {renderPagination()}
-
         <PaginationItem>
           <PaginationNext
-            href={{
-              pathname,
-              query: {
-                page: page + 1,
-              },
-            }}
+            href={
+              page === pageSize
+                ? "#"
+                : {
+                    pathname,
+                    query: {
+                      page: page + 1,
+                    },
+                  }
+            }
             className={cn({
               "cursor-not-allowed": page === pageSize,
             })}
@@ -154,4 +161,6 @@ export default function AutoPagination({ page, pageSize, pathname }: Props) {
       </PaginationContent>
     </Pagination>
   );
-}
+};
+
+export default AutoPagination;

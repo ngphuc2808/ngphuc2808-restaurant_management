@@ -12,7 +12,7 @@ import {
   SheetTrigger,
 } from "@repo/ui/components/sheet";
 import { cn } from "@repo/ui/lib/utils";
-import menuItems from "@/app/manage/menuItems";
+import { menuItems } from "@/constants";
 
 const MobileNavLinks = () => {
   const pathname = usePathname();
@@ -45,7 +45,7 @@ const MobileNavLinks = () => {
                   {
                     "text-foreground": isActive,
                     "text-muted-foreground": !isActive,
-                  },
+                  }
                 )}
               >
                 <Item.Icon className="h-5 w-5" />

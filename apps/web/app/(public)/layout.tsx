@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Menu, Package2 } from "lucide-react";
 
-import NavItems from "@/app/(public)/nav-items";
+import NavItems from "@/components/molecules/nav-items";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
 import { Button } from "@repo/ui/components/button";
 import {

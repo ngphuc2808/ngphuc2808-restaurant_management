@@ -6,7 +6,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { TIMEOUT, UNAUTHENTICATED_PATH } from "@/constants";
 import { checkAndRefreshToken } from "@/lib/utils";
 
-const RefreshToken = () => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const RefreshTokenProvider = ({ children }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -28,14 +32,14 @@ const RefreshToken = () => {
             router.push("/login");
           },
         }),
-      TIMEOUT,
+      TIMEOUT
     );
     return () => {
       clearInterval(interval);
     };
   }, [pathname, router]);
 
-  return null;
+  return children;
 };
 
-export default RefreshToken;
+export default RefreshTokenProvider;

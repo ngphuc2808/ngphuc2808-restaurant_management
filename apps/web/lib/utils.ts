@@ -1,8 +1,11 @@
 import { UseFormSetError } from "react-hook-form";
+import jwt from "jsonwebtoken";
+
 import { EntityError } from "@/lib/http";
 import { toast } from "@repo/ui/hooks/use-toast";
-import jwt from "jsonwebtoken";
+import { DishStatus, TableStatus } from "@/constants/type";
 import authApiRequests from "@/apiRequests/auth";
+import { envClientConfig } from "@/config";
 
 export const normalizePath = (path: string) => {
   return path.startsWith("/") ? path.slice(1) : path;
@@ -52,6 +55,55 @@ export const removeTokensFromLocalStorage = () => {
   isBrowser && localStorage.removeItem("refreshToken");
 };
 
+export const formatCurrency = (number: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(number);
+};
+
+export const getVietnameseDishStatus = (
+  status: (typeof DishStatus)[keyof typeof DishStatus]
+) => {
+  switch (status) {
+    case DishStatus.Available:
+      return "Có sẵn";
+    case DishStatus.Unavailable:
+      return "Không có sẵn";
+    default:
+      return "Ẩn";
+  }
+};
+
+export const getVietnameseTableStatus = (
+  status: (typeof TableStatus)[keyof typeof TableStatus]
+) => {
+  switch (status) {
+    case TableStatus.Available:
+      return "Có sẵn";
+    case TableStatus.Reserved:
+      return "Đã đặt";
+    default:
+      return "Ẩn";
+  }
+};
+
+export const getTableLink = ({
+  token,
+  tableNumber,
+}: {
+  token: string;
+  tableNumber: number;
+}) => {
+  return (
+    envClientConfig.NEXT_PUBLIC_URL +
+    `/tables/` +
+    tableNumber +
+    "?token=" +
+    token
+  );
+};
+
 export const checkAndRefreshToken = async (param?: {
   onError?: () => void;
   onSuccess?: () => void;
@@ -74,6 +126,7 @@ export const checkAndRefreshToken = async (param?: {
   // Thời điểm hết hạn của token là tính theo epoch time (s)
   // Còn khi các bạn dùng cú pháp new Date().getTime() thì nó sẽ trả về epoch time (ms)
   const now = new Date().getTime() / 1000 - 1;
+
   // trường hợp refresh token hết hạn thì không xử lý nữa
   if (decodedRefreshToken.exp <= now) {
     removeTokensFromLocalStorage();

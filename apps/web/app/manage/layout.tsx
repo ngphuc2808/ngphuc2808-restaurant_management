@@ -1,13 +1,13 @@
-import NavLinks from "@/app/manage/nav-links";
+import NavLinks from "@/components/molecules/nav-links";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
-import DropdownAvatar from "@/app/manage/dropdown-avatar";
-import MobileNavLinks from "@/app/manage/mobile-nav-links";
+import DropdownAvatar from "@/components/atoms/dropdown-avatar";
+import MobileNavLinks from "@/components/molecules/mobile-nav-links";
 
-export default function Layout({
+const ManageLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <NavLinks />
@@ -25,4 +25,6 @@ export default function Layout({
       </div>
     </div>
   );
-}
+};
+
+export default ManageLayout;

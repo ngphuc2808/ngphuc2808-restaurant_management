@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 
+import { useAppContext } from "@/providers/app-provider";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
+import { useLoginMutation } from "@/queries/useAuth";
+import { handleErrorApi } from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
@@ -15,18 +18,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { Input } from "@repo/ui/components/input";
-import { Label } from "@repo/ui/components/label";
 import {
   Form,
   FormField,
   FormItem,
   FormMessage,
 } from "@repo/ui/components/form";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
-import { useLoginMutation } from "@/queries/useAuth";
-import { handleErrorApi } from "@/lib/utils";
-import { useAppContext } from "@/providers/app-provider";
 
 const LoginForm = () => {
   const router = useRouter();

@@ -11,7 +11,7 @@ import {
   TooltipProvider,
 } from "@repo/ui/components/tooltip";
 import { cn } from "@repo/ui/lib/utils";
-import menuItems from "@/app/manage/menuItems";
+import { menuItems } from "@/constants";
 
 const NavLinks = () => {
   const pathname = usePathname();
@@ -40,7 +40,7 @@ const NavLinks = () => {
                       {
                         "bg-accent text-accent-foreground": isActive,
                         "text-muted-foreground": !isActive,
-                      },
+                      }
                     )}
                   >
                     <Item.Icon className="h-5 w-5" />
@@ -63,7 +63,7 @@ const NavLinks = () => {
                     "bg-accent text-accent-foreground":
                       pathname === "/manage/setting",
                     "text-muted-foreground": pathname !== "/manage/setting",
-                  },
+                  }
                 )}
               >
                 <Settings className="h-5 w-5" />

@@ -7,30 +7,30 @@ import {
   ChangePasswordBody,
   ChangePasswordBodyType,
 } from "@/schemaValidations/account.schema";
-import { toast } from "@repo/ui/hooks/use-toast";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
-import { Button } from "@repo/ui/components/button";
-import { Input } from "@repo/ui/components/input";
-import { Label } from "@repo/ui/components/label";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@repo/ui/components/form";
 import { useChangePasswordMutation } from "@/queries/useAccount";
 import {
   handleErrorApi,
   setAccessTokenToLocalStorage,
   setRefreshTokenToLocalStorage,
 } from "@/lib/utils";
+import { Button } from "@repo/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@repo/ui/components/form";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
+import { toast } from "@repo/ui/hooks/use-toast";
 
-export default function ChangePasswordForm() {
+const ChangePasswordForm = () => {
   const changePasswordMutation = useChangePasswordMutation();
   const form = useForm<ChangePasswordBodyType>({
     resolver: zodResolver(ChangePasswordBody),
@@ -148,4 +148,6 @@ export default function ChangePasswordForm() {
       </form>
     </Form>
   );
-}
+};
+
+export default ChangePasswordForm;

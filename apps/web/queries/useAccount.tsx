@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-query";
 
 import accountApiRequest from "@/apiRequests/account";
-
 import {
   AccountListResType,
   AccountResType,
@@ -29,6 +28,7 @@ export const useAccountMe = (): UseQueryResult<
   return useQuery({
     queryKey: ["account-me"],
     queryFn: accountApiRequest.me,
+    gcTime: 0,
   });
 };
 
@@ -135,7 +135,7 @@ export const useDeleteAccountMutation = (): UseMutationResult<
 };
 
 export const useGetGuestListQuery = (
-  queryParams: GetGuestListQueryParamsType,
+  queryParams: GetGuestListQueryParamsType
 ): UseQueryResult<QueryResponseType<GetListGuestsResType>, Error> => {
   return useQuery({
     queryFn: () => accountApiRequest.guestList(queryParams),

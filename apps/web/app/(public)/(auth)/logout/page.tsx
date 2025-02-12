@@ -1,15 +1,15 @@
 "use client";
 
-import React from "react";
-
-import { useLogoutMutation } from "@/queries/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+import { LoaderCircle } from "lucide-react";
+
+import { useAppContext } from "@/providers/app-provider";
+import { useLogoutMutation } from "@/queries/useAuth";
 import {
   getAccessTokenFromLocalStorage,
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
-import { LoaderCircle } from "lucide-react";
-import { useAppContext } from "@/providers/app-provider";
 
 const Logout = () => {
   const router = useRouter();

@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import RefreshToken from "@/components/globals/refresh-token";
+import RefreshTokenProvider from "@/providers/refresh-token-provider";
 import {
   getAccessTokenFromLocalStorage,
   removeTokensFromLocalStorage,
@@ -73,8 +73,7 @@ const AppProvider = ({ children }: Props) => {
   return (
     <AppContext value={{ isAuth, setIsAuth }}>
       <QueryClientProvider client={queryClient}>
-        <RefreshToken />
-        {children}
+        <RefreshTokenProvider>{children}</RefreshTokenProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AppContext>

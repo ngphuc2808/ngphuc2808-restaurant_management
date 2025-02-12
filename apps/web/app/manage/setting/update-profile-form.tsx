@@ -2,37 +2,37 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Upload } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Upload } from "lucide-react";
 
 import {
   UpdateMeBody,
   UpdateMeBodyType,
 } from "@/schemaValidations/account.schema";
+import { useAccountMe, useUpdateMeMutation } from "@/queries/useAccount";
+import { useUploadMediaMutation } from "@/queries/useMedia";
+import { handleErrorApi } from "@/lib/utils";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
+import { Button } from "@repo/ui/components/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { Button } from "@repo/ui/components/button";
-import { Input } from "@repo/ui/components/input";
-import { Label } from "@repo/ui/components/label";
 import {
   Form,
   FormField,
   FormItem,
   FormMessage,
 } from "@repo/ui/components/form";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@repo/ui/components/avatar";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
-import { useAccountMe, useUpdateMeMutation } from "@/queries/useAccount";
-import { useUploadMediaMutation } from "@/queries/useMedia";
-import { handleErrorApi } from "@/lib/utils";
 
 const UpdateProfileForm = () => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -54,7 +54,7 @@ const UpdateProfileForm = () => {
 
   const previewAvatar = React.useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
-    [file, avatar],
+    [file, avatar]
   );
 
   const reset = () => {
@@ -102,6 +102,7 @@ const UpdateProfileForm = () => {
   React.useEffect(() => {
     if (data) {
       const { name, avatar } = data.payload.data;
+
       form.reset({ name, avatar: avatar ?? undefined });
     }
   }, [data]);
@@ -144,7 +145,7 @@ const UpdateProfileForm = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + field.name,
+                              "http://localhost:3000/" + field.name
                             );
                           }
                         }}

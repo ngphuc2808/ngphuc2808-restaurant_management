@@ -1,6 +1,6 @@
+import { Badge } from "@repo/ui/components/badge";
 import ChangePasswordForm from "@/app/manage/setting/change-password-form";
 import UpdateProfileForm from "@/app/manage/setting/update-profile-form";
-import { Badge } from "@repo/ui/components/badge";
 
 const SettingPage = () => {
   return (

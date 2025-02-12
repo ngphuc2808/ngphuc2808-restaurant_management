@@ -1,6 +1,7 @@
-import accountApiRequest from "@/apiRequests/account";
 import { cookies } from "next/headers";
 import React from "react";
+
+import accountApiRequest from "@/apiRequests/account";
 
 const DashboardPage = async () => {
   const cookieStore = await cookies();
