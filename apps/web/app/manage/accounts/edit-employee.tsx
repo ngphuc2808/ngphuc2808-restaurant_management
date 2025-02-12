@@ -62,7 +62,7 @@ const EditEmployee = ({
     defaultValues: {
       name: "",
       email: "",
-      avatar: "",
+      avatar: undefined,
       changePassword: false,
     },
   });
@@ -71,8 +71,8 @@ const EditEmployee = ({
   const changePassword = form.watch("changePassword");
 
   const previewAvatar = React.useMemo(
-    () => (file ? URL.createObjectURL(file) : avatar || ""),
-    [file, avatar],
+    () => (file ? URL.createObjectURL(file) : avatar || undefined),
+    [file, avatar]
   );
 
   const reset = () => {
@@ -121,7 +121,7 @@ const EditEmployee = ({
       const { name, avatar, email } = dataAccount.data.payload.data;
       form.reset({
         name,
-        avatar: avatar ?? "",
+        avatar: avatar ?? undefined,
         email,
         changePassword: form.getValues("changePassword"),
         password: form.getValues("password"),
@@ -129,13 +129,6 @@ const EditEmployee = ({
       });
     }
   }, [dataAccount.data, form]);
-
-  useEffect(() => {
-    if (!changePassword) {
-      form.setValue("password", undefined);
-      form.setValue("confirmPassword", undefined);
-    }
-  }, [changePassword]);
 
   return (
     <Dialog
@@ -182,7 +175,7 @@ const EditEmployee = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name,
+                              "http://localhost:3000/" + file.name
                             );
                           }
                         }}
@@ -200,7 +193,6 @@ const EditEmployee = ({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="name"
@@ -241,7 +233,16 @@ const EditEmployee = ({
                       <div className="col-span-3 w-full space-y-2">
                         <Switch
                           checked={field.value}
-                          onCheckedChange={field.onChange}
+                          onCheckedChange={(value) => {
+                            field.onChange(value);
+                            if (!value) {
+                              form.setValue("password", undefined);
+                              form.setValue("confirmPassword", undefined);
+                            } else {
+                              form.setValue("password", "");
+                              form.setValue("confirmPassword", "");
+                            }
+                          }}
                         />
                         <FormMessage />
                       </div>
