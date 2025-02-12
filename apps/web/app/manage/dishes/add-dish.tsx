@@ -69,7 +69,7 @@ const AddDish = () => {
 
   const previewImage = React.useMemo(
     () => (file ? URL.createObjectURL(file) : image || undefined),
-    [file, image]
+    [file, image],
   );
 
   const reset = () => {
@@ -164,7 +164,7 @@ const AddDish = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name
+                              "http://localhost:3000/" + file.name,
                             );
                           }
                         }}

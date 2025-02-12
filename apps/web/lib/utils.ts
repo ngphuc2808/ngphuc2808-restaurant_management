@@ -63,7 +63,7 @@ export const formatCurrency = (number: number) => {
 };
 
 export const getVietnameseDishStatus = (
-  status: (typeof DishStatus)[keyof typeof DishStatus]
+  status: (typeof DishStatus)[keyof typeof DishStatus],
 ) => {
   switch (status) {
     case DishStatus.Available:
@@ -76,7 +76,7 @@ export const getVietnameseDishStatus = (
 };
 
 export const getVietnameseTableStatus = (
-  status: (typeof TableStatus)[keyof typeof TableStatus]
+  status: (typeof TableStatus)[keyof typeof TableStatus],
 ) => {
   switch (status) {
     case TableStatus.Available:

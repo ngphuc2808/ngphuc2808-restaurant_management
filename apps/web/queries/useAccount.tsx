@@ -135,7 +135,7 @@ export const useDeleteAccountMutation = (): UseMutationResult<
 };
 
 export const useGetGuestListQuery = (
-  queryParams: GetGuestListQueryParamsType
+  queryParams: GetGuestListQueryParamsType,
 ): UseQueryResult<QueryResponseType<GetListGuestsResType>, Error> => {
   return useQuery({
     queryFn: () => accountApiRequest.guestList(queryParams),

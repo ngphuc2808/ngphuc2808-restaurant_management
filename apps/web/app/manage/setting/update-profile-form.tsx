@@ -54,7 +54,7 @@ const UpdateProfileForm = () => {
 
   const previewAvatar = React.useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
-    [file, avatar]
+    [file, avatar],
   );
 
   const reset = () => {
@@ -145,7 +145,7 @@ const UpdateProfileForm = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + field.name
+                              "http://localhost:3000/" + field.name,
                             );
                           }
                         }}

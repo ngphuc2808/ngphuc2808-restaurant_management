@@ -26,12 +26,12 @@ const QRCodeTable = ({
     canvasContext.fillText(
       `Bàn số ${tableNumber}`,
       canvas.width / 2,
-      canvas.width + 20
+      canvas.width + 20,
     );
     canvasContext.fillText(
       `Quét mã QR để gọi món`,
       canvas.width / 2,
-      canvas.width + 50
+      canvas.width + 50,
     );
     const virtalCanvas = document.createElement("canvas");
     QRCode.toCanvas(
@@ -47,7 +47,7 @@ const QRCodeTable = ({
       function (error) {
         if (error) console.error(error);
         canvasContext.drawImage(virtalCanvas, 0, 0, width, width);
-      }
+      },
     );
   }, [token, width, tableNumber]);
   return <canvas ref={canvasRef} />;

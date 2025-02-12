@@ -76,7 +76,7 @@ const EditDish = ({
 
   const previewImage = React.useMemo(
     () => (file ? URL.createObjectURL(file) : image || undefined),
-    [file, image]
+    [file, image],
   );
 
   const onSubmit = async (values: UpdateDishBodyType) => {
@@ -179,7 +179,7 @@ const EditDish = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name
+                              "http://localhost:3000/" + file.name,
                             );
                           }
                         }}

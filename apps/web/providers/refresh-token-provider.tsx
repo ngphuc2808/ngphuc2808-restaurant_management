@@ -32,7 +32,7 @@ const RefreshTokenProvider = ({ children }: Props) => {
             router.push("/login");
           },
         }),
-      TIMEOUT
+      TIMEOUT,
     );
     return () => {
       clearInterval(interval);
