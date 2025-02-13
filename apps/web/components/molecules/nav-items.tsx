@@ -6,6 +6,17 @@ import React from "react";
 import { useAppContext } from "@/providers/app-provider";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useGuestLogoutMutation } from "@/queries/useGuest";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@repo/ui/components/alert-dialog";
 import { cn } from "@repo/ui/lib/utils";
 import { menuItemsHomePage } from "@/constants";
 import { useRouter } from "next/navigation";
@@ -54,10 +65,23 @@ const NavItems = ({ className }: { className?: string }) => {
 
         return null;
       })}
+
       {role && (
-        <div className={cn(className, "cursor-pointer")} onClick={logout}>
-          Đăng xuất
-        </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className={cn(className, "cursor-pointer")}>Đăng xuất</div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Bạn có muốn đăng xuất?</AlertDialogTitle>
+              <AlertDialogDescription>Xác nhận</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Hủy bỏ</AlertDialogCancel>
+              <AlertDialogAction onClick={logout}>OK</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </>
   );

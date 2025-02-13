@@ -1,3 +1,5 @@
+import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
+
 export const TokenType = {
   ForgotPasswordToken: "ForgotPasswordToken",
   AccessToken: "AccessToken",
@@ -52,5 +54,13 @@ export const OrderStatusValues = [
   OrderStatus.Delivered,
   OrderStatus.Paid,
 ] as const;
+
+export const OrderStatusIcon = {
+  [OrderStatus.Pending]: Loader,
+  [OrderStatus.Processing]: CookingPot,
+  [OrderStatus.Rejected]: BookX,
+  [OrderStatus.Delivered]: Truck,
+  [OrderStatus.Paid]: HandCoins,
+};
 
 export const ManagerRoom = "manager" as const;

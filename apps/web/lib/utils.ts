@@ -1,14 +1,14 @@
 import { UseFormSetError } from "react-hook-form";
-import jwt from "jsonwebtoken";
 import { jwtDecode } from "jwt-decode";
+import { format } from "date-fns";
 
-import { EntityError } from "@/lib/http";
-import { envClientConfig } from "@/config";
-import authApiRequests from "@/apiRequests/auth";
-import { toast } from "@repo/ui/hooks/use-toast";
-import { DishStatus, Role, TableStatus } from "@/constants/type";
-import { TokenPayload } from "@/types/jwt.types";
 import guestApiRequest from "@/apiRequests/guest";
+import authApiRequests from "@/apiRequests/auth";
+import { envConfig } from "@/config";
+import { EntityError } from "@/lib/http";
+import { toast } from "@repo/ui/hooks/use-toast";
+import { DishStatus, OrderStatus, Role, TableStatus } from "@/constants/type";
+import { TokenPayload } from "@/types/jwt.types";
 
 export const normalizePath = (path: string) => {
   return path.startsWith("/") ? path.slice(1) : path;
@@ -91,6 +91,23 @@ export const getVietnameseTableStatus = (
   }
 };
 
+export const getVietnameseOrderStatus = (
+  status: (typeof OrderStatus)[keyof typeof OrderStatus],
+) => {
+  switch (status) {
+    case OrderStatus.Delivered:
+      return "Đã phục vụ";
+    case OrderStatus.Paid:
+      return "Đã thanh toán";
+    case OrderStatus.Pending:
+      return "Chờ xử lý";
+    case OrderStatus.Processing:
+      return "Đang nấu";
+    default:
+      return "Từ chối";
+  }
+};
+
 export const getTableLink = ({
   token,
   tableNumber,
@@ -99,11 +116,7 @@ export const getTableLink = ({
   tableNumber: number;
 }) => {
   return (
-    envClientConfig.NEXT_PUBLIC_URL +
-    `/tables/` +
-    tableNumber +
-    "?token=" +
-    token
+    envConfig.NEXT_PUBLIC_URL + `/tables/` + tableNumber + "?token=" + token
   );
 };
 
@@ -146,4 +159,47 @@ export const checkAndRefreshToken = async (param?: {
       param?.onError && param.onError();
     }
   }
+};
+
+export const removeAccents = (str: string) => {
+  const accentsMap = [
+    "aàảãáạăằẳẵắặâầẩẫấậ",
+    "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+    "dđ",
+    "DĐ",
+    "eèẻẽéẹêềểễếệ",
+    "EÈẺẼÉẸÊỀỂỄẾỆ",
+    "iìỉĩíị",
+    "IÌỈĨÍỊ",
+    "oòỏõóọôồổỗốộơờởỡớợ",
+    "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+    "uùủũúụưừửữứự",
+    "UÙỦŨÚỤƯỪỬỮỨỰ",
+    "yỳỷỹýỵ",
+    "YỲỶỸÝỴ",
+  ];
+
+  for (let i = 0; i < accentsMap.length; i++) {
+    const re = new RegExp("[" + accentsMap[i]!.substring(1) + "]", "g");
+    const char = accentsMap[i]![0];
+    str = str.replace(re, char!);
+  }
+  return str;
+};
+
+export const simpleMatchText = (fullText: string, matchText: string) => {
+  return removeAccents(fullText.toLowerCase()).includes(
+    removeAccents(matchText.trim().toLowerCase()),
+  );
+};
+
+export const formatDateTimeToLocaleString = (date: string | Date) => {
+  return format(
+    date instanceof Date ? date : new Date(date),
+    "HH:mm:ss dd/MM/yyyy",
+  );
+};
+
+export const formatDateTimeToTimeString = (date: string | Date) => {
+  return format(date instanceof Date ? date : new Date(date), "HH:mm:ss");
 };

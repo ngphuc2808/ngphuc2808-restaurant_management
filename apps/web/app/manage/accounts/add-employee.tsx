@@ -64,15 +64,6 @@ const AddEmployee = () => {
     [file, avatar],
   );
 
-  const reset = () => {
-    form.reset();
-    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
-      URL.revokeObjectURL(previewAvatar);
-    }
-    setFile(null);
-    setOpen(false);
-  };
-
   const onSubmit = async (values: CreateEmployeeAccountBodyType) => {
     if (addAccountMutation.isPending) return;
 
@@ -105,6 +96,15 @@ const AddEmployee = () => {
         setError: form.setError,
       });
     }
+  };
+
+  const reset = () => {
+    form.reset();
+    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
+      URL.revokeObjectURL(previewAvatar);
+    }
+    setFile(null);
+    setOpen(false);
   };
 
   return (

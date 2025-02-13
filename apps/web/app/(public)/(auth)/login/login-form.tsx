@@ -35,12 +35,6 @@ const LoginForm = () => {
   const { setRole } = useAppContext();
   const loginMutation = useLoginMutation();
 
-  React.useEffect(() => {
-    if (clearTokens) {
-      setRole();
-    }
-  }, [clearTokens, setRole]);
-
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -67,6 +61,12 @@ const LoginForm = () => {
       });
     }
   };
+
+  React.useEffect(() => {
+    if (clearTokens) {
+      setRole();
+    }
+  }, [clearTokens, setRole]);
 
   return (
     <Card className="mx-auto max-w-sm">

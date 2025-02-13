@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { envClientConfig } from "@/config";
+import { envConfig } from "@/config";
 import {
   getAccessTokenFromLocalStorage,
   normalizePath,
@@ -94,7 +94,7 @@ const request = async <Response>(
 
   const baseUrl =
     options?.baseUrl === undefined
-      ? envClientConfig.NEXT_PUBLIC_API_ENDPOINT
+      ? envConfig.NEXT_PUBLIC_API_ENDPOINT
       : options.baseUrl;
 
   const fullUrl = `${baseUrl}/${normalizePath(url)}`;

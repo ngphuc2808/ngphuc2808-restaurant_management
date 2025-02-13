@@ -51,7 +51,7 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import AddTable from "@/app/manage/tables/add-table";
 import EditTable from "@/app/manage/tables/edit-table";
 import AutoPagination from "@/components/molecules/auto-pagination";
-import QRCodeTable from "@/components/atoms/qrcode-table";
+import QRCodeTable from "@/app/manage/tables/qrcode-table";
 
 type TableItem = TableListResType["data"][0];
 

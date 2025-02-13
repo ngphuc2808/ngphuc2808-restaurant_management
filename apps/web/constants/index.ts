@@ -7,6 +7,7 @@ import {
   Salad,
   Table,
 } from "lucide-react";
+
 import { Role } from "./type";
 import { RoleType } from "@/types/jwt.types";
 
@@ -26,6 +27,11 @@ export const menuItemsHomePage: {
   {
     title: "Menu",
     href: "/guest/menu",
+    roles: [Role.Guest],
+  },
+  {
+    title: "Đơn hàng",
+    href: "/guest/orders",
     roles: [Role.Guest],
   },
   {

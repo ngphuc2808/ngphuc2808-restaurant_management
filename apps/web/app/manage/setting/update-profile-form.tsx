@@ -57,14 +57,6 @@ const UpdateProfileForm = () => {
     [file, avatar],
   );
 
-  const reset = () => {
-    form.reset();
-    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
-      URL.revokeObjectURL(previewAvatar);
-    }
-    setFile(null);
-  };
-
   const onSubmit = async (values: UpdateMeBodyType) => {
     if (updateMeMutation.isPending) return;
 
@@ -97,6 +89,14 @@ const UpdateProfileForm = () => {
         setError: form.setError,
       });
     }
+  };
+
+  const reset = () => {
+    form.reset();
+    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
+      URL.revokeObjectURL(previewAvatar);
+    }
+    setFile(null);
   };
 
   React.useEffect(() => {

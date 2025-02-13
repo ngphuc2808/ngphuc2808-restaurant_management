@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
@@ -75,15 +75,6 @@ const EditEmployee = ({
     [file, avatar],
   );
 
-  const reset = () => {
-    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
-      URL.revokeObjectURL(previewAvatar);
-    }
-    setId(undefined);
-    setFile(null);
-    form.reset();
-  };
-
   const onSubmit = async (values: UpdateEmployeeAccountBodyType) => {
     if (updateAccountMutation.isPending) return;
     try {
@@ -116,7 +107,16 @@ const EditEmployee = ({
     }
   };
 
-  useEffect(() => {
+  const reset = () => {
+    if (file && previewAvatar && previewAvatar.startsWith("blob:")) {
+      URL.revokeObjectURL(previewAvatar);
+    }
+    setId(undefined);
+    setFile(null);
+    form.reset();
+  };
+
+  React.useEffect(() => {
     if (dataAccount.data) {
       const { name, avatar, email } = dataAccount.data.payload.data;
       form.reset({

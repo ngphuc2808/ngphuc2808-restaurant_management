@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -42,7 +42,7 @@ import {
 import { Switch } from "@repo/ui/components/switch";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 import { toast } from "@repo/ui/hooks/use-toast";
-import QRCodeTable from "@/components/atoms/qrcode-table";
+import QRCodeTable from "@/app/manage/tables/qrcode-table";
 
 const EditTable = ({
   id,
@@ -65,16 +65,6 @@ const EditTable = ({
   });
   const { data } = useGetTableQuery({ enabled: Boolean(id), id: id as number });
 
-  useEffect(() => {
-    if (data) {
-      const { capacity, status } = data.payload.data;
-      form.reset({
-        capacity,
-        status,
-        changeToken: form.getValues("changeToken"),
-      });
-    }
-  }, [data, form]);
   const onSubmit = async (values: UpdateTableBodyType) => {
     if (updateTableMutation.isPending) return;
     try {
@@ -95,9 +85,21 @@ const EditTable = ({
       });
     }
   };
+
   const reset = () => {
     setId(undefined);
   };
+
+  React.useEffect(() => {
+    if (data) {
+      const { capacity, status } = data.payload.data;
+      form.reset({
+        capacity,
+        status,
+        changeToken: form.getValues("changeToken"),
+      });
+    }
+  }, [data, form]);
 
   return (
     <Dialog
