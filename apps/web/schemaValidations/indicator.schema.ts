@@ -1,6 +1,5 @@
-import z from "zod";
-
 import { DishSchema } from "@/schemaValidations/dish.schema";
+import z from "zod";
 
 export const DashboardIndicatorQueryParams = z.object({
   fromDate: z.coerce.date(),

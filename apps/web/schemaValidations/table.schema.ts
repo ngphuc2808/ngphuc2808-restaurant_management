@@ -1,6 +1,5 @@
-import z from "zod";
-
 import { TableStatusValues } from "@/constants/type";
+import z from "zod";
 
 export const CreateTableBody = z.object({
   number: z.coerce.number().positive(),

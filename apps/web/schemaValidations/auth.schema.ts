@@ -1,13 +1,10 @@
-import z from "zod";
-
 import { Role } from "@/constants/type";
+import z from "zod";
 
 export const LoginBody = z
   .object({
-    email: z.string().min(1, { message: "required" }).email({
-      message: "invalidEmail",
-    }),
-    password: z.string().min(6, "minmaxPassword").max(100, "minmaxPassword"),
+    email: z.string().email(),
+    password: z.string().min(6).max(100),
   })
   .strict();
 

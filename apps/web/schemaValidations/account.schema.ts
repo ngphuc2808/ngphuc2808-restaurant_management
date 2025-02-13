@@ -1,7 +1,6 @@
-import z from "zod";
-
 import { Role } from "@/constants/type";
 import { LoginRes } from "@/schemaValidations/auth.schema";
+import z from "zod";
 
 export const AccountSchema = z.object({
   id: z.number(),

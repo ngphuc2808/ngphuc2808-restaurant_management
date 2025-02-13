@@ -40,10 +40,11 @@ const ChangePasswordForm = () => {
       confirmPassword: "",
     },
   });
-  const onSubmit = async (data: ChangePasswordBodyType) => {
+
+  const onSubmit = async (values: ChangePasswordBodyType) => {
     if (changePasswordMutation.isPending) return;
     try {
-      const result = await changePasswordMutation.mutateAsync(data);
+      const result = await changePasswordMutation.mutateAsync(values);
       setAccessTokenToLocalStorage(result.payload.data.accessToken);
       setRefreshTokenToLocalStorage(result.payload.data.refreshToken);
       toast({
@@ -66,7 +67,7 @@ const ChangePasswordForm = () => {
       <form
         noValidate
         className="grid auto-rows-max items-start gap-4 md:gap-8"
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit, console.log)}
         onReset={reset}
       >
         <Card className="overflow-hidden" x-chunk="dashboard-07-chunk-4">

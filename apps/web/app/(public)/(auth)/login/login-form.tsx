@@ -30,16 +30,16 @@ import { toast } from "@repo/ui/hooks/use-toast";
 
 const LoginForm = () => {
   const router = useRouter();
-  const loginMutation = useLoginMutation();
   const searchParams = useSearchParams();
   const clearTokens = searchParams.get("clearTokens");
-  const { setIsAuth } = useAppContext();
+  const { setRole } = useAppContext();
+  const loginMutation = useLoginMutation();
 
   React.useEffect(() => {
     if (clearTokens) {
-      setIsAuth(false);
+      setRole();
     }
-  }, [clearTokens, setIsAuth]);
+  }, [clearTokens, setRole]);
 
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
@@ -49,16 +49,16 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: LoginBodyType) => {
+  const onSubmit = async (values: LoginBodyType) => {
     if (loginMutation.isPending) return;
 
     try {
-      const result = await loginMutation.mutateAsync(data);
+      const result = await loginMutation.mutateAsync(values);
       toast({
         description: result.payload.message,
         duration: 2000,
       });
-      setIsAuth(true);
+      setRole(result.payload.data.account.role);
       router.push("/manage/dashboard");
     } catch (error) {
       handleErrorApi({
@@ -81,9 +81,7 @@ const LoginForm = () => {
           <form
             className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
             noValidate
-            onSubmit={form.handleSubmit(onSubmit, (error) => {
-              console.log(error);
-            })}
+            onSubmit={form.handleSubmit(onSubmit, console.log)}
           >
             <div className="grid gap-4">
               <FormField

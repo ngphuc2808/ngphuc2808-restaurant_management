@@ -1,7 +1,6 @@
-import z from "zod";
-
 import { Role } from "@/constants/type";
 import { OrderSchema } from "@/schemaValidations/order.schema";
+import z from "zod";
 
 export const GuestLoginBody = z
   .object({

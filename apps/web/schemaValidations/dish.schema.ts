@@ -1,6 +1,5 @@
-import z from "zod";
-
 import { DishStatusValues } from "@/constants/type";
+import z from "zod";
 
 export const CreateDishBody = z.object({
   name: z.string().min(1).max(256),
@@ -43,3 +42,27 @@ export const DishParams = z.object({
   id: z.coerce.number(),
 });
 export type DishParamsType = z.TypeOf<typeof DishParams>;
+
+export const DishListWithPaginationQuery = z.object({
+  page: z.coerce.number().positive().lte(10000).default(1),
+  limit: z.coerce.number().positive().lte(10000).default(10),
+});
+
+export type DishListWithPaginationQueryType = z.TypeOf<
+  typeof DishListWithPaginationQuery
+>;
+
+export const DishListWithPaginationRes = z.object({
+  data: z.object({
+    totalItem: z.number(),
+    totalPage: z.number(),
+    page: z.number(),
+    limit: z.number(),
+    items: z.array(DishSchema),
+  }),
+  message: z.string(),
+});
+
+export type DishListWithPaginationResType = z.TypeOf<
+  typeof DishListWithPaginationRes
+>;

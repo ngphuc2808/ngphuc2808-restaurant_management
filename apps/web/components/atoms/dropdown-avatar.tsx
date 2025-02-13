@@ -26,18 +26,18 @@ import {
 const DropdownAvatar = () => {
   const router = useRouter();
 
-  const { setIsAuth } = useAppContext();
+  const { setRole } = useAppContext();
 
   const accountProfile = useAccountMe();
   const account = accountProfile.data?.payload.data;
 
   const logoutMutation = useLogoutMutation();
 
-  const handleLogout = async () => {
+  const logout = async () => {
     if (logoutMutation.isPending) return;
     try {
       await logoutMutation.mutateAsync();
-      setIsAuth(false);
+      setRole();
       router.push("/");
     } catch (error) {
       handleErrorApi({
@@ -45,8 +45,6 @@ const DropdownAvatar = () => {
       });
     }
   };
-
-  if (accountProfile.isPending) return <Loader2 className="animate-spin" />;
 
   return (
     <DropdownMenu>
@@ -77,7 +75,7 @@ const DropdownAvatar = () => {
         </DropdownMenuItem>
         <DropdownMenuItem>Hỗ trợ</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Đăng xuất</DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>Đăng xuất</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

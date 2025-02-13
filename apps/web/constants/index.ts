@@ -7,29 +7,36 @@ import {
   Salad,
   Table,
 } from "lucide-react";
+import { Role } from "./type";
+import { RoleType } from "@/types/jwt.types";
 
 export const TIMEOUT = 1000;
 export const UNAUTHENTICATED_PATH = ["/login", "/logout", "/refresh-token"];
 
-export const menuItemsHomePage = [
+export const menuItemsHomePage: {
+  title: string;
+  href: string;
+  roles?: RoleType[];
+  hideWhenLogin?: boolean;
+}[] = [
   {
-    title: "Món ăn",
-    href: "/menu",
+    title: "Trang chủ",
+    href: "/",
   },
   {
-    title: "Đơn hàng",
-    href: "/orders",
-    authRequired: true,
+    title: "Menu",
+    href: "/guest/menu",
+    roles: [Role.Guest],
   },
   {
     title: "Đăng nhập",
     href: "/login",
-    authRequired: false,
+    hideWhenLogin: true,
   },
   {
     title: "Quản lý",
     href: "/manage/dashboard",
-    authRequired: true,
+    roles: [Role.Owner, Role.Employee],
   },
 ];
 

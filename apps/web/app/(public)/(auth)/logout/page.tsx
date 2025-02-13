@@ -13,15 +13,13 @@ import {
 
 const Logout = () => {
   const router = useRouter();
-
-  const { mutateAsync } = useLogoutMutation();
-
-  const { setIsAuth } = useAppContext();
   const searchParams = useSearchParams();
   const refreshTokenFromUrl = searchParams.get("refreshToken");
   const accessTokenFromUrl = searchParams.get("accessToken");
-
+  const { setRole } = useAppContext();
   const ref = React.useRef<boolean>(false);
+
+  const { mutateAsync } = useLogoutMutation();
 
   React.useEffect(() => {
     if (
@@ -40,13 +38,13 @@ const Logout = () => {
         setTimeout(() => {
           ref.current = false;
         }, 1000);
-        setIsAuth(false);
+        setRole();
         router.push("/login");
       });
     } else {
       router.push("/");
     }
-  }, [mutateAsync, router, accessTokenFromUrl, refreshTokenFromUrl, setIsAuth]);
+  }, [mutateAsync, router, accessTokenFromUrl, refreshTokenFromUrl, setRole]);
 
   return null;
 };
