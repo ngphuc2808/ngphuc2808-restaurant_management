@@ -21,7 +21,6 @@ const makeQueryClient = () => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
       },
     },
   });

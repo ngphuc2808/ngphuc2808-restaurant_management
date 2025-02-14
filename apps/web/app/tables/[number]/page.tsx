@@ -1,4 +1,4 @@
-import GuestLoginForm from "@/app/(public)/tables/[number]/guest-login-form";
+import GuestLoginForm from "@/app/tables/[number]/guest-login-form";
 
 const TableNumberPage = () => {
   return <GuestLoginForm />;

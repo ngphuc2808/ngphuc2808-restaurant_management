@@ -16,7 +16,11 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { endOfDay, format, startOfDay } from "date-fns";
 
-import { GetOrdersResType } from "@/schemaValidations/order.schema";
+import {
+  GetOrdersResType,
+  PayGuestOrdersResType,
+  UpdateOrderResType,
+} from "@/schemaValidations/order.schema";
 import { useTableListQuery } from "@/queries/useTable";
 import {
   useGetOrderListQuery,
@@ -53,6 +57,9 @@ import { useOrderService } from "@/app/manage/orders/order.service";
 import AddOrder from "@/app/manage/orders/add-order";
 import EditOrder from "@/app/manage/orders/edit-order";
 import AutoPagination from "@/components/molecules/auto-pagination";
+import { socket } from "@/lib/socket";
+import { toast } from "@repo/ui/hooks/use-toast";
+import { GuestCreateOrdersResType } from "@/schemaValidations/guest.schema";
 
 export const OrderTableContext = React.createContext({
   setOrderIdEdit: (value: number | undefined) => {},
@@ -163,69 +170,69 @@ const OrderTable = () => {
     });
   }, [table, pageIndex]);
 
-  // useEffect(() => {
-  //   if (socket?.connected) {
-  //     onConnect()
-  //   }
+  React.useEffect(() => {
+    if (socket?.connected) {
+      onConnect();
+    }
 
-  //   function onConnect() {
-  //     console.log(socket?.id)
-  //   }
+    function onConnect() {
+      console.log(socket?.id);
+    }
 
-  //   function onDisconnect() {
-  //     console.log('disconnect')
-  //   }
+    function onDisconnect() {
+      console.log("disconnect");
+    }
 
-  //   function refetch() {
-  //     const now = new Date()
-  //     if (now >= fromDate && now <= toDate) {
-  //       refetchOrderList()
-  //     }
-  //   }
+    function refetch() {
+      const now = new Date();
+      if (now >= fromDate && now <= toDate) {
+        refetchOrderList();
+      }
+    }
 
-  //   function onUpdateOrder(data: UpdateOrderResType['data']) {
-  //     const {
-  //       dishSnapshot: { name },
-  //       quantity
-  //     } = data
-  //     toast({
-  //       description: `Món ${name} (SL: ${quantity}) vừa được cập nhật sang trạng thái "${getVietnameseOrderStatus(
-  //         data.status
-  //       )}"`
-  //     })
-  //     refetch()
-  //   }
+    function onUpdateOrder(data: UpdateOrderResType["data"]) {
+      const {
+        dishSnapshot: { name },
+        quantity,
+      } = data;
+      toast({
+        description: `Món ${name} (SL: ${quantity}) vừa được cập nhật sang trạng thái "${getVietnameseOrderStatus(
+          data.status,
+        )}"`,
+      });
+      refetch();
+    }
 
-  //   function onNewOrder(data: GuestCreateOrdersResType['data']) {
-  //     const { guest } = data[0]
-  //     toast({
-  //       description: `${guest?.name} tại bàn ${guest?.tableNumber} vừa đặt ${data.length} đơn`
-  //     })
-  //     refetch()
-  //   }
+    function onNewOrder(data: GuestCreateOrdersResType["data"]) {
+      const { guest } = data[0]!;
+      toast({
+        description: `${guest?.name} tại bàn ${guest?.tableNumber} vừa đặt ${data.length} đơn`,
+      });
+      refetch();
+    }
 
-  //   function onPayment(data: PayGuestOrdersResType['data']) {
-  //     const { guest } = data[0]
-  //     toast({
-  //       description: `${guest?.name} tại bàn ${guest?.tableNumber} thanh toán thành công ${data.length} đơn`
-  //     })
-  //     refetch()
-  //   }
+    function onPayment(data: PayGuestOrdersResType["data"]) {
+      const { guest } = data[0]!;
+      toast({
+        description: `${guest?.name} tại bàn ${guest?.tableNumber} thanh toán thành công ${data.length} đơn`,
+      });
+      refetch();
+    }
 
-  //   socket?.on('update-order', onUpdateOrder)
-  //   socket?.on('new-order', onNewOrder)
-  //   socket?.on('connect', onConnect)
-  //   socket?.on('disconnect', onDisconnect)
-  //   socket?.on('payment', onPayment)
+    socket?.on("update-order", onUpdateOrder);
+    socket?.on("new-order", onNewOrder);
+    socket?.on("connect", onConnect);
+    socket?.on("disconnect", onDisconnect);
+    socket?.on("payment", onPayment);
 
-  //   return () => {
-  //     socket?.off('connect', onConnect)
-  //     socket?.off('disconnect', onDisconnect)
-  //     socket?.off('update-order', onUpdateOrder)
-  //     socket?.off('new-order', onNewOrder)
-  //     socket?.off('payment', onPayment)
-  //   }
-  // }, [refetchOrderList, fromDate, toDate, socket])
+    return () => {
+      socket?.off("update-order", onUpdateOrder);
+      socket?.off("new-order", onNewOrder);
+      socket?.off("connect", onConnect);
+      socket?.off("disconnect", onDisconnect);
+      socket?.off("payment", onPayment);
+    };
+  }, [refetchOrderList, fromDate, toDate]);
 
   return (
     <OrderTableContext.Provider

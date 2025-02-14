@@ -21,28 +21,8 @@ interface Props {
   onClick?: (pageNumber: number) => void;
 }
 
-/**
-Với range = 2 áp dụng cho khoảng cách đầu, cuối và xung quanh current_page
-
-[1] 2 3 ... 19 20
-1 [2] 3 4 ... 19 20 
-1 2 [3] 4 5 ... 19 20
-1 2 3 [4] 5 6 ... 19 20
-1 2 3 4 [5] 6 7 ... 19 20
-
-1 2 ... 4 5 [6] 8 9 ... 19 20
-
-1 2 ...13 14 [15] 16 17 ... 19 20
-
-
-1 2 ... 14 15 [16] 17 18 19 20
-1 2 ... 15 16 [17] 18 19 20
-1 2 ... 16 17 [18] 19 20
-1 2 ... 17 18 [19] 20
-1 2 ... 18 19 [20]
- */
-
 const RANGE = 2;
+
 export default function AutoPagination({
   page,
   pageSize,
@@ -147,11 +127,11 @@ export default function AutoPagination({
               }}
               className={cn({
                 "cursor-not-allowed": page === 1,
-                "pointer-events-none": page === 1,
               })}
               onClick={(e) => {
                 if (page === 1) {
                   e.preventDefault();
+                  e.nativeEvent.stopImmediatePropagation();
                 }
               }}
             />
@@ -182,13 +162,14 @@ export default function AutoPagination({
               }}
               className={cn({
                 "cursor-not-allowed": page === pageSize,
-                "pointer-events-none": page === pageSize,
               })}
               onClick={(e) => {
                 if (page === pageSize) {
                   e.preventDefault();
+                  e.nativeEvent.stopImmediatePropagation();
                 }
               }}
+              scroll={false}
             />
           )}
           {!isLink && (

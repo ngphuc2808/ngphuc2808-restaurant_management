@@ -28,7 +28,6 @@ export const useAccountMe = (): UseQueryResult<
   return useQuery({
     queryKey: ["account-me"],
     queryFn: accountApiRequest.me,
-    gcTime: 0,
   });
 };
 

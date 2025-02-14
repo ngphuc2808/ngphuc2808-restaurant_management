@@ -54,6 +54,5 @@ export const useGuestGetOrderListQuery = (): UseQueryResult<
   return useQuery({
     queryFn: guestApiRequest.getOrderList,
     queryKey: ["guest-orders"],
-    gcTime: 0,
   });
 };

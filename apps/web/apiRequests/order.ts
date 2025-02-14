@@ -20,7 +20,7 @@ const orderApiRequest = {
     http.post<CreateOrdersResType>(prefix, body),
   getOrderList: (queryParams: GetOrdersQueryParamsType) =>
     http.get<GetOrdersResType>(
-      `/${prefix}` +
+      `/${prefix}?` +
         queryString.stringify({
           fromDate: queryParams.fromDate?.toISOString(),
           toDate: queryParams.toDate?.toISOString(),

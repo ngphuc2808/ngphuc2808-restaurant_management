@@ -6,6 +6,7 @@ import {
   Users2,
   Salad,
   Table,
+  Settings,
 } from "lucide-react";
 
 import { Role } from "./type";
@@ -46,41 +47,63 @@ export const menuItemsHomePage: {
   },
 ];
 
-export const menuItems = [
-  {
-    title: "Trang chủ",
-    Icon: Home,
-    href: "/",
+export const menuItems = {
+  user: {
+    name: "satnaing",
+    email: "satnaingdev@gmail.com",
+    avatar: "/avatars/shadcn.jpg",
   },
-  {
-    title: "Dashboard",
-    Icon: LayoutDashboard,
-    href: "/manage/dashboard",
-  },
-  {
-    title: "Đơn hàng",
-    Icon: ShoppingCart,
-    href: "/manage/orders",
-  },
-  {
-    title: "Bàn ăn",
-    Icon: Table,
-    href: "/manage/tables",
-  },
-  {
-    title: "Món ăn",
-    Icon: Salad,
-    href: "/manage/dishes",
-  },
+  navGroups: [
+    {
+      title: "General",
+      items: [
+        {
+          title: "Trang chủ",
+          icon: Home,
+          url: "/",
+        },
+        {
+          title: "Dashboard",
+          icon: LayoutDashboard,
+          url: "/manage/dashboard",
+        },
+        {
+          title: "Đơn hàng",
+          icon: ShoppingCart,
+          url: "/manage/orders",
+        },
+        {
+          title: "Bàn ăn",
+          icon: Table,
+          url: "/manage/tables",
+        },
+        {
+          title: "Món ăn",
+          icon: Salad,
+          url: "/manage/dishes",
+        },
 
-  {
-    title: "Phân tích",
-    Icon: LineChart,
-    href: "/manage/analytics",
-  },
-  {
-    title: "Nhân viên",
-    Icon: Users2,
-    href: "/manage/accounts",
-  },
-];
+        {
+          title: "Phân tích",
+          icon: LineChart,
+          url: "/manage/analytics",
+        },
+        {
+          title: "Nhân viên",
+          icon: Users2,
+          url: "/manage/accounts",
+        },
+      ],
+    },
+    {
+      title: "Other",
+      items: [
+        {
+          title: "Cài đặt",
+          icon: Settings,
+          url: "/manage/setting",
+        },
+      ],
+    },
+  ],
+};

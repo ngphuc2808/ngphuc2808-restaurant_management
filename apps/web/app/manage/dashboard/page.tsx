@@ -1,24 +1,26 @@
-import { cookies } from "next/headers";
-import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
+import DashboardMain from "@/app/manage/dashboard/dashboard-main";
 
-import accountApiRequest from "@/apiRequests/account";
-
-const DashboardPage = async () => {
-  const cookieStore = await cookies();
-
-  const accessToken = cookieStore.get("accessToken")?.value!;
-
-  let name = "";
-  try {
-    const result = await accountApiRequest.sMe(accessToken);
-    name = result.payload.data.name;
-  } catch (error: any) {
-    if (error?.digest?.includes("NEXT_REDIRECT")) {
-      throw error;
-    }
-  }
-
-  return <div>{name}</div>;
+const Dashboard = () => {
+  return (
+    <div className="space-y-2">
+      <Card x-chunk="dashboard-06-chunk-0">
+        <CardHeader>
+          <CardTitle>Dashboard</CardTitle>
+          <CardDescription>Phân tích các chỉ số</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DashboardMain />
+        </CardContent>
+      </Card>
+    </div>
+  );
 };
 
-export default DashboardPage;
+export default Dashboard;

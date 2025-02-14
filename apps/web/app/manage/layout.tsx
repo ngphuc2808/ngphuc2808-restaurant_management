@@ -1,30 +1,11 @@
-import NavLinks from "@/components/molecules/nav-links";
-import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
-import DropdownAvatar from "@/components/atoms/dropdown-avatar";
-import MobileNavLinks from "@/components/molecules/mobile-nav-links";
+import AdminLayout from "@/components/templates/admin-layout";
 
-const ManageLayout = ({
+const Manage = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <NavLinks />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <MobileNavLinks />
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <div className="flex justify-end">
-              <DarkModeToggle />
-            </div>
-          </div>
-          <DropdownAvatar />
-        </header>
-        {children}
-      </div>
-    </div>
-  );
+  return <AdminLayout>{children}</AdminLayout>;
 };
 
-export default ManageLayout;
+export default Manage;

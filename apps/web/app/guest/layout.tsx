@@ -1,7 +1,7 @@
-import Layout from "@/app/(public)/layout";
+import GlobalLayout from "@/components/templates/global-layout";
 
-export default function GuestLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return <Layout>{children}</Layout>;
-}
+const Guest = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  return <GlobalLayout>{children}</GlobalLayout>;
+};
+
+export default Guest;

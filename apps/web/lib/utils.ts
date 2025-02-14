@@ -203,3 +203,14 @@ export const formatDateTimeToLocaleString = (date: string | Date) => {
 export const formatDateTimeToTimeString = (date: string | Date) => {
   return format(date instanceof Date ? date : new Date(date), "HH:mm:ss");
 };
+
+export const checkIsActive = (href: string, item: NavItem, mainNav = false) => {
+  return (
+    href === item.url ||
+    href.split("?")[0] === item.url ||
+    !!item?.items?.filter((i) => i.url === href).length ||
+    (mainNav &&
+      href.split("/")[1] !== "" &&
+      href.split("/")[1] === item?.url?.split("/")[1])
+  );
+};

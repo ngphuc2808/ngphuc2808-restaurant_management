@@ -1,6 +1,6 @@
 import dishApiRequest from "@/apiRequests/dish";
-import MenuOrder from "@/app/guest/menu/menu-order";
 import { DishListResType } from "@/schemaValidations/dish.schema";
+import MenuOrder from "@/app/guest/menu/menu-order";
 
 const MenuPage = async () => {
   let dishes: DishListResType["data"] = [];

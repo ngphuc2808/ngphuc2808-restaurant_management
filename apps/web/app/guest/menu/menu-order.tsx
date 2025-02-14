@@ -69,7 +69,7 @@ const MenuOrder = ({ dishes }: Props) => {
           >
             <div className="flex-shrink-0 relative">
               {dish.status === DishStatus.Unavailable && (
-                <span className="absolute inset-0 flex items-center justify-center rounded-md text-sm bg-slate-600/50 text-white">
+                <span className="absolute inset-0 flex items-center justify-center text-sm rounded-md bg-slate-600/50 text-white">
                   Hết hàng
                 </span>
               )}

@@ -1,13 +1,14 @@
 import "@repo/ui/globals.css";
 
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
 
-import { cn } from "@repo/ui/lib/utils";
 import { Toaster } from "@repo/ui/components/toaster";
 import ThemeProvider from "@/providers/theme-provider";
 import AppProvider from "@/providers/app-provider";
+import { SidebarProvider } from "@repo/ui/components/sidebar";
 
 const font = localFont({
   src: [
@@ -41,19 +42,17 @@ export const metadata: Metadata = {
   description: "The best restaurant in the world",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          `${font.className} ${font.variable}`,
-        )}
-      >
+      <body className={`${font.className} ${font.variable}`}>
         <NextTopLoader showSpinner={false} color="hsl(var(--foreground))" />
         <AppProvider>
           <ThemeProvider
@@ -62,7 +61,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <SidebarProvider defaultOpen={defaultOpen}>
+              {children}
+            </SidebarProvider>
             <Toaster />
           </ThemeProvider>
         </AppProvider>
