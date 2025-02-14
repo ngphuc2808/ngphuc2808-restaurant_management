@@ -10,8 +10,12 @@ import {
 import { menuItems } from "@/constants";
 import NavGroup from "@/components/molecules/nav-group";
 import NavUser from "@/components/molecules/nav-user";
+import { useAccountMe } from "@/queries/useAccount";
 
 const AppSidebar = () => {
+  const accountProfile = useAccountMe();
+  const account = accountProfile.data?.payload.data;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row justify-center">
@@ -23,7 +27,7 @@ const AppSidebar = () => {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={menuItems.user} />
+        <NavUser user={account!} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

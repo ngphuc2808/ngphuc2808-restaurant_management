@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { Menu, Package2 } from "lucide-react";
 
-import NavItems from "@/components/molecules/nav-items";
-import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
 import { Button } from "@repo/ui/components/button";
 import {
   Sheet,
@@ -10,6 +8,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@repo/ui/components/sheet";
+import Main from "@/components/organisms/main";
+import NavItems from "@/components/molecules/nav-items";
+import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
 
 type Props = {
   children: React.ReactNode;
@@ -58,9 +59,9 @@ const GlobalLayout = ({ children }: Props) => {
           <DarkModeToggle />
         </div>
       </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <Main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         {children}
-      </main>
+      </Main>
     </div>
   );
 };

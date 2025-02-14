@@ -1,6 +1,7 @@
 import { cn } from "@repo/ui/lib/utils";
 import AppSidebar from "@/components/organisms/app-sidebar";
 import Header from "@/components/organisms/header";
+import Main from "@/components/organisms/main";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
 import DropdownAvatar from "@/components/atoms/dropdown-avatar";
 
@@ -28,7 +29,7 @@ const AdminLayout = ({ children }: Props) => {
             <DropdownAvatar />
           </div>
         </Header>
-        <main className="sm:p-4 p-2">{children}</main>
+        <Main className="sm:p-4 p-2">{children}</Main>
       </div>
     </>
   );

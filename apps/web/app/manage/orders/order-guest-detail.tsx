@@ -82,10 +82,10 @@ const OrderGuestDetail = ({
               <span className="w-[10px]">{index + 1}</span>
               <span title={getVietnameseOrderStatus(order.status)}>
                 {order.status === OrderStatus.Pending && (
-                  <OrderStatusIcon.Pending className="w-4 h-4" />
+                  <OrderStatusIcon.Pending className="w-4 h-4 animate-spin" />
                 )}
                 {order.status === OrderStatus.Processing && (
-                  <OrderStatusIcon.Processing className="w-4 h-4" />
+                  <OrderStatusIcon.Processing className="w-4 h-4 animate-bounce" />
                 )}
                 {order.status === OrderStatus.Rejected && (
                   <OrderStatusIcon.Rejected className="w-4 h-4 text-red-400" />

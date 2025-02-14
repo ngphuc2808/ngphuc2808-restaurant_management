@@ -1,4 +1,10 @@
-import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
+import {
+  BookX,
+  CookingPot,
+  HandCoins,
+  LoaderCircle,
+  Truck,
+} from "lucide-react";
 
 export const TokenType = {
   ForgotPasswordToken: "ForgotPasswordToken",
@@ -56,7 +62,7 @@ export const OrderStatusValues = [
 ] as const;
 
 export const OrderStatusIcon = {
-  [OrderStatus.Pending]: Loader,
+  [OrderStatus.Pending]: LoaderCircle,
   [OrderStatus.Processing]: CookingPot,
   [OrderStatus.Rejected]: BookX,
   [OrderStatus.Delivered]: Truck,

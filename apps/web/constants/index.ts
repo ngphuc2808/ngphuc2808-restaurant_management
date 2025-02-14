@@ -48,11 +48,6 @@ export const menuItemsHomePage: {
 ];
 
 export const menuItems = {
-  user: {
-    name: "satnaing",
-    email: "satnaingdev@gmail.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navGroups: [
     {
       title: "General",

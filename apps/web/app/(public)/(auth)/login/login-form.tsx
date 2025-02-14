@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 
 import { useAppContext } from "@/providers/app-provider";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
@@ -125,7 +125,7 @@ const LoginForm = () => {
               />
               <Button type="submit" className="w-full">
                 {loginMutation.isPending ? (
-                  <Loader2 className="animate-spin" />
+                  <LoaderCircle className="animate-spin" />
                 ) : (
                   "Đăng nhập"
                 )}

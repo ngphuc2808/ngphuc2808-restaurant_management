@@ -1,14 +1,12 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 
+import { useAppContext } from "@/providers/app-provider";
+import { AccountResType } from "@/schemaValidations/account.schema";
+import { useLogoutMutation } from "@/queries/useAuth";
+import { handleErrorApi } from "@/lib/utils";
 import {
   Avatar,
   AvatarFallback,
@@ -17,10 +15,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 import {
@@ -30,16 +25,30 @@ import {
   useSidebar,
 } from "@repo/ui/components/sidebar";
 
-const NavUser = ({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) => {
+type Props = {
+  user: AccountResType["data"];
+};
+
+const NavUser = ({ user }: Props) => {
+  const router = useRouter();
+
+  const { setRole } = useAppContext();
   const { isMobile } = useSidebar();
+
+  const logoutMutation = useLogoutMutation();
+
+  const logout = async () => {
+    if (logoutMutation.isPending) return;
+    try {
+      await logoutMutation.mutateAsync();
+      setRole();
+      router.push("/");
+    } catch (error) {
+      handleErrorApi({
+        error,
+      });
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -51,12 +60,14 @@ const NavUser = ({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">SN</AvatarFallback>
+                <AvatarImage src={user?.avatar ?? undefined} alt={user?.name} />
+                <AvatarFallback className="rounded-lg">
+                  {user?.name.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user?.name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -67,9 +78,9 @@ const NavUser = ({
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={logout}>
               <LogOut />
-              Log out
+              Đăng xuất
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -172,7 +172,7 @@ const OrderStatics = ({
                     <Tooltip>
                       <TooltipTrigger>
                         <div className="flex gap-2 items-center">
-                          <OrderStatusIcon.Pending className="w-4 h-4" />
+                          <OrderStatusIcon.Pending className="w-4 h-4 animate-spin" />
                           <span>{countObject[OrderStatus.Pending] ?? 0}</span>
                         </div>
                       </TooltipTrigger>
@@ -185,7 +185,7 @@ const OrderStatics = ({
                     <Tooltip>
                       <TooltipTrigger>
                         <div className="flex gap-2 items-center">
-                          <OrderStatusIcon.Processing className="w-4 h-4" />
+                          <OrderStatusIcon.Processing className="w-4 h-4 animate-bounce" />
                           <span>
                             {countObject[OrderStatus.Processing] ?? 0}
                           </span>

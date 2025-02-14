@@ -15,6 +15,7 @@ import {
   removeTokensFromLocalStorage,
 } from "@/lib/utils";
 import { RoleType } from "@/types/jwt.types";
+import { LoaderCircle } from "lucide-react";
 
 const makeQueryClient = () => {
   return new QueryClient({
