@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
+import { useAppStore } from "@/providers/app-provider";
 import { checkIsActive } from "@/lib/utils";
 import { Badge } from "@repo/ui/components/badge";
 import {
@@ -148,9 +149,9 @@ const SidebarMenuCollapsedDropdown = ({
 };
 
 const NavGroup = ({ title, items }: NavGroupType) => {
-  const { state } = useSidebar();
-
   const pathname = usePathname();
+  const { state } = useSidebar();
+  const role = useAppStore((state) => state.role);
 
   return (
     <SidebarGroup>
@@ -158,6 +159,8 @@ const NavGroup = ({ title, items }: NavGroupType) => {
       <SidebarMenu>
         {items.map((item) => {
           const key = `${item.title}-${item.url}`;
+
+          if (item.roles && !item.roles.includes(role!)) return null;
 
           if (!item.items)
             return <SidebarMenuLink key={key} item={item} href={pathname} />;

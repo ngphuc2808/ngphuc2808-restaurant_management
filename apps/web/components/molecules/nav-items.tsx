@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { useAppContext } from "@/providers/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useGuestLogoutMutation } from "@/queries/useGuest";
 import {
@@ -24,7 +24,10 @@ import { Role } from "@/constants/type";
 import { handleErrorApi } from "@/lib/utils";
 
 const NavItems = ({ className }: { className?: string }) => {
-  const { role, setRole } = useAppContext();
+  const role = useAppStore((state) => state.role);
+  const setRole = useAppStore((state) => state.setRole);
+  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+
   const router = useRouter();
 
   const logoutMutation = useLogoutMutation();
@@ -39,7 +42,8 @@ const NavItems = ({ className }: { className?: string }) => {
         if (logoutGuestMutation.isPending) return;
         await logoutGuestMutation.mutateAsync();
       }
-      setRole();
+      setRole(undefined);
+      disconnectSocket();
       router.push("/");
     } catch (error) {
       handleErrorApi({

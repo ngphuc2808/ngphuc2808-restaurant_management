@@ -161,6 +161,13 @@ const request = async <Response>(
       const { accessToken, refreshToken } = (payload as LoginResType).data;
       setAccessTokenToLocalStorage(accessToken);
       setRefreshTokenToLocalStorage(refreshToken);
+    } else if ("auth/token" === normalizeUrl) {
+      const { accessToken, refreshToken } = payload as {
+        accessToken: string;
+        refreshToken: string;
+      };
+      setAccessTokenToLocalStorage(accessToken);
+      setRefreshTokenToLocalStorage(refreshToken);
     } else if (["auth/logout", "guest/auth/logout"].includes(normalizeUrl)) {
       removeTokensFromLocalStorage();
     }

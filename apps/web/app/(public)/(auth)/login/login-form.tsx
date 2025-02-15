@@ -1,15 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 
-import { useAppContext } from "@/providers/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { useLoginMutation } from "@/queries/useAuth";
-import { handleErrorApi } from "@/lib/utils";
+import { generateSocketInstace, handleErrorApi } from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
@@ -26,13 +27,32 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import { toast } from "@repo/ui/hooks/use-toast";
+import { envConfig } from "@/config";
+
+const getOauthGoogleUrl = () => {
+  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const options = {
+    redirect_uri: envConfig.NEXT_PUBLIC_GOOGLE_AUTHORIZED_REDIRECT_URI,
+    client_id: envConfig.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ].join(" "),
+  };
+  const qs = new URLSearchParams(options);
+  return `${rootUrl}?${qs.toString()}`;
+};
+const googleOauthUrl = getOauthGoogleUrl();
 
 const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const clearTokens = searchParams.get("clearTokens");
-  const { setRole } = useAppContext();
+  const setRole = useAppStore((state) => state.setRole);
+  const setSocket = useAppStore((state) => state.setSocket);
   const loginMutation = useLoginMutation();
 
   const form = useForm<LoginBodyType>({
@@ -48,11 +68,8 @@ const LoginForm = () => {
 
     try {
       const result = await loginMutation.mutateAsync(values);
-      toast({
-        description: result.payload.message,
-        duration: 2000,
-      });
       setRole(result.payload.data.account.role);
+      setSocket(generateSocketInstace(result.payload.data.accessToken));
       router.push("/manage/dashboard");
     } catch (error) {
       handleErrorApi({
@@ -64,7 +81,7 @@ const LoginForm = () => {
 
   React.useEffect(() => {
     if (clearTokens) {
-      setRole();
+      setRole(undefined);
     }
   }, [clearTokens, setRole]);
 
@@ -130,9 +147,11 @@ const LoginForm = () => {
                   "Đăng nhập"
                 )}
               </Button>
-              <Button variant="outline" className="w-full" type="button">
-                Đăng nhập bằng Google
-              </Button>
+              <Link href={googleOauthUrl}>
+                <Button variant="outline" className="w-full" type="button">
+                  Đăng nhập bằng Google
+                </Button>
+              </Link>
             </div>
           </form>
         </Form>

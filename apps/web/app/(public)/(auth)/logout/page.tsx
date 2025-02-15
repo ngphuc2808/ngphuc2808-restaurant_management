@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { LoaderCircle } from "lucide-react";
 
-import { useAppContext } from "@/providers/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { useLogoutMutation } from "@/queries/useAuth";
 import {
   getAccessTokenFromLocalStorage,
@@ -12,11 +12,12 @@ import {
 } from "@/lib/utils";
 
 const Logout = () => {
+  const setRole = useAppStore((state) => state.setRole);
+  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
   const router = useRouter();
   const searchParams = useSearchParams();
   const refreshTokenFromUrl = searchParams.get("refreshToken");
   const accessTokenFromUrl = searchParams.get("accessToken");
-  const { setRole } = useAppContext();
   const ref = React.useRef<boolean>(false);
 
   const { mutateAsync } = useLogoutMutation();
@@ -38,13 +39,21 @@ const Logout = () => {
         setTimeout(() => {
           ref.current = false;
         }, 1000);
-        setRole();
+        setRole(undefined);
+        disconnectSocket();
         router.push("/login");
       });
     } else {
       router.push("/");
     }
-  }, [mutateAsync, router, accessTokenFromUrl, refreshTokenFromUrl, setRole]);
+  }, [
+    disconnectSocket,
+    mutateAsync,
+    router,
+    accessTokenFromUrl,
+    refreshTokenFromUrl,
+    setRole,
+  ]);
 
   return null;
 };

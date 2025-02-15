@@ -1,7 +1,6 @@
 import {
   Home,
   LayoutDashboard,
-  LineChart,
   ShoppingCart,
   Users2,
   Salad,
@@ -43,7 +42,12 @@ export const menuItemsHomePage: {
   {
     title: "Quản lý",
     href: "/manage/dashboard",
-    roles: [Role.Owner, Role.Employee],
+    roles: [Role.Owner],
+  },
+  {
+    title: "Đơn hàng",
+    href: "/manage/orders",
+    roles: [Role.Employee],
   },
 ];
 
@@ -56,37 +60,37 @@ export const menuItems = {
           title: "Trang chủ",
           icon: Home,
           url: "/",
+          roles: [Role.Owner, Role.Employee],
         },
         {
           title: "Dashboard",
           icon: LayoutDashboard,
           url: "/manage/dashboard",
+          roles: [Role.Owner],
         },
         {
           title: "Đơn hàng",
           icon: ShoppingCart,
           url: "/manage/orders",
+          roles: [Role.Owner, Role.Employee],
         },
         {
           title: "Bàn ăn",
           icon: Table,
           url: "/manage/tables",
+          roles: [Role.Owner, Role.Employee],
         },
         {
           title: "Món ăn",
           icon: Salad,
           url: "/manage/dishes",
-        },
-
-        {
-          title: "Phân tích",
-          icon: LineChart,
-          url: "/manage/analytics",
+          roles: [Role.Owner, Role.Employee],
         },
         {
           title: "Nhân viên",
           icon: Users2,
           url: "/manage/accounts",
+          roles: [Role.Owner],
         },
       ],
     },

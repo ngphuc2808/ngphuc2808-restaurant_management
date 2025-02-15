@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
-import { useAppContext } from "@/providers/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { AccountResType } from "@/schemaValidations/account.schema";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { handleErrorApi } from "@/lib/utils";
@@ -32,7 +32,9 @@ type Props = {
 const NavUser = ({ user }: Props) => {
   const router = useRouter();
 
-  const { setRole } = useAppContext();
+  const setRole = useAppStore((state) => state.setRole);
+  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+
   const { isMobile } = useSidebar();
 
   const logoutMutation = useLogoutMutation();
@@ -41,7 +43,8 @@ const NavUser = ({ user }: Props) => {
     if (logoutMutation.isPending) return;
     try {
       await logoutMutation.mutateAsync();
-      setRole();
+      setRole(undefined);
+      disconnectSocket();
       router.push("/");
     } catch (error) {
       handleErrorApi({

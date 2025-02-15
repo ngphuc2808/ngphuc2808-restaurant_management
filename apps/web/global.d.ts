@@ -12,6 +12,7 @@ interface User {
 interface BaseNavItem {
   title: string;
   badge?: string;
+  roles?: ("Owner" | "Employee" | "Guest")[];
   icon?: React.ElementType;
 }
 

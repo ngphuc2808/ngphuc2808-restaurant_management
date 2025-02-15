@@ -1,6 +1,7 @@
-import authApiRequest from "@/apiRequests/auth";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+
+import authApiRequest from "@/apiRequests/auth";
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();

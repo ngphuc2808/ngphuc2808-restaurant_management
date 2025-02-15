@@ -1,4 +1,5 @@
 import { UseFormSetError } from "react-hook-form";
+import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
 import { format } from "date-fns";
 
@@ -127,6 +128,7 @@ export const decodeToken = (token: string) => {
 export const checkAndRefreshToken = async (param?: {
   onError?: () => void;
   onSuccess?: () => void;
+  force?: boolean;
 }) => {
   const accessToken = getAccessTokenFromLocalStorage();
   const refreshToken = getRefreshTokenFromLocalStorage();
@@ -143,8 +145,9 @@ export const checkAndRefreshToken = async (param?: {
   }
 
   if (
+    param?.force ||
     decodedAccessToken.exp - now <
-    (decodedAccessToken.exp - decodedAccessToken.iat) / 3
+      (decodedAccessToken.exp - decodedAccessToken.iat) / 3
   ) {
     try {
       const { role } = decodedRefreshToken;
@@ -213,4 +216,12 @@ export const checkIsActive = (href: string, item: NavItem, mainNav = false) => {
       href.split("/")[1] !== "" &&
       href.split("/")[1] === item?.url?.split("/")[1])
   );
+};
+
+export const generateSocketInstace = (accessToken: string) => {
+  return io(envConfig.NEXT_PUBLIC_API_ENDPOINT, {
+    auth: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 };

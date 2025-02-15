@@ -5,10 +5,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
 
+import { SidebarProvider } from "@repo/ui/components/sidebar";
 import { Toaster } from "@repo/ui/components/toaster";
 import ThemeProvider from "@/providers/theme-provider";
 import AppProvider from "@/providers/app-provider";
-import { SidebarProvider } from "@repo/ui/components/sidebar";
 
 const font = localFont({
   src: [

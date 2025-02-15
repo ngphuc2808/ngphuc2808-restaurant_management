@@ -3,18 +3,20 @@
 import Image from "next/image";
 import React from "react";
 
+import { useAppStore } from "@/providers/app-provider";
 import {
   PayGuestOrdersResType,
   UpdateOrderResType,
 } from "@/schemaValidations/order.schema";
 import { useGuestGetOrderListQuery } from "@/queries/useGuest";
 import { formatCurrency, getVietnameseOrderStatus } from "@/lib/utils";
-import { socket } from "@/lib/socket";
+
 import { Badge } from "@repo/ui/components/badge";
 import { toast } from "@repo/ui/hooks/use-toast";
 import { OrderStatus } from "@/constants/type";
 
 const OrdersCart = () => {
+  const socket = useAppStore((state) => state.socket);
   const { data, refetch } = useGuestGetOrderListQuery();
 
   const orders = React.useMemo(() => data?.payload.data ?? [], [data]);
@@ -62,18 +64,6 @@ const OrdersCart = () => {
   }, [orders]);
 
   React.useEffect(() => {
-    if (socket?.connected) {
-      onConnect();
-    }
-
-    function onConnect() {
-      console.log(socket?.id);
-    }
-
-    function onDisconnect() {
-      console.log("disconnect");
-    }
-
     function onUpdateOrder(data: UpdateOrderResType["data"]) {
       const {
         dishSnapshot: { name },
@@ -97,16 +87,12 @@ const OrdersCart = () => {
 
     socket?.on("update-order", onUpdateOrder);
     socket?.on("payment", onPayment);
-    socket?.on("connect", onConnect);
-    socket?.on("disconnect", onDisconnect);
 
     return () => {
-      socket?.off("connect", onConnect);
-      socket?.off("disconnect", onDisconnect);
       socket?.off("update-order", onUpdateOrder);
       socket?.off("payment", onPayment);
     };
-  }, [refetch, socket]);
+  }, [socket, refetch]);
 
   return (
     <>

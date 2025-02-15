@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { decodeToken } from "./lib/utils";
+import { jwtDecode } from "jwt-decode";
+
 import { Role } from "./constants/type";
+import { TokenPayload } from "./types/jwt.types";
 
 const managePaths = ["/manage"];
+const onlyManagePaths = ["/manage/accounts", "/manage/dashboard"];
 const guestPaths = ["/guest"];
 const privatePaths = [...managePaths, ...guestPaths];
 const unAuthPaths = ["/login"];
+
+export const decodeToken = (token: string) => {
+  return jwtDecode(token) as TokenPayload;
+};
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -46,7 +53,9 @@ export function middleware(request: NextRequest) {
       (role === Role.Guest &&
         managePaths.some((path) => pathname.startsWith(path))) ||
       (role !== Role.Guest &&
-        guestPaths.some((path) => pathname.startsWith(path)))
+        guestPaths.some((path) => pathname.startsWith(path))) ||
+      (role !== Role.Owner &&
+        onlyManagePaths.some((path) => pathname.startsWith(path)))
     ) {
       return NextResponse.redirect(new URL("/", request.url));
     }

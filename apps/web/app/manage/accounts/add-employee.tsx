@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, Upload } from "lucide-react";
 
+import {
+  CreateEmployeeAccountBody,
+  CreateEmployeeAccountBodyType,
+} from "@/schemaValidations/account.schema";
 import { useAddAccountMutation } from "@/queries/useAccount";
 import { useUploadMediaMutation } from "@/queries/useMedia";
 import { handleErrorApi } from "@/lib/utils";
@@ -31,10 +35,6 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import {
-  CreateEmployeeAccountBody,
-  CreateEmployeeAccountBodyType,
-} from "@/schemaValidations/account.schema";
 import { toast } from "@repo/ui/hooks/use-toast";
 
 const AddEmployee = () => {
@@ -154,7 +154,7 @@ const AddEmployee = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name,
+                              "http://localhost:3001/" + file.name,
                             );
                           }
                         }}

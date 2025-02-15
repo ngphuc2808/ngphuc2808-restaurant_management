@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 
+import {
+  UpdateEmployeeAccountBody,
+  UpdateEmployeeAccountBodyType,
+} from "@/schemaValidations/account.schema";
 import { useGetAccount, useUpdateAccountMutation } from "@/queries/useAccount";
 import { useUploadMediaMutation } from "@/queries/useMedia";
 import { handleErrorApi } from "@/lib/utils";
@@ -24,18 +28,23 @@ import {
 } from "@repo/ui/components/dialog";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import { Switch } from "@repo/ui/components/switch";
 import {
-  UpdateEmployeeAccountBody,
-  UpdateEmployeeAccountBodyType,
-} from "@/schemaValidations/account.schema";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/components/select";
+import { Switch } from "@repo/ui/components/switch";
 import { toast } from "@repo/ui/hooks/use-toast";
+import { Role, RoleValues } from "@/constants/type";
 
 const EditEmployee = ({
   id,
@@ -64,6 +73,7 @@ const EditEmployee = ({
       email: "",
       avatar: undefined,
       changePassword: false,
+      role: Role.Employee,
     },
   });
   const avatar = form.watch("avatar");
@@ -118,7 +128,7 @@ const EditEmployee = ({
 
   React.useEffect(() => {
     if (dataAccount.data) {
-      const { name, avatar, email } = dataAccount.data.payload.data;
+      const { name, avatar, email, role } = dataAccount.data.payload.data;
       form.reset({
         name,
         avatar: avatar ?? undefined,
@@ -126,6 +136,7 @@ const EditEmployee = ({
         changePassword: form.getValues("changePassword"),
         password: form.getValues("password"),
         confirmPassword: form.getValues("confirmPassword"),
+        role,
       });
     }
   }, [dataAccount.data, form]);
@@ -175,7 +186,7 @@ const EditEmployee = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3000/" + file.name,
+                              "http://localhost:3001/" + file.name,
                             );
                           }
                         }}
@@ -217,6 +228,40 @@ const EditEmployee = ({
                       <Label htmlFor="email">Email</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="email" className="w-full" {...field} />
+                        <FormMessage />
+                      </div>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="grid grid-cols-4 items-center justify-items-start gap-4">
+                      <Label htmlFor="role">Vai trò</Label>
+                      <div className="col-span-3 w-full space-y-2">
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Chọn vai trò" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {RoleValues.map((role) => {
+                              if (role === Role.Guest) return null;
+                              return (
+                                <SelectItem key={role} value={role}>
+                                  {role}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </div>
                     </div>

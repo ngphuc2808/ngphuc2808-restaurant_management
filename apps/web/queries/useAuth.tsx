@@ -24,3 +24,14 @@ export const useLogoutMutation = (): UseMutationResult<
     mutationFn: authApiRequests.logout,
   });
 };
+
+export const useSetTokenToCookieMutation = (): UseMutationResult<
+  QueryResponseType<unknown>,
+  Error,
+  { accessToken: string; refreshToken: string },
+  unknown
+> => {
+  return useMutation({
+    mutationFn: authApiRequests.setTokenToCookie,
+  });
+};

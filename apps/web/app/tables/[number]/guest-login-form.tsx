@@ -5,11 +5,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useAppStore } from "@/providers/app-provider";
 import {
   GuestLoginBody,
   GuestLoginBodyType,
 } from "@/schemaValidations/guest.schema";
 import { useGuestLoginMutation } from "@/queries/useGuest";
+import { generateSocketInstace, handleErrorApi } from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
@@ -25,9 +27,6 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import { toast } from "@repo/ui/hooks/use-toast";
-import { useAppContext } from "@/providers/app-provider";
-import { handleErrorApi } from "@/lib/utils";
 
 const GuestLoginForm = () => {
   const router = useRouter();
@@ -35,7 +34,8 @@ const GuestLoginForm = () => {
   const params = useParams();
   const tableNumber = Number(params.number);
   const token = searchParams.get("token");
-  const { setRole } = useAppContext();
+  const setRole = useAppStore((state) => state.setRole);
+  const setSocket = useAppStore((state) => state.setSocket);
 
   const loginMutation = useGuestLoginMutation();
 
@@ -53,6 +53,7 @@ const GuestLoginForm = () => {
     try {
       const result = await loginMutation.mutateAsync(values);
       setRole(result.payload.data.guest.role);
+      setSocket(generateSocketInstace(result.payload.data.accessToken));
       router.push("/guest/menu");
     } catch (error) {
       handleErrorApi({

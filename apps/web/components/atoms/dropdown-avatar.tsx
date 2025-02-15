@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 
-import { useAppContext } from "@/providers/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useAccountMe } from "@/queries/useAccount";
 import { handleErrorApi } from "@/lib/utils";
@@ -26,7 +25,8 @@ import {
 const DropdownAvatar = () => {
   const router = useRouter();
 
-  const { setRole } = useAppContext();
+  const setRole = useAppStore((state) => state.setRole);
+  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
 
   const accountProfile = useAccountMe();
   const account = accountProfile.data?.payload.data;
@@ -37,7 +37,8 @@ const DropdownAvatar = () => {
     if (logoutMutation.isPending) return;
     try {
       await logoutMutation.mutateAsync();
-      setRole();
+      setRole(undefined);
+      disconnectSocket();
       router.push("/");
     } catch (error) {
       handleErrorApi({
