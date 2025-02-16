@@ -11,7 +11,7 @@ const MenuPage = async () => {
     } = result;
     dishes = data;
   } catch (error) {
-    return <div>Something went wrong</div>;
+    throw error;
   }
 
   return (

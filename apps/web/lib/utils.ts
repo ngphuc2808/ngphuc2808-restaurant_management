@@ -2,6 +2,7 @@ import { UseFormSetError } from "react-hook-form";
 import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
 import { format } from "date-fns";
+import slugify from "slugify";
 
 import guestApiRequest from "@/apiRequests/guest";
 import authApiRequests from "@/apiRequests/auth";
@@ -224,4 +225,24 @@ export const generateSocketInstace = (accessToken: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+};
+
+export const wrapServerApi = async <T>(fn: () => Promise<T>) => {
+  let result = null;
+  try {
+    result = await fn();
+  } catch (error: any) {
+    if (error.digest?.includes("NEXT_REDIRECT")) {
+      throw error;
+    }
+  }
+  return result;
+};
+
+export const generateSlugUrl = ({ name, id }: { name: string; id: number }) => {
+  return `${slugify(name)}-i.${id}`;
+};
+
+export const getIdFromSlugUrl = (slug: string) => {
+  return Number(slug.split("-i.")[1]);
 };
