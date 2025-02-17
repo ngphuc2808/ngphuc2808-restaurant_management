@@ -1,39 +1,65 @@
-type QueryResponseType<T> = {
-  status: number;
-  payload: T;
-};
+import type { Socket } from "socket.io-client";
 
-interface User {
-  name: string;
-  email: string;
-  avatar: string;
-}
+import vi from "@/messages/vi.json";
+import { RoleType } from "@/types/jwt.types";
+import { Locale } from "@/config";
 
-interface BaseNavItem {
-  title: string;
-  badge?: string;
-  roles?: ("Owner" | "Employee" | "Guest")[];
-  icon?: React.ElementType;
-}
+type Messages = typeof vi;
 
-type NavLink = BaseNavItem & {
-  url: string;
-  items?: never;
-};
+declare global {
+  interface IntlMessages extends Messages {}
 
-type NavCollapsible = BaseNavItem & {
-  items: (BaseNavItem & { url: string })[];
-  url?: never;
-};
+  type GlobalProps = {
+    params: Promise<{ number: string; slug: string; locale: Locale }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  };
 
-type NavItem = NavCollapsible | NavLink;
+  type AppStoreType = {
+    isAuth: boolean;
+    role: RoleType | undefined;
+    setRole: (role?: RoleType | undefined) => void;
+    socket: Socket | undefined;
+    setSocket: (socket?: Socket | undefined) => void;
+    disconnectSocket: () => void;
+  };
 
-interface NavGroupType {
-  title: string;
-  items: NavItem[];
-}
+  type QueryResponseType<T> = {
+    status: number;
+    payload: T;
+  };
 
-interface SidebarData {
-  user: User;
-  navGroups: NavGroupType[];
+  type User = {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+
+  type BaseNavItem = {
+    title: string;
+    badge?: string;
+    roles?: RoleType[];
+    icon?: React.ElementType;
+  };
+
+  type NavLink = BaseNavItem & {
+    url: string;
+    items?: never;
+  };
+
+  type NavCollapsible = BaseNavItem & {
+    items: (BaseNavItem & { url: string })[];
+    url?: never;
+  };
+
+  type NavItem = NavCollapsible | NavLink;
+
+  type NavGroupType = {
+    title: string;
+    items: NavItem[];
+  };
+
+  type SidebarData = {
+    user: User;
+    navGroups: NavGroupType[];
+  };
 }

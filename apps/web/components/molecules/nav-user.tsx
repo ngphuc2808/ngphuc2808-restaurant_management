@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
-import { useAppStore } from "@/providers/app-provider";
+import { useRouter } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { AccountResType } from "@/schemaValidations/account.schema";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { handleErrorApi } from "@/lib/utils";
@@ -30,10 +30,9 @@ type Props = {
 };
 
 const NavUser = ({ user }: Props) => {
-  const router = useRouter();
+  const { setRole, disconnectSocket } = useAppStore();
 
-  const setRole = useAppStore((state) => state.setRole);
-  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const router = useRouter();
 
   const { isMobile } = useSidebar();
 

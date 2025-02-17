@@ -21,3 +21,8 @@ if (!configObject.success) {
 }
 
 export const envConfig = configObject.data;
+
+export type Locale = (typeof locales)[number];
+
+export const locales = ["en", "vi"] as const;
+export const defaultLocale: Locale = "vi";

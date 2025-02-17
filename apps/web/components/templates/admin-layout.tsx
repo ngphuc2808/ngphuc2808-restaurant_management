@@ -4,6 +4,7 @@ import Header from "@/components/organisms/header";
 import Main from "@/components/organisms/main";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
 import DropdownAvatar from "@/components/atoms/dropdown-avatar";
+import SwitchLanguage from "@/components/atoms/switch-language";
 
 type Props = {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ const AdminLayout = ({ children }: Props) => {
       >
         <Header>
           <div className="ml-auto flex items-center space-x-4">
+            <SwitchLanguage />
             <DarkModeToggle />
             <DropdownAvatar />
           </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 
-import { useAppStore } from "@/providers/app-provider";
+import { useRouter, Link } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useGuestLogoutMutation } from "@/queries/useGuest";
 import {
@@ -19,14 +19,11 @@ import {
 } from "@repo/ui/components/alert-dialog";
 import { cn } from "@repo/ui/lib/utils";
 import { menuItemsHomePage } from "@/constants";
-import { useRouter } from "next/navigation";
 import { Role } from "@/constants/type";
 import { handleErrorApi } from "@/lib/utils";
 
 const NavItems = ({ className }: { className?: string }) => {
-  const role = useAppStore((state) => state.role);
-  const setRole = useAppStore((state) => state.setRole);
-  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const { role, setRole, disconnectSocket } = useAppStore();
 
   const router = useRouter();
 

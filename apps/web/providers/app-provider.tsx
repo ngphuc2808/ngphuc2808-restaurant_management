@@ -1,24 +1,21 @@
 "use client";
 
 import React from "react";
-import { create } from "zustand";
 import {
   isServer,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import type { Socket } from "socket.io-client";
 
+import useAppStore from "@/store/app";
 import RefreshToken from "@/providers/refresh-token";
 import ListenLogoutSocket from "@/providers/listen-logout-socket";
 import {
   decodeToken,
   generateSocketInstace,
   getAccessTokenFromLocalStorage,
-  removeTokensFromLocalStorage,
 } from "@/lib/utils";
-import { RoleType } from "@/types/jwt.types";
 
 const makeQueryClient = () => {
   return new QueryClient({
@@ -41,41 +38,13 @@ const getQueryClient = () => {
   }
 };
 
-type AppStoreType = {
-  isAuth: boolean;
-  role: RoleType | undefined;
-  setRole: (role?: RoleType | undefined) => void;
-  socket: Socket | undefined;
-  setSocket: (socket?: Socket | undefined) => void;
-  disconnectSocket: () => void;
-};
-
-export const useAppStore = create<AppStoreType>((set) => ({
-  isAuth: false,
-  role: undefined as RoleType | undefined,
-  setRole: (role?: RoleType | undefined) => {
-    set({ role, isAuth: Boolean(role) });
-    if (!role) {
-      removeTokensFromLocalStorage();
-    }
-  },
-  socket: undefined as Socket | undefined,
-  setSocket: (socket?: Socket | undefined) => set({ socket }),
-  disconnectSocket: () =>
-    set((state) => {
-      state.socket?.disconnect();
-      return { socket: undefined };
-    }),
-}));
-
 type Props = {
   children: React.ReactNode;
 };
 
 const AppProvider = ({ children }: Props) => {
   const queryClient = getQueryClient();
-  const setRole = useAppStore((state) => state.setRole);
-  const setSocket = useAppStore((state) => state.setSocket);
+  const { setRole, setSocket } = useAppStore();
 
   const count = React.useRef(0);
 

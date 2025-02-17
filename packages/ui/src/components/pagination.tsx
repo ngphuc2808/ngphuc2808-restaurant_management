@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
+import { Link } from "../../../../apps/web/i18n/routing";
 import { ButtonProps, buttonVariants } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/lib/utils";
 

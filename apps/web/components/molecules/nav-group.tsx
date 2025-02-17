@@ -1,11 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
-import { useAppStore } from "@/providers/app-provider";
+import { Link, usePathname } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { checkIsActive } from "@/lib/utils";
 import { Badge } from "@repo/ui/components/badge";
 import {
@@ -149,9 +148,10 @@ const SidebarMenuCollapsedDropdown = ({
 };
 
 const NavGroup = ({ title, items }: NavGroupType) => {
+  const { role } = useAppStore();
+
   const pathname = usePathname();
   const { state } = useSidebar();
-  const role = useAppStore((state) => state.role);
 
   return (
     <SidebarGroup>

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Menu, Package2 } from "lucide-react";
 
+import { Link } from "@/i18n/routing";
 import { Button } from "@repo/ui/components/button";
 import {
   Sheet,
@@ -11,6 +11,7 @@ import {
 import Main from "@/components/organisms/main";
 import NavItems from "@/components/molecules/nav-items";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
+import SwitchLanguage from "../atoms/switch-language";
 
 type Props = {
   children: React.ReactNode;
@@ -55,7 +56,8 @@ const GlobalLayout = ({ children }: Props) => {
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center space-x-4">
+          <SwitchLanguage />
           <DarkModeToggle />
         </div>
       </header>

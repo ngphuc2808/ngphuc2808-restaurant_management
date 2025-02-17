@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
-import { useAppStore } from "@/providers/app-provider";
+import { useRouter, Link } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { useAccountMe } from "@/queries/useAccount";
 import { handleErrorApi } from "@/lib/utils";
@@ -23,10 +21,9 @@ import {
 } from "@repo/ui/components/dropdown-menu";
 
 const DropdownAvatar = () => {
-  const router = useRouter();
+  const { setRole, disconnectSocket } = useAppStore();
 
-  const setRole = useAppStore((state) => state.setRole);
-  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const router = useRouter();
 
   const accountProfile = useAccountMe();
   const account = accountProfile.data?.payload.data;

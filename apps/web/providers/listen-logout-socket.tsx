@@ -1,17 +1,15 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
-import { useAppStore } from "@/providers/app-provider";
+import { useRouter, usePathname } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";
 import { handleErrorApi } from "@/lib/utils";
 import { UNAUTHENTICATED_PATH } from "@/constants";
 
 const ListenLogoutSocket = () => {
-  const setRole = useAppStore((state) => state.setRole);
-  const socket = useAppStore((state) => state.socket);
-  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const { setRole, socket, disconnectSocket } = useAppStore();
 
   const pathname = usePathname();
   const router = useRouter();

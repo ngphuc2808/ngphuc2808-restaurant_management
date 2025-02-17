@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
 
-import { useAppStore } from "@/providers/app-provider";
+import { useRouter, usePathname } from "@/i18n/routing";
+import useAppStore from "@/store/app";
 import { checkAndRefreshToken } from "@/lib/utils";
 import { TIMEOUT, UNAUTHENTICATED_PATH } from "@/constants";
 
 const RefreshToken = () => {
-  const socket = useAppStore((state) => state.socket);
-  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const { socket, disconnectSocket } = useAppStore();
+
   const pathname = usePathname();
   const router = useRouter();
 
