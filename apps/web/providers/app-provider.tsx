@@ -9,8 +9,8 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import useAppStore from "@/store/app";
-import RefreshToken from "@/providers/refresh-token";
-import ListenLogoutSocket from "@/providers/listen-logout-socket";
+import RefreshToken from "@/components/atoms/refresh-token";
+import ListenLogoutSocket from "@/components/atoms/listen-logout-socket";
 import {
   decodeToken,
   generateSocketInstace,
