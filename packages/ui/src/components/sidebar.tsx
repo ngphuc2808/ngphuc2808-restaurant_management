@@ -10,7 +10,12 @@ import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { Separator } from "@repo/ui/components/separator";
-import { Sheet, SheetContent } from "@repo/ui/components/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+} from "@repo/ui/components/sheet";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import {
   Tooltip,
@@ -203,6 +208,7 @@ const Sidebar = React.forwardRef<
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+          <SheetTitle hidden />
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
@@ -214,6 +220,7 @@ const Sidebar = React.forwardRef<
             }
             side={side}
           >
+            <SheetDescription hidden />
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
         </Sheet>
