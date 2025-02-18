@@ -48,9 +48,10 @@ const HomePage = async (props: { params: Promise<{ locale: string }> }) => {
       payload: { data },
     } = result;
     dishList = data;
-  } catch (error) {
-    return <div>Something went wrong</div>;
+  } catch (eror) {
+    throw new Error("Something went wrong");
   }
+
   return (
     <div className="w-full space-y-4">
       <section className="relative z-10">

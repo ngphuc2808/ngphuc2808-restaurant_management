@@ -297,6 +297,7 @@ const OrderTable = () => {
                   <CommandList>
                     {OrderStatusValues.map((status) => (
                       <CommandItem
+                        className="cursor-pointer"
                         key={status}
                         value={status}
                         onSelect={(currentValue) => {

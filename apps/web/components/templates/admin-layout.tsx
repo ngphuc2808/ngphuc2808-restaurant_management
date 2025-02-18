@@ -1,4 +1,5 @@
 import { cn } from "@repo/ui/lib/utils";
+import { SidebarProvider } from "@repo/ui/components/sidebar";
 import AppSidebar from "@/components/organisms/app-sidebar";
 import Header from "@/components/organisms/header";
 import Main from "@/components/organisms/main";
@@ -10,9 +11,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AdminLayout = ({ children }: Props) => {
+const AdminLayout = async ({ children }: Props) => {
   return (
-    <>
+    <SidebarProvider defaultOpen>
       <AppSidebar />
       <div
         id="content"
@@ -33,7 +34,7 @@ const AdminLayout = ({ children }: Props) => {
         </Header>
         <Main className="sm:p-4 p-2">{children}</Main>
       </div>
-    </>
+    </SidebarProvider>
   );
 };
 

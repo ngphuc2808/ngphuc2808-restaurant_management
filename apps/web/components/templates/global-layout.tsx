@@ -11,13 +11,13 @@ import {
 import Main from "@/components/organisms/main";
 import NavItems from "@/components/molecules/nav-items";
 import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
-import SwitchLanguage from "../atoms/switch-language";
+import SwitchLanguage from "@/components/atoms/switch-language";
 
 type Props = {
   children: React.ReactNode;
 };
 
-const GlobalLayout = ({ children }: Props) => {
+const GlobalLayout = async ({ children }: Props) => {
   return (
     <div className="flex min-h-screen w-full flex-col relative">
       <header className="sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">

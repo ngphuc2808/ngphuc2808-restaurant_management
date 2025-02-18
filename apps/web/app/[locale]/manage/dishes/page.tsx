@@ -1,7 +1,7 @@
-import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+
 import React from "react";
-import { LoaderCircle } from "lucide-react";
 
 import {
   Card,

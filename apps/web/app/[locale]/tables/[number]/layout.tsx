@@ -1,6 +1,6 @@
 import EmptyLayout from "@/components/templates/empty-layout";
 
-const Tables = ({
+const Tables = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;

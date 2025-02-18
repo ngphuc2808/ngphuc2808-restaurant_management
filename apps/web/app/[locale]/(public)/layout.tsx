@@ -1,6 +1,6 @@
 import GlobalLayout from "@/components/templates/global-layout";
 
-const Public = ({
+const Public = async ({
   children,
   modal,
 }: Readonly<{

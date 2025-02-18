@@ -29,7 +29,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const LoginPage = (props: { params: Promise<{ locale: string }> }) => {
+const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <LoginForm />

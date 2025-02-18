@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-
 import OrdersCart from "@/app/[locale]/guest/orders/orders-cart";
 import { getTranslations } from "next-intl/server";
 import { envConfig } from "@/config";

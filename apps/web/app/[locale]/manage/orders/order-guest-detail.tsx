@@ -139,7 +139,6 @@ const OrderGuestDetail = ({
           );
         })}
       </div>
-
       <div className="space-x-1">
         <span className="font-semibold">Chưa thanh toán:</span>
         <Badge>

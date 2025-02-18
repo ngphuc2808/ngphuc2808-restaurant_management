@@ -1,7 +1,6 @@
 import "@repo/ui/globals.css";
 
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
@@ -15,7 +14,6 @@ import NextTopLoader from "nextjs-toploader";
 import { routing } from "@/i18n/routing";
 import AppProvider from "@/providers/app-provider";
 import ThemeProvider from "@/providers/theme-provider";
-import { SidebarProvider } from "@repo/ui/components/sidebar";
 import { Toaster } from "@repo/ui/components/toaster";
 import { baseOpenGraph } from "@/shared-metadata";
 import { Locale } from "@/config";
@@ -68,12 +66,12 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function RootLayout(
+const RootLayout = async (
   props: Readonly<{
     children: React.ReactNode;
     params: Promise<{ locale: string }>;
   }>,
-) {
+) => {
   const params = await props.params;
 
   const { locale } = params;
@@ -87,9 +85,6 @@ export default async function RootLayout(
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${font.className} ${font.variable}`}>
@@ -102,9 +97,7 @@ export default async function RootLayout(
               enableSystem
               disableTransitionOnChange
             >
-              <SidebarProvider defaultOpen={defaultOpen}>
-                {children}
-              </SidebarProvider>
+              {children}
               <Toaster />
             </ThemeProvider>
           </AppProvider>
@@ -112,4 +105,6 @@ export default async function RootLayout(
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -2,13 +2,11 @@ type Props = {
   children: React.ReactNode;
 };
 
-const EmptyLayout = ({ children }: Props) => {
+const EmptyLayout = async ({ children }: Props) => {
   return (
-    <html>
-      <div className="fixed inset-0 flex justify-center items-center">
-        {children}
-      </div>
-    </html>
+    <div className="fixed inset-0 flex justify-center items-center">
+      {children}
+    </div>
   );
 };
 
