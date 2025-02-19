@@ -7,7 +7,7 @@ export const baseOpenGraph = {
   siteName: "Bigboy Restaurant",
   images: [
     {
-      url: "https://drive.google.com/file/d/1bEg7ciIJbyKFEiTZ7BqnNS9dv6eaLoCI/view?usp=drive_link",
+      url: "https://github.com/ngphuc2808/restaurant_management/blob/main/apps/web/public/main-logo.png?raw=true",
     },
   ],
 };
@@ -18,7 +18,7 @@ export const idJsonObject = {
   name: "Big Boy Restaurant",
   image: {
     "@type": "ImageObject",
-    url: "https://drive.google.com/file/d/1bEg7ciIJbyKFEiTZ7BqnNS9dv6eaLoCI/view?usp=drive_link",
+    url: "https://github.com/ngphuc2808/restaurant_management/blob/main/apps/web/public/main-logo.png?raw=true",
     width: 1080,
     height: 1080,
   },
