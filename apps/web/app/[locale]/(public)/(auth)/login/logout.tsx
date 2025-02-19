@@ -1,72 +1,66 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef } from "react";
 import { LoaderCircle } from "lucide-react";
+import { memo, Suspense, useEffect, useRef } from "react";
 
 import { useRouter } from "@/i18n/routing";
-import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";
+import useAppStore from "@/store/app";
 import {
   getAccessTokenFromLocalStorage,
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
 
-const Logout = () => {
-  const { setRole, disconnectSocket } = useAppStore();
-
+const LogoutComponent = () => {
+  const { mutateAsync } = useLogoutMutation();
   const router = useRouter();
+  const disconnectSocket = useAppStore((state) => state.disconnectSocket);
+  const setRole = useAppStore((state) => state.setRole);
   const searchParams = useSearchParams();
   const refreshTokenFromUrl = searchParams.get("refreshToken");
   const accessTokenFromUrl = searchParams.get("accessToken");
   const ref = useRef<boolean>(false);
 
-  const { mutateAsync } = useLogoutMutation();
-
   useEffect(() => {
     if (
-      !(
-        ref.current ||
-        !refreshTokenFromUrl ||
-        !accessTokenFromUrl ||
-        (refreshTokenFromUrl &&
-          refreshTokenFromUrl !== getRefreshTokenFromLocalStorage()) ||
+      !ref.current &&
+      ((refreshTokenFromUrl &&
+        refreshTokenFromUrl === getRefreshTokenFromLocalStorage()) ||
         (accessTokenFromUrl &&
-          accessTokenFromUrl !== getAccessTokenFromLocalStorage())
-      )
+          accessTokenFromUrl === getAccessTokenFromLocalStorage()))
     ) {
       ref.current = true;
-      mutateAsync().then(() => {
+      mutateAsync().then((res) => {
         setTimeout(() => {
           ref.current = false;
         }, 1000);
-        setRole(undefined);
+        setRole();
         disconnectSocket();
-        router.push("/login");
       });
-    } else {
+    } else if (accessTokenFromUrl !== getAccessTokenFromLocalStorage()) {
       router.push("/");
     }
   }, [
-    disconnectSocket,
     mutateAsync,
     router,
-    accessTokenFromUrl,
     refreshTokenFromUrl,
+    accessTokenFromUrl,
     setRole,
+    disconnectSocket,
   ]);
 
   return null;
 };
 
-const LogoutPage = () => {
+const Logout = memo(function LogoutInner() {
   return (
     <Suspense
       fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
     >
-      <Logout />
+      <LogoutComponent />
     </Suspense>
   );
-};
+});
 
-export default LogoutPage;
+export default Logout;

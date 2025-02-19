@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { Metadata } from "next";
 import { useEffect, useRef } from "react";
 
@@ -8,9 +9,6 @@ import useAppStore from "@/store/app";
 import { useSetTokenToCookieMutation } from "@/queries/useAuth";
 import { decodeToken, generateSocketInstace } from "@/lib/utils";
 import { toast } from "@repo/ui/hooks/use-toast";
-import SearchParamsLoader, {
-  useSearchParamsLoader,
-} from "@/components/atoms/search-params-loader";
 
 export const metadata: Metadata = {
   title: "Google Login Redirect",
@@ -26,10 +24,11 @@ const Oauth = () => {
   const router = useRouter();
   const count = useRef(0);
 
-  const { searchParams, setSearchParams } = useSearchParamsLoader();
-  const accessToken = searchParams?.get("accessToken");
-  const refreshToken = searchParams?.get("refreshToken");
-  const message = searchParams?.get("message");
+  const searchParams = useSearchParams();
+
+  const accessToken = searchParams.get("accessToken");
+  const refreshToken = searchParams.get("refreshToken");
+  const message = searchParams.get("message");
 
   useEffect(() => {
     if (accessToken && refreshToken) {
@@ -69,7 +68,7 @@ const Oauth = () => {
     mutateAsync,
   ]);
 
-  return <SearchParamsLoader onParamsReceived={setSearchParams} />;
+  return null;
 };
 
 export default Oauth;

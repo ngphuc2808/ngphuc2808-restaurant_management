@@ -1,10 +1,11 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { htmlToTextForDescription } from "@/lib/server-utils";
-import LoginForm from "@/app/[locale]/(public)/(auth)/login/login-form";
 import { envConfig } from "@/config";
 import { baseOpenGraph } from "@/shared-metadata";
+import LoginForm from "@/app/[locale]/(public)/(auth)/login/login-form";
+import Logout from "@/app/[locale]/(public)/(auth)/login/logout";
 
 export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   const params = await props.params;
@@ -29,10 +30,17 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const LoginPage = () => {
+const LoginPage = async (props: GlobalProps) => {
+  const params = await props.params;
+
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <LoginForm />
+      <Logout />
     </div>
   );
 };

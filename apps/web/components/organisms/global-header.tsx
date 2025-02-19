@@ -35,7 +35,12 @@ const GlobalHeader = () => {
       </nav>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 md:hidden"
+            aria-label="toggle sidebar"
+          >
             <PanelLeft className="h-5 w-5" />
           </Button>
         </SheetTrigger>

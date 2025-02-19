@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 import {
@@ -8,15 +9,14 @@ import {
 } from "@/lib/utils";
 
 import { useRouter } from "@/i18n/routing";
-import SearchParamsLoader, {
-  useSearchParamsLoader,
-} from "@/components/atoms/search-params-loader";
 
 const RefreshToken = () => {
   const router = useRouter();
-  const { searchParams, setSearchParams } = useSearchParamsLoader();
-  const refreshTokenFromUrl = searchParams?.get("refreshToken");
-  const redirectPathname = searchParams?.get("redirect");
+
+  const searchParams = useSearchParams();
+
+  const refreshTokenFromUrl = searchParams.get("refreshToken");
+  const redirectPathname = searchParams.get("redirect");
 
   useEffect(() => {
     if (
@@ -33,7 +33,7 @@ const RefreshToken = () => {
     }
   }, [router, refreshTokenFromUrl, redirectPathname]);
 
-  return <SearchParamsLoader onParamsReceived={setSearchParams} />;
+  return null;
 };
 
 export default RefreshToken;

@@ -28,7 +28,7 @@ const RefreshToken = () => {
       });
     };
 
-    interval = setInterval(() => onRefreshToken, TIMEOUT);
+    interval = setInterval(onRefreshToken, TIMEOUT);
 
     function onRefreshTokenSocket() {
       onRefreshToken(true);
