@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import LoginForm from "@/app/[locale]/(public)/(auth)/login/login-form";
 import { envConfig } from "@/config";
 import { baseOpenGraph } from "@/shared-metadata";
@@ -16,11 +17,11 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
     openGraph: {
       ...baseOpenGraph,
       title: t("title"),
-      description: t("description"),
+      description: htmlToTextForDescription(t("description")),
       url,
     },
     alternates: {

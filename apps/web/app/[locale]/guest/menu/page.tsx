@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import dishApiRequest from "@/apiRequests/dish";
 import { DishListResType } from "@/schemaValidations/dish.schema";
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import MenuOrder from "@/app/[locale]/guest/menu/menu-order";
 import { envConfig } from "@/config";
 import { baseOpenGraph } from "@/shared-metadata";
@@ -18,11 +19,11 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
     openGraph: {
       ...baseOpenGraph,
       title: t("title"),
-      description: t("description"),
+      description: htmlToTextForDescription(t("description")),
       url,
     },
     alternates: {

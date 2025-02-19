@@ -36,6 +36,7 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
+import { envConfig } from "@/config";
 
 const AddEmployee = () => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -154,7 +155,7 @@ const AddEmployee = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3001/" + file.name,
+                              `${envConfig.NEXT_PUBLIC_URL}/` + file.name,
                             );
                           }
                         }}

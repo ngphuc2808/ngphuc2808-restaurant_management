@@ -30,7 +30,7 @@ const SwitchLanguage = () => {
         router.refresh();
       }}
     >
-      <SelectTrigger className="w-[140px]">
+      <SelectTrigger className="w-[140px]" aria-label="Switch language">
         <SelectValue placeholder={t("title")} />
       </SelectTrigger>
       <SelectContent>

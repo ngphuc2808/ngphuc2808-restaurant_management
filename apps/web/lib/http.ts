@@ -1,6 +1,8 @@
-import { redirect } from "next/navigation";
+import Cookies from "js-cookie";
 
-import { envConfig } from "@/config";
+import { redirect } from "@/i18n/routing";
+import { LoginResType } from "@/schemaValidations/auth.schema";
+import { defaultLocale, envConfig } from "@/config";
 import {
   getAccessTokenFromLocalStorage,
   normalizePath,
@@ -8,7 +10,6 @@ import {
   setAccessTokenToLocalStorage,
   setRefreshTokenToLocalStorage,
 } from "@/lib/utils";
-import { LoginResType } from "@/schemaValidations/auth.schema";
 
 type CustomOptions = Omit<RequestInit, "method"> & {
   baseUrl?: string | undefined;
@@ -123,6 +124,7 @@ const request = async <Response>(
       );
     } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
       if (isClient) {
+        const locale = Cookies.get("NEXT_LOCALE");
         if (!clientLogoutRequest) {
           clientLogoutRequest = fetch("/api/auth/logout", {
             method: "POST",
@@ -141,14 +143,18 @@ const request = async <Response>(
             // Nếu không không được xử lý đúng cách
             // Vì nếu rơi vào trường hợp tại trang Login, chúng ta có gọi các API cần access token
             // Mà access token đã bị xóa thì nó lại nhảy vào đây, và cứ thế nó sẽ bị lặp
-            location.href = "/login";
+            location.href = `/${locale}/login`;
           }
         }
       } else {
         const accessToken = (options?.headers as any)?.Authorization.split(
           "Bearer ",
         )[1];
-        redirect(`/logout?accessToken=${accessToken}`);
+        const locale = Cookies.get("NEXT_LOCALE");
+        redirect({
+          href: `/login?accessToken=${accessToken}`,
+          locale: locale ?? defaultLocale,
+        });
       }
     } else {
       throw new HttpError(data);

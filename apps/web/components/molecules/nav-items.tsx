@@ -55,7 +55,6 @@ const NavItems = ({ className }: { className?: string }) => {
         const isAuth = item.roles && role && item.roles.includes(role);
         const canShow =
           (!item.roles && !item.hideWhenLogin) || (!role && item.hideWhenLogin);
-
         if (isAuth || canShow) {
           return (
             <Link href={item.href} key={item.href} className={className}>
@@ -63,10 +62,8 @@ const NavItems = ({ className }: { className?: string }) => {
             </Link>
           );
         }
-
         return null;
       })}
-
       {role && (
         <AlertDialog>
           <AlertDialogTrigger asChild>

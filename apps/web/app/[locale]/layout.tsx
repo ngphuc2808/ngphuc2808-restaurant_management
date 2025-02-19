@@ -1,7 +1,7 @@
 import "@repo/ui/globals.css";
 
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import Script from "next/script";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -15,8 +15,10 @@ import { routing } from "@/i18n/routing";
 import AppProvider from "@/providers/app-provider";
 import ThemeProvider from "@/providers/theme-provider";
 import { Toaster } from "@repo/ui/components/toaster";
-import { baseOpenGraph } from "@/shared-metadata";
+import { idJsonObject, baseOpenGraph } from "@/shared-metadata";
 import { Locale } from "@/config";
+import Notfound from "@/app/[locale]/[...not-found]/not-found";
+import Footer from "@/components/organisms/footer";
 
 const font = localFont({
   src: [
@@ -78,12 +80,18 @@ const RootLayout = async (
 
   const { children } = props;
 
-  if (!routing.locales.includes(locale as Locale)) {
-    notFound();
-  }
-
   setRequestLocale(locale);
   const messages = await getMessages();
+
+  if (!routing.locales.includes(locale as Locale)) {
+    return (
+      <html lang={locale} suppressHydrationWarning>
+        <body className={`${font.className} ${font.variable}`}>
+          <Notfound />
+        </body>
+      </html>
+    );
+  }
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -98,11 +106,16 @@ const RootLayout = async (
               disableTransitionOnChange
             >
               {children}
+              <Footer />
               <Toaster />
             </ThemeProvider>
           </AppProvider>
         </NextIntlClientProvider>
       </body>
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(idJsonObject) }}
+      />
     </html>
   );
 };

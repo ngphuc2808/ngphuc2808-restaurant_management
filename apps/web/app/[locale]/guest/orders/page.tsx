@@ -1,6 +1,8 @@
 import { Metadata } from "next";
-import OrdersCart from "@/app/[locale]/guest/orders/orders-cart";
 import { getTranslations } from "next-intl/server";
+
+import { htmlToTextForDescription } from "@/lib/server-utils";
+import OrdersCart from "@/app/[locale]/guest/orders/orders-cart";
 import { envConfig } from "@/config";
 import { baseOpenGraph } from "@/shared-metadata";
 
@@ -15,11 +17,11 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
     openGraph: {
       ...baseOpenGraph,
       title: t("title"),
-      description: t("description"),
+      description: htmlToTextForDescription(t("description")),
       url,
     },
     alternates: {

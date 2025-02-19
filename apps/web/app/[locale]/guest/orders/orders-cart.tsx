@@ -106,7 +106,7 @@ const OrdersCart = () => {
               alt={order.dishSnapshot.name}
               height={100}
               width={100}
-              quality={100}
+              quality={80}
               className="object-cover w-[80px] h-[80px] rounded-md"
             />
           </div>

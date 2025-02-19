@@ -10,6 +10,7 @@ import {
 
 import { Role } from "./type";
 import { RoleType } from "@/types/jwt.types";
+import { envConfig } from "@/config";
 
 export const TIMEOUT = 1000;
 export const UNAUTHENTICATED_PATH = ["/login", "/logout", "/refresh-token"];

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Menu, Package2 } from "lucide-react";
 
 import { Link } from "@/i18n/routing";
@@ -26,8 +27,15 @@ const GlobalLayout = async ({ children }: Props) => {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Big boy</span>
+            <Image
+              src="/logo.png"
+              width={60}
+              height={60}
+              quality={80}
+              loading="lazy"
+              alt="Logo"
+              title="Logo"
+            />
           </Link>
           <NavItems className="text-muted-foreground transition-colors hover:text-foreground flex-shrink-0" />
         </nav>

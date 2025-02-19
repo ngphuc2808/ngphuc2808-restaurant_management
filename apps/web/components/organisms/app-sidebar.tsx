@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import {
   Sidebar,
   SidebarHeader,
@@ -19,7 +21,15 @@ const AppSidebar = () => {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row justify-center">
-        Logo
+        <Image
+          src="/logo.png"
+          width={60}
+          height={60}
+          quality={80}
+          loading="lazy"
+          alt="Logo"
+          title="Logo"
+        />
       </SidebarHeader>
       <SidebarContent>
         {menuItems.navGroups.map((props) => (

@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import {
   Card,
   CardContent,
@@ -23,7 +24,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
     alternates: {
       canonical: url,
     },

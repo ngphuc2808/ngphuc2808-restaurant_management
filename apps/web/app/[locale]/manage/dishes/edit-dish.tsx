@@ -46,6 +46,7 @@ import {
 import { Textarea } from "@repo/ui/components/textarea";
 import { toast } from "@repo/ui/hooks/use-toast";
 import { DishStatus, DishStatusValues } from "@/constants/type";
+import { envConfig } from "@/config";
 
 const EditDish = ({
   id,
@@ -179,7 +180,7 @@ const EditDish = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3001/" + file.name,
+                              `${envConfig.NEXT_PUBLIC_URL}/` + file.name,
                             );
                           }
                         }}

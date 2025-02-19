@@ -45,6 +45,7 @@ import {
 import { Switch } from "@repo/ui/components/switch";
 import { toast } from "@repo/ui/hooks/use-toast";
 import { Role, RoleValues } from "@/constants/type";
+import { envConfig } from "@/config";
 
 const EditEmployee = ({
   id,
@@ -186,7 +187,7 @@ const EditEmployee = ({
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3001/" + file.name,
+                              `${envConfig.NEXT_PUBLIC_URL}/` + file.name,
                             );
                           }
                         }}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,6 +53,9 @@ const googleOauthUrl = getOauthGoogleUrl();
 const LoginForm = () => {
   const { setRole, setSocket } = useAppStore();
 
+  const t = useTranslations("Login");
+  const errorMessageT = useTranslations("ErrorMessage");
+
   const router = useRouter();
   const { searchParams, setSearchParams } = useSearchParamsLoader();
   const clearTokens = searchParams?.get("clearTokens");
@@ -92,10 +96,8 @@ const LoginForm = () => {
       <SearchParamsLoader onParamsReceived={setSearchParams} />
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Đăng nhập</CardTitle>
-          <CardDescription>
-            Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("cardDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -108,7 +110,7 @@ const LoginForm = () => {
                 <FormField
                   control={form.control}
                   name="email"
-                  render={({ field }) => (
+                  render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
@@ -119,7 +121,10 @@ const LoginForm = () => {
                           required
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {Boolean(errors.email?.message) &&
+                            errorMessageT(errors.email?.message as any)}
+                        </FormMessage>
                       </div>
                     </FormItem>
                   )}
@@ -127,7 +132,7 @@ const LoginForm = () => {
                 <FormField
                   control={form.control}
                   name="password"
-                  render={({ field }) => (
+                  render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid gap-2">
                         <div className="flex items-center">
@@ -139,21 +144,23 @@ const LoginForm = () => {
                           required
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {Boolean(errors.password?.message) &&
+                            errorMessageT(errors.password?.message as any)}
+                        </FormMessage>
                       </div>
                     </FormItem>
                   )}
                 />
                 <Button type="submit" className="w-full">
-                  {loginMutation.isPending ? (
-                    <LoaderCircle className="animate-spin" />
-                  ) : (
-                    "Đăng nhập"
+                  {loginMutation.isPending && (
+                    <LoaderCircle className="w-5 h-5 mr-2 animate-spin" />
                   )}
+                  {t("buttonLogin")}
                 </Button>
                 <Link href={googleOauthUrl}>
                   <Button variant="outline" className="w-full" type="button">
-                    Đăng nhập bằng Google
+                    {t("loginWithGoogle")}
                   </Button>
                 </Link>
               </div>

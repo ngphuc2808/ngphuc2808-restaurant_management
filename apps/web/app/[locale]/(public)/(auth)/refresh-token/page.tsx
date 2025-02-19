@@ -1,39 +1,13 @@
-"use client";
+import { Metadata } from "next";
 
-import React from "react";
+import RefreshToken from "@/app/[locale]/(public)/(auth)/refresh-token/refresh-token";
 
-import {
-  checkAndRefreshToken,
-  getRefreshTokenFromLocalStorage,
-} from "@/lib/utils";
-
-import { useRouter } from "@/i18n/routing";
-import SearchParamsLoader, {
-  useSearchParamsLoader,
-} from "@/components/atoms/search-params-loader";
-
-const RefreshToken = () => {
-  const router = useRouter();
-  const { searchParams, setSearchParams } = useSearchParamsLoader();
-  const refreshTokenFromUrl = searchParams?.get("refreshToken");
-  const redirectPathname = searchParams?.get("redirect");
-
-  React.useEffect(() => {
-    if (
-      refreshTokenFromUrl &&
-      refreshTokenFromUrl === getRefreshTokenFromLocalStorage()
-    ) {
-      checkAndRefreshToken({
-        onSuccess: () => {
-          router.push(redirectPathname || "/");
-        },
-      });
-    } else {
-      router.push("/");
-    }
-  }, [router, refreshTokenFromUrl, redirectPathname]);
-
-  return <SearchParamsLoader onParamsReceived={setSearchParams} />;
+export const metadata: Metadata = {
+  title: "Refresh token redirect",
+  description: "Refresh token redirect",
+  robots: {
+    index: false,
+  },
 };
 
 const RefreshTokenPage = () => {

@@ -1,9 +1,10 @@
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import { Badge } from "@repo/ui/components/badge";
 import ChangePasswordForm from "@/app/[locale]/manage/setting/change-password-form";
 import UpdateProfileForm from "@/app/[locale]/manage/setting/update-profile-form";
-import { getTranslations } from "next-intl/server";
 import { envConfig } from "@/config";
 
 export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
@@ -17,7 +18,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
     alternates: {
       canonical: url,
     },
