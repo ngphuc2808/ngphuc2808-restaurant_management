@@ -1,23 +1,25 @@
 "use client";
 
-import { cn } from "@repo/ui/lib/utils";
 import { Separator } from "@repo/ui/components/separator";
 import { SidebarTrigger } from "@repo/ui/components/sidebar";
+import SwitchLanguage from "@/components/atoms/switch-language";
+import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
+import DropdownAvatar from "@/components/atoms/dropdown-avatar";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const Header = ({ children }: Props) => {
+const Header = () => {
   return (
     <header
-      className={cn(
-        "flex items-center gap-3 sm:gap-4 bg-background p-4 w-full h-16 shadow",
-      )}
+      className={
+        "flex items-center gap-3 sm:gap-4 bg-background p-4 w-full h-16 shadow"
+      }
     >
       <SidebarTrigger variant="outline" className="scale-125 sm:scale-100" />
       <Separator orientation="vertical" className="h-6" />
-      {children}
+      <div className="ml-auto flex items-center space-x-4">
+        <SwitchLanguage />
+        <DarkModeToggle />
+        <DropdownAvatar />
+      </div>
     </header>
   );
 };

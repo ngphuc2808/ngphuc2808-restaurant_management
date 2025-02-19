@@ -72,7 +72,7 @@ const RootLayout = async (
   props: Readonly<{
     children: React.ReactNode;
     params: Promise<{ locale: string }>;
-  }>,
+  }>
 ) => {
   const params = await props.params;
 
@@ -106,7 +106,6 @@ const RootLayout = async (
               disableTransitionOnChange
             >
               {children}
-              <Footer />
               <Toaster />
             </ThemeProvider>
           </AppProvider>
