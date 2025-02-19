@@ -79,9 +79,6 @@ const RootLayout = async (
 
   const { children } = props;
 
-  setRequestLocale(locale);
-  const messages = await getMessages();
-
   if (!routing.locales.includes(locale as Locale)) {
     return (
       <html lang={locale} suppressHydrationWarning>
@@ -92,6 +89,9 @@ const RootLayout = async (
       </html>
     );
   }
+
+  setRequestLocale(locale);
+  const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
