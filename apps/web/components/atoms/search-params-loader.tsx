@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
-import React from "react";
+import { Suspense, memo, useEffect, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 
 type SearchParamsLoaderProps = {
@@ -10,30 +10,30 @@ type SearchParamsLoaderProps = {
 
 function Suspender(props: SearchParamsLoaderProps) {
   return (
-    <React.Suspense
+    <Suspense
       fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
     >
       <Suspendend {...props} />
-    </React.Suspense>
+    </Suspense>
   );
 }
 
 function Suspendend({ onParamsReceived }: SearchParamsLoaderProps) {
   const searchParams = useSearchParams();
 
-  React.useEffect(() => {
+  useEffect(() => {
     onParamsReceived(searchParams);
   });
 
   return null;
 }
 
-const SearchParamsLoader = React.memo(Suspender);
+const SearchParamsLoader = memo(Suspender);
 export default SearchParamsLoader;
 
 export const useSearchParamsLoader = () => {
   const [searchParams, setSearchParams] =
-    React.useState<ReadonlyURLSearchParams | null>(null);
+    useState<ReadonlyURLSearchParams | null>(null);
 
   return {
     searchParams,

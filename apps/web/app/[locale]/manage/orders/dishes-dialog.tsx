@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -89,17 +89,14 @@ export const dishesColumns = () => {
 const PAGE_SIZE = 10;
 
 const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const dishListQuery = useDishListQuery();
   const data = dishListQuery.data?.payload.data ?? [];
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
@@ -131,7 +128,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
     setOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPagination({
       pageIndex: 0,
       pageSize: PAGE_SIZE,

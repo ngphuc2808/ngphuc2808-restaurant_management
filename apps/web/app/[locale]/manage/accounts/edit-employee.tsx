@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
@@ -56,8 +56,8 @@ const EditEmployee = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const avatarInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
   const dataAccount = useGetAccount({
     id: id as number,
@@ -81,7 +81,7 @@ const EditEmployee = ({
   const name = form.watch("name");
   const changePassword = form.watch("changePassword");
 
-  const previewAvatar = React.useMemo(
+  const previewAvatar = useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
     [file, avatar],
   );
@@ -127,7 +127,7 @@ const EditEmployee = ({
     form.reset();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (dataAccount.data) {
       const { name, avatar, email, role } = dataAccount.data.payload.data;
       form.reset({

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, Upload } from "lucide-react";
@@ -49,11 +49,11 @@ import { DishStatus, DishStatusValues } from "@/constants/type";
 import { envConfig } from "@/config";
 
 const AddDish = () => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const [open, setOpen] = React.useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [open, setOpen] = useState(false);
   const addDishMutation = useAddDishMutation();
   const uploadMediaMutation = useUploadMediaMutation();
-  const imageInputRef = React.useRef<HTMLInputElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const form = useForm<CreateDishBodyType>({
     resolver: zodResolver(CreateDishBody),
     defaultValues: {
@@ -68,7 +68,7 @@ const AddDish = () => {
   const image = form.watch("image");
   const name = form.watch("name");
 
-  const previewImage = React.useMemo(
+  const previewImage = useMemo(
     () => (file ? URL.createObjectURL(file) : image || undefined),
     [file, image],
   );

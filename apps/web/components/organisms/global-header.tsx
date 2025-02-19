@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import { PanelLeft } from "lucide-react";
 
 import { Link } from "@/i18n/routing";

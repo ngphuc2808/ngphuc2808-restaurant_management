@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { endOfDay, format, startOfDay } from "date-fns";
 
 import { useDashboardIndicator } from "@/queries/useIndicator";
@@ -20,8 +20,8 @@ const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 
 const DashboardMain = () => {
-  const [fromDate, setFromDate] = React.useState(initFromDate);
-  const [toDate, setToDate] = React.useState(initToDate);
+  const [fromDate, setFromDate] = useState(initFromDate);
+  const [toDate, setToDate] = useState(initToDate);
   const { data } = useDashboardIndicator({
     fromDate,
     toDate,

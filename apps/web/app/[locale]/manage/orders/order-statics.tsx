@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { Users } from "lucide-react";
 
 import { TableListResType } from "@/schemaValidations/table.schema";
@@ -41,8 +41,7 @@ const OrderStatics = ({
   tableList: TableListResType["data"];
   servingGuestByTableNumber: ServingGuestByTableNumber;
 }) => {
-  const [selectedTableNumber, setSelectedTableNumber] =
-    React.useState<number>(0);
+  const [selectedTableNumber, setSelectedTableNumber] = useState<number>(0);
   const selectedServingGuest = servingGuestByTableNumber[selectedTableNumber];
   return (
     <>

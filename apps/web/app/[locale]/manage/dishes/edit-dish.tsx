@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
@@ -57,8 +57,8 @@ const EditDish = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const imageInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const uploadMediaMutation = useUploadMediaMutation();
   const updateDishMutation = useUpdateDishMutation();
   const { data } = useGetDishQuery({ enabled: Boolean(id), id: id as number });
@@ -75,7 +75,7 @@ const EditDish = ({
   const image = form.watch("image");
   const name = form.watch("name");
 
-  const previewImage = React.useMemo(
+  const previewImage = useMemo(
     () => (file ? URL.createObjectURL(file) : image || undefined),
     [file, image],
   );
@@ -122,7 +122,7 @@ const EditDish = ({
     form.reset();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const { name, image, description, price, status } = data.payload.data;
       form.reset({

@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import React from "react";
+import { useEffect, useRef } from "react";
 import QRCode from "qrcode";
 
 import { getTableLink } from "@/lib/utils";
@@ -15,11 +15,11 @@ const QRCodeTable = ({
   tableNumber: number;
   width?: number;
 }) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const locale = useLocale();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const canvas = canvasRef.current!;
     canvas.height = width + 70;
     canvas.width = width;

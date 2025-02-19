@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnFiltersState,
   SortingState,
@@ -88,9 +88,9 @@ const OrderTable = () => {
   const page = searchParams?.get("page")
     ? Number(searchParams?.get("page"))
     : 1;
-  const [openStatusFilter, setOpenStatusFilter] = React.useState(false);
-  const [fromDate, setFromDate] = React.useState(initFromDate);
-  const [toDate, setToDate] = React.useState(initToDate);
+  const [openStatusFilter, setOpenStatusFilter] = useState(false);
+  const [fromDate, setFromDate] = useState(initFromDate);
+  const [toDate, setToDate] = useState(initToDate);
   const pageIndex = page - 1;
   const orderListQuery = useGetOrderListQuery({
     fromDate,
@@ -102,14 +102,11 @@ const OrderTable = () => {
   const tableList = tableListQuery.data?.payload.data ?? [];
   const tableListSortedByNumber = tableList.sort((a, b) => a.number - b.number);
   const updateOrderMutation = useUpdateOrderMutation();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
     pageIndex,
     pageSize: PAGE_SIZE,
   });
@@ -159,14 +156,14 @@ const OrderTable = () => {
     setToDate(initToDate);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPagination({
       pageIndex,
       pageSize: PAGE_SIZE,
     });
   }, [table, pageIndex]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function refetch() {
       const now = new Date();
       if (now >= fromDate && now <= toDate) {

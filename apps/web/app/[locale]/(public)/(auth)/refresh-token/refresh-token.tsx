@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
 
 import {
   checkAndRefreshToken,
@@ -18,7 +18,7 @@ const RefreshToken = () => {
   const refreshTokenFromUrl = searchParams?.get("refreshToken");
   const redirectPathname = searchParams?.get("redirect");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       refreshTokenFromUrl &&
       refreshTokenFromUrl === getRefreshTokenFromLocalStorage()

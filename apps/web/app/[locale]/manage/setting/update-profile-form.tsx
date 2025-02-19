@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
@@ -35,8 +35,8 @@ import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
 
 const UpdateProfileForm = () => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const avatarInputRef = React.useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const { data, refetch } = useAccountMe();
   const updateMeMutation = useUpdateMeMutation();
@@ -52,7 +52,7 @@ const UpdateProfileForm = () => {
 
   const avatar = form.watch("avatar");
 
-  const previewAvatar = React.useMemo(
+  const previewAvatar = useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
     [file, avatar],
   );
@@ -99,7 +99,7 @@ const UpdateProfileForm = () => {
     setFile(null);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const { name, avatar } = data.payload.data;
 

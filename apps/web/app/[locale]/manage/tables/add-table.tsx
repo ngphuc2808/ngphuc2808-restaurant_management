@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
@@ -40,7 +40,7 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 
 const AddTable = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const addTableMutation = useAddTableMutation();
   const form = useForm<CreateTableBodyType>({
     resolver: zodResolver(CreateTableBody),

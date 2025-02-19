@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
 
 import { useRouter, usePathname } from "@/i18n/routing";
 import useAppStore from "@/store/app";
@@ -16,7 +16,7 @@ const ListenLogoutSocket = () => {
 
   const { isPending, mutateAsync } = useLogoutMutation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (UNAUTHENTICATED_PATH.includes(pathname)) return;
 
     async function onLogout() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { LoaderCircle } from "lucide-react";
 
 import { useRouter } from "@/i18n/routing";
@@ -19,11 +19,11 @@ const Logout = () => {
   const searchParams = useSearchParams();
   const refreshTokenFromUrl = searchParams.get("refreshToken");
   const accessTokenFromUrl = searchParams.get("accessToken");
-  const ref = React.useRef<boolean>(false);
+  const ref = useRef<boolean>(false);
 
   const { mutateAsync } = useLogoutMutation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       !(
         ref.current ||
@@ -61,11 +61,11 @@ const Logout = () => {
 
 const LogoutPage = () => {
   return (
-    <React.Suspense
+    <Suspense
       fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
     >
       <Logout />
-    </React.Suspense>
+    </Suspense>
   );
 };
 

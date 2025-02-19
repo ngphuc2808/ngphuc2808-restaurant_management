@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 
 import { TableListResType } from "@/schemaValidations/table.schema";
 import { useTableListQuery } from "@/queries/useTable";
@@ -82,19 +82,16 @@ const TablesDialog = ({
 }: {
   onChoose: (table: TableItem) => void;
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const tableListQuery = useTableListQuery();
   const data = tableListQuery.data?.payload.data ?? [];
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-    pageSize: PAGE_SIZE, //default page size
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: PAGE_SIZE,
   });
 
   const table = useReactTable({
@@ -124,7 +121,7 @@ const TablesDialog = ({
     setOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPagination({
       pageIndex: 0,
       pageSize: PAGE_SIZE,

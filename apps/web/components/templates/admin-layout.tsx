@@ -24,7 +24,7 @@ const AdminLayout = async ({ children }: Props) => {
           "peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon))]",
           "peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]",
           "transition-[width] ease-linear duration-200",
-          "h-svh flex flex-col"
+          "h-svh flex flex-col",
         )}
       >
         <Header />

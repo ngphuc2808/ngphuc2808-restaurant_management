@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, Upload } from "lucide-react";
@@ -39,9 +39,9 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import { envConfig } from "@/config";
 
 const AddEmployee = () => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const [open, setOpen] = React.useState(false);
-  const avatarInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [open, setOpen] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
   const addAccountMutation = useAddAccountMutation();
   const uploadMediaMutation = useUploadMediaMutation();
@@ -60,7 +60,7 @@ const AddEmployee = () => {
   const name = form.watch("name");
   const avatar = form.watch("avatar");
 
-  const previewAvatar = React.useMemo(
+  const previewAvatar = useMemo(
     () => (file ? URL.createObjectURL(file) : avatar || undefined),
     [file, avatar],
   );

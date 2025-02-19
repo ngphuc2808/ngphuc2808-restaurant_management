@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import {
   isServer,
   QueryClient,
@@ -39,16 +39,16 @@ const getQueryClient = () => {
 };
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const AppProvider = ({ children }: Props) => {
   const queryClient = getQueryClient();
   const { setRole, setSocket } = useAppStore();
 
-  const count = React.useRef(0);
+  const count = useRef(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (count.current === 0) {
       const accessToken = getAccessTokenFromLocalStorage();
       if (accessToken) {

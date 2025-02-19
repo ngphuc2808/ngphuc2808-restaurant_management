@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
@@ -42,24 +42,23 @@ import Quantity from "@/app/[locale]/guest/menu/quantity";
 import TablesDialog from "@/app/[locale]/manage/orders/tables-dialog";
 
 const AddOrder = () => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedGuest, setSelectedGuest] = React.useState<
+  const [open, setOpen] = useState(false);
+  const [selectedGuest, setSelectedGuest] = useState<
     GetListGuestsResType["data"][0] | null
   >(null);
-  const [isNewGuest, setIsNewGuest] = React.useState(true);
-  const [orders, setOrders] = React.useState<CreateOrdersBodyType["orders"]>(
-    [],
-  );
+  const [isNewGuest, setIsNewGuest] = useState(true);
+  const [orders, setOrders] = useState<CreateOrdersBodyType["orders"]>([]);
   const { data } = useDishListQuery();
-  const dishes = React.useMemo(() => data?.payload.data ?? [], [data]);
+  const dishes = useMemo(() => data?.payload.data ?? [], [data]);
 
-  const totalPrice = React.useMemo(() => {
+  const totalPrice = useMemo(() => {
     return dishes.reduce((result, dish) => {
       const order = orders.find((order) => order.dishId === dish.id);
       if (!order) return result;
       return result + order.quantity * dish.price;
     }, 0);
   }, [dishes, orders]);
+
   const createOrderMutation = useCreateOrderMutation();
   const createGuestMutation = useCreateGuestMutation();
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useSearchParams } from "next/navigation";
-import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -64,7 +64,7 @@ const GuestLoginForm = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) {
       router.push("/");
     }

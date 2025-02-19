@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -93,7 +93,7 @@ const EditTable = ({
     setId(undefined);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const { capacity, status } = data.payload.data;
       form.reset({

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -220,14 +220,11 @@ const AccountTable = () => {
 
   const accountListQuery = useGetAccountList();
   const data = accountListQuery.data?.payload.data ?? [];
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
     pageIndex,
     pageSize: PAGE_SIZE,
   });
@@ -254,7 +251,7 @@ const AccountTable = () => {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPagination({
       pageIndex,
       pageSize: PAGE_SIZE,

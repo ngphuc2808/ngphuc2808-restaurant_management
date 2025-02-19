@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo } from "react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { DashboardIndicatorResType } from "@/schemaValidations/indicator.schema";
@@ -60,7 +60,7 @@ const DishBarChart = ({
     "name" | "successOrders"
   >[];
 }) => {
-  const chartDateColors = React.useMemo(
+  const chartDateColors = useMemo(
     () =>
       chartData.map((data, index) => {
         return {

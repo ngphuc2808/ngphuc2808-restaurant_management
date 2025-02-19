@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -85,7 +85,7 @@ const LoginForm = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (clearTokens) {
       setRole(undefined);
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { ReactNode, useState } from "react";
 
 import { useRouter } from "@/i18n/routing";
 import {
@@ -11,9 +11,9 @@ import {
   DialogTitle,
 } from "@repo/ui/components/dialog";
 
-const Modal = ({ children }: { children: React.ReactNode }) => {
+const Modal = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
 
   return (
     <Dialog

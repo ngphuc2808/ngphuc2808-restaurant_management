@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import React from "react";
-
 import { htmlToTextForDescription } from "@/lib/server-utils";
 import {
   Card,

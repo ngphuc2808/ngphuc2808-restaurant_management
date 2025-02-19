@@ -1,4 +1,4 @@
-import React from "react";
+import { useMemo } from "react";
 
 import { GetOrdersResType } from "@/schemaValidations/order.schema";
 import {
@@ -9,7 +9,7 @@ import {
 import { OrderStatus } from "@/constants/type";
 
 export const useOrderService = (orderList: GetOrdersResType["data"]) => {
-  const result = React.useMemo(() => {
+  const result = useMemo(() => {
     const statics: Statics = {
       status: {
         Pending: 0,
@@ -20,6 +20,7 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
       },
       table: {},
     };
+
     const orderObjectByGuestId: OrderObjectByGuestID = {};
     const guestByTableNumber: ServingGuestByTableNumber = {};
     orderList.forEach((order) => {

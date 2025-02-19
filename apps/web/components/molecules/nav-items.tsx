@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { useRouter, Link } from "@/i18n/routing";
 import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import { useEffect, useMemo } from "react";
 
 import useAppStore from "@/store/app";
 import {
@@ -20,8 +20,8 @@ const OrdersCart = () => {
 
   const { data, refetch } = useGuestGetOrderListQuery();
 
-  const orders = React.useMemo(() => data?.payload.data ?? [], [data]);
-  const { waitingForPaying, paid } = React.useMemo(() => {
+  const orders = useMemo(() => data?.payload.data ?? [], [data]);
+  const { waitingForPaying, paid } = useMemo(() => {
     return orders.reduce(
       (result, order) => {
         if (
@@ -64,7 +64,7 @@ const OrdersCart = () => {
     );
   }, [orders]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function onUpdateOrder(data: UpdateOrderResType["data"]) {
       const {
         dishSnapshot: { name },

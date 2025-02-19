@@ -1,7 +1,6 @@
 import "@repo/ui/globals.css";
 
 import { Metadata } from "next";
-import Script from "next/script";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -15,10 +14,10 @@ import { routing } from "@/i18n/routing";
 import AppProvider from "@/providers/app-provider";
 import ThemeProvider from "@/providers/theme-provider";
 import { Toaster } from "@repo/ui/components/toaster";
-import { idJsonObject, baseOpenGraph } from "@/shared-metadata";
+import { baseOpenGraph } from "@/shared-metadata";
 import { Locale } from "@/config";
 import Notfound from "@/app/[locale]/[...not-found]/not-found";
-import Footer from "@/components/organisms/footer";
+import GlobalScript from "@/components/atoms/global-script";
 
 const font = localFont({
   src: [
@@ -72,7 +71,7 @@ const RootLayout = async (
   props: Readonly<{
     children: React.ReactNode;
     params: Promise<{ locale: string }>;
-  }>
+  }>,
 ) => {
   const params = await props.params;
 
@@ -88,6 +87,7 @@ const RootLayout = async (
       <html lang={locale} suppressHydrationWarning>
         <body className={`${font.className} ${font.variable}`}>
           <Notfound />
+          <GlobalScript />
         </body>
       </html>
     );
@@ -110,11 +110,8 @@ const RootLayout = async (
             </ThemeProvider>
           </AppProvider>
         </NextIntlClientProvider>
+        <GlobalScript />
       </body>
-      <Script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(idJsonObject) }}
-      />
     </html>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -94,22 +94,19 @@ const GuestsDialog = ({
 }: {
   onChoose: (guest: GuestItem) => void;
 }) => {
-  const [open, setOpen] = React.useState(false);
-  const [fromDate, setFromDate] = React.useState(initFromDate);
-  const [toDate, setToDate] = React.useState(initToDate);
+  const [open, setOpen] = useState(false);
+  const [fromDate, setFromDate] = useState(initFromDate);
+  const [toDate, setToDate] = useState(initToDate);
   const guestListQuery = useGetGuestListQuery({
     fromDate,
     toDate,
   });
   const data = guestListQuery.data?.payload.data ?? [];
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
@@ -146,7 +143,7 @@ const GuestsDialog = ({
     setToDate(initToDate);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPagination({
       pageIndex: 0,
       pageSize: PAGE_SIZE,
