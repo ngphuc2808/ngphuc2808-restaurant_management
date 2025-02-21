@@ -1,18 +1,119 @@
 {
-  "ErrorMessage": {
-    "invalidEmail": "Invalid email",
-    "required": "This field is required",
-    "minmaxPassword": "Password must be between 6 and 100 characters"
-  },
   "Brand": {
     "title": "Big Boy Restaurant",
     "defaultTitle": "Big Boy"
+  },
+  "All": {
+    "logout": "Logout",
+    "add": "Add",
+    "edit": "Update",
+    "search": "Search",
+    "searchValue": "Search {value}",
+    "delete": "Delete",
+    "save": "Save",
+    "confirm": "Confirm",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "previous": "Previous",
+    "next": "Next",
+    "back": "Back",
+    "more_pages": "More pages",
+    "error": "An error occurred",
+    "email": "Email",
+    "role": "Role",
+    "owner": "Owner",
+    "employee": "Employee",
+    "avatar": "Avatar",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "noData": "No data",
+    "price": "Price: {price}",
+    "dishes": "Dishes",
+    "status": "Status",
+    "available": "Available",
+    "notAvailable": "Not available",
+    "hidden": "Hidden",
+    "reserved": "Reserved",
+    "delivered": "Delivered",
+    "paid": "Paid",
+    "pending": "Pending",
+    "processing": "Processing",
+    "rejected": "Rejected",
+    "personalInformation": "Personal information",
+    "name": "Name",
+    "showResultPagination": "Showing {result} of {total} results",
+    "from": "From",
+    "to": "To"
+  },
+  "ErrorMessage": {
+    "invalidEmail": "Invalid email",
+    "required": "This field is required",
+    "minCharacter": "Minimum 2 characters",
+    "maxCharacter": "Maximum 254 characters",
+    "minmaxPassword": "Password must be between 6 and 100 characters",
+    "changePasswordDescription": "Please enter new password and re-enter new password",
+    "passwordNotMatch": "Password does not match",
+    "minPrice": "Minimum price is 0"
+  },
+  "NotFound": {
+    "title": "Not Found",
+    "description": "The page you are looking for does not exist"
+  },
+  "Error": {
+    "title": "Error",
+    "description": "There is a problem with the system, please try again later"
+  },
+  "OAuth": {
+    "title": "Google Login Redirect"
+  },
+  "RefreshToken": {
+    "title": "Refresh token"
+  },
+  "TermOfService": {
+    "title": "Term of Service",
+    "description": "Please read the terms of service carefully before using the service",
+    "introduce": "Introduce",
+    "introduceDescription": "Welcome to our Terms of Service page. By using our service, you agree to comply with the following terms and conditions.",
+    "useTheService": "Use the service",
+    "useTheServiceDescription": "You agree to use our service only for lawful purposes and not to violate any laws. You may not use our service to distribute illegal, harmful, or infringing content.",
+    "intellectualProperty": "Intellectual property",
+    "intellectualPropertyDescription": "All content and materials on our website, including text, images, graphics, logos, and software, are owned by us or our licensors and are protected by intellectual property laws.",
+    "changeTheTerms": "Change the terms",
+    "changeTheTermsDescription": "We reserve the right to change these terms of service at any time without prior notice. Your continued use of our service after the changes are posted will be considered your acceptance of those changes.",
+    "contactUs": "Contact us",
+    "contactUsDescription": "If you have any questions about these terms of service, please contact us via the email or phone number provided on our website."
+  },
+  "About": {
+    "title": "About us",
+    "description": "Learn more about our restaurant",
+    "slogan": "Taste good, every moment",
+    "address": "Address: 585 Nguyen Thi Thap, District 7, Ho Chi Minh City",
+    "ourStory": "Our story",
+    "ourStoryDescription": "Big Boy was founded in 2025 with a simple mission: serving delicious, high quality food to connect people together. Our passion for special raw materials and creative formulas have made us a favorite local organization, famous for its commitment to creating nourishing meals and souls.",
+    "ourValue": "Our value",
+    "ourValueDescription": "At the center of Big Boy is a profound dedication to sustainability, community and excellence in cuisine. We take raw materials from local farmers and manufacturers, ensuring freshness and supporting the local economy. Our team is passionate about creating dishes that not only satisfy the taste buds but also nourish the body, with the focus on healthy food, without processing.",
+    "ourCommitment": "Our commitment",
+    "ourCommitmentDescription": "We believe that delicious food has the power to connect people together and create long -term memories. That is why we are committed to providing a great culinary experience, from the time you walk through the door to the last piece of the meal. Our talented chefs work constantly to create the best dishes that show seasonal ingredients, taken from the locality, ensuring that each dish is a celebration of flavor and quality. quantity."
+  },
+  "PrivacyPolicy": {
+    "title": "Privacy Policy",
+    "description": "Please read the privacy policy carefully before using the service",
+    "dataCollected": "Data collected",
+    "dataCollectedDescription": "We collect personal information that you provide when creating an account, ordering, or contacting us. This information may include name. In addition, we also collect some information automatically when you access our website, such as IP address and browser type.",
+    "purposeOfUse": "Purpose of use",
+    "purposeOfUseDescription": {
+      "title": "We use your personal information for the following purposes:",
+      "item1": "To process your order: We use your contact and payment information to confirm and process orders, as well as to send invoices and delivery information.",
+      "item2": "To provide customer support: We use your contact information to respond to your requests and provide customer support.",
+      "item3": "To send promotional emails: We use your email address to send you promotional emails about our products and services.",
+      "item4": "To improve our service: We use aggregated and anonymized data to analyze trends and improve our service."
+    }
   },
   "HomePage": {
     "title": "Home page",
     "description": "Craving a classic American diner experience? Look no further than Big Boy! Savor our iconic Big Boy burger, juicy and flavorful, paired with creamy milkshakes and crispy fries. Perfect for families and friends!",
     "slogan": "Taste good, every moment",
-    "h2": "A variety of dishes"
+    "aVarietyOfDishes": "A variety of dishes"
   },
   "Login": {
     "title": "Login",
@@ -26,23 +127,65 @@
   },
   "LoginGuest": {
     "title": "Login to order",
-    "description": "Enter login information to place an order"
+    "description": "Enter login information to place an order",
+    "guestName": "Guest name",
+    "login": "Login",
+    "tableNumber": "Table number: {number}"
   },
   "GuestMenu": {
     "title": "Menu",
-    "description": "Choose your favorite dishes"
+    "description": "Choose your favorite dishes",
+    "order": "Order",
+    "outOfFood": "Out of food"
   },
   "ManageAccounts": {
     "title": "Manage accounts",
-    "description": "Manage employee accounts"
+    "description": "Manage employee accounts",
+    "createAccount": "Create account",
+    "updateAccount": "Update account",
+    "requiredDescription": "Name, email, and password fields are required",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "selectRole": "Select role",
+    "owner": "Quản lý",
+    "employee": "Nhân viên",
+    "table": {
+      "avatar": "Avatar",
+      "name": "Name",
+      "email": "Email",
+      "actions": "Actions"
+    }
   },
   "Dashboard": {
     "title": "Dashboard",
-    "description": "View and analyze sales data"
+    "description": "View and analyze indicators",
+    "totalRevenue": "Total revenue",
+    "guest": "Guest",
+    "orderDish": "Order dish",
+    "order": "Order",
+    "theTableIsServing": "The table is serving",
+    "revenue": "Revenue",
+    "rankingDishes": "Ranking dishes",
+    "theMostCalledDish": "The most called dish",
+    "orderPaid": "Order paid"
   },
   "Dishes": {
     "title": "Dishes",
-    "description": "Manage dishes"
+    "description": "Manage dishes",
+    "dishDoesNotExist": "Dish does not exist",
+    "addDish": "Add dish",
+    "updateDish": "Update dish",
+    "requiredDescription": "Dish name, price fields are required",
+    "selectStatus": "Select status",
+    "table": {
+      "photo": "Photo",
+      "dishName": "Food name",
+      "price": "Price",
+      "description": "Description",
+      "status": "Status",
+      "actions": "Actions"
+    }
   },
   "Orders": {
     "title": "Orders",
@@ -50,11 +193,17 @@
   },
   "GuestOrders": {
     "title": "Orders",
-    "description": "Guest orders"
+    "description": "Guest orders",
+    "applicationPaid": "Application paid",
+    "unusedApplication": "Unused application"
   },
-  "Setting": {
-    "title": "Setting",
-    "description": "Manage your account settings"
+  "Settings": {
+    "title": "Settings",
+    "description": "Manage your account settings",
+    "changePassword": "Change password",
+    "enterOldPassword": "Enter old password",
+    "enterNewPassword": "Enter new password",
+    "rerenderPassword": "Re-enter new password"
   },
   "Tables": {
     "title": "Tables",
@@ -65,7 +214,12 @@
     "en": "English",
     "vi": "Vietnamese"
   },
-  "NavItem": {
+  "SwitchMode": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "NavItems": {
     "home": "Home",
     "menu": "Menu",
     "orders": "Orders",
@@ -74,8 +228,18 @@
     "manage": "Manage",
     "logoutDialog": {
       "logoutQuestion": "Are you sure you want to log out?",
-      "logoutCancel": "Cancel",
       "logoutConfirm": "Signing out may result in loss of your orders"
     }
+  },
+  "SidebarItems": {
+    "home": "Home",
+    "general": "General",
+    "dashboard": "Dashboard",
+    "dishes": "Dishes",
+    "orders": "Orders",
+    "tables": "Tables",
+    "accounts": "Accounts",
+    "others": "Others",
+    "settings": "Settings"
   }
 }

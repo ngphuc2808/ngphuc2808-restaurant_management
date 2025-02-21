@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-import { htmlToTextForDescription } from "@/lib/server-utils";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import AccountTable from "@/app/[locale]/manage/accounts/account-table";
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import { envConfig } from "@/config";
 
 export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
@@ -33,13 +34,15 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const AccountPage = () => {
+const AccountPage = async () => {
+  const t = await getTranslations("ManageAccounts");
+
   return (
     <div className="space-y-2">
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
-          <CardTitle>Tài khoản</CardTitle>
-          <CardDescription>Quản lý tài khoản nhân viên</CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <AccountTable />

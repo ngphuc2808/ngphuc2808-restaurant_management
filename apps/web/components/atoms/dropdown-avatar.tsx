@@ -67,7 +67,7 @@ const DropdownAvatar = () => {
         <DropdownMenuLabel>{account?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={"/manage/setting"} className="cursor-pointer">
+          <Link href={"/manage/settings"} className="cursor-pointer">
             Cài đặt
           </Link>
         </DropdownMenuItem>

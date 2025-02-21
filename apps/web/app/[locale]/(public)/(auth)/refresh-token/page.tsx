@@ -3,14 +3,22 @@ import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
 
 import RefreshToken from "@/app/[locale]/(public)/(auth)/refresh-token/refresh-token";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Refresh token redirect",
-  description: "Refresh token redirect",
-  robots: {
-    index: false,
-  },
-};
+export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
+  const params = await props.params;
+
+  const { locale } = params;
+
+  const t = await getTranslations({ locale, namespace: "RefreshToken" });
+
+  return {
+    title: t("title"),
+    robots: {
+      index: false,
+    },
+  };
+}
 
 const RefreshTokenPage = () => {
   return (

@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { htmlToTextForDescription } from "@/lib/server-utils";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import DashboardMain from "@/app/[locale]/manage/dashboard/dashboard-main";
+import { htmlToTextForDescription } from "@/lib/server-utils";
 import { envConfig } from "@/config";
 
 export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
@@ -33,13 +33,15 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const Dashboard = () => {
+const DashboardPage = async () => {
+  const t = await getTranslations("Dashboard");
+
   return (
     <div className="space-y-2">
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
-          <CardTitle>Dashboard</CardTitle>
-          <CardDescription>Phân tích các chỉ số</CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <DashboardMain />
@@ -49,4 +51,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

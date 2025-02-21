@@ -1,14 +1,20 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { DishResType } from "@/schemaValidations/dish.schema";
 import { formatCurrency } from "@/lib/utils";
 
 const DishDetail = ({ dish }: { dish: DishResType["data"] | undefined }) => {
+  const t = useTranslations("Dishes");
+  const tAll = useTranslations("All");
+
   if (!dish)
     return (
       <div>
         <h1 className="text-2xl lg:text-3xl font-semibold">
-          Món ăn không tồn tại
+          {t("dishDoesNotExist")}
         </h1>
       </div>
     );
@@ -16,7 +22,9 @@ const DishDetail = ({ dish }: { dish: DishResType["data"] | undefined }) => {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl lg:text-3xl font-semibold">{dish.name}</h1>
-      <h2 className="font-semibold">Giá: {formatCurrency(dish.price)}</h2>
+      <h2 className="font-semibold">
+        {tAll("price", { price: formatCurrency(dish.price) })}
+      </h2>
       <Image
         src={dish.image}
         width={500}

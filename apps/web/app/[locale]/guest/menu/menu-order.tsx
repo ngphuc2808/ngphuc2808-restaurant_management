@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { useRouter } from "@/i18n/routing";
@@ -18,6 +19,9 @@ type Props = {
 };
 
 const MenuOrder = ({ dishes }: Props) => {
+  const t = useTranslations("GuestMenu");
+  const tAll = useTranslations("All");
+
   const [orders, setOrders] = useState<GuestCreateOrdersBodyType>([]);
   const { mutateAsync } = useGuestOrderMutation();
   const router = useRouter();
@@ -57,7 +61,8 @@ const MenuOrder = ({ dishes }: Props) => {
   };
 
   return (
-    <>
+    <div className="max-w-[400px] mx-auto space-y-4">
+      <h1 className="text-center text-xl font-bold">🍕 {t("title")}</h1>
       {dishes
         .filter((dish) => dish.status !== DishStatus.Hidden)
         .map((dish) => (
@@ -69,8 +74,8 @@ const MenuOrder = ({ dishes }: Props) => {
           >
             <div className="flex-shrink-0 relative">
               {dish.status === DishStatus.Unavailable && (
-                <span className="absolute inset-0 flex items-center justify-center text-sm rounded-md bg-slate-600/50 text-white">
-                  Hết hàng
+                <span className="text-center absolute inset-0 flex items-center justify-center text-sm rounded-md bg-slate-600/50 text-white">
+                  {t("outOfFood")}
                 </span>
               )}
               <Image
@@ -106,11 +111,13 @@ const MenuOrder = ({ dishes }: Props) => {
           onClick={handleOrder}
           disabled={orders.length === 0}
         >
-          <span>Đặt hàng · {orders.length} món</span>
+          <span>
+            {t("order")} · {orders.length} {tAll("dishes").toLowerCase()}
+          </span>
           <span>{formatCurrency(totalPrice)}</span>
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

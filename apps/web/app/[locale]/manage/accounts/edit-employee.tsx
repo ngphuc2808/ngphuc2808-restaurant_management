@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +12,11 @@ import {
 } from "@/schemaValidations/account.schema";
 import { useGetAccount, useUpdateAccountMutation } from "@/queries/useAccount";
 import { useUploadMediaMutation } from "@/queries/useMedia";
-import { handleErrorApi } from "@/lib/utils";
+import {
+  checkMessageFromResponse,
+  getVietnameseRole,
+  handleErrorApi,
+} from "@/lib/utils";
 import {
   Avatar,
   AvatarFallback,
@@ -56,6 +61,10 @@ const EditEmployee = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
+  const t = useTranslations("ManageAccounts");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const [file, setFile] = useState<File | null>(null);
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -153,10 +162,8 @@ const EditEmployee = ({
     >
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Cập nhật tài khoản</DialogTitle>
-          <DialogDescription>
-            Các trường tên, email, mật khẩu là bắt buộc
-          </DialogDescription>
+          <DialogTitle>{t("updateAccount")}</DialogTitle>
+          <DialogDescription>{t("requiredDescription")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -175,7 +182,7 @@ const EditEmployee = ({
                       <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
                         <AvatarImage src={previewAvatar} />
                         <AvatarFallback className="rounded-none">
-                          {name || "Avatar"}
+                          {name || tAll("avatar")}
                         </AvatarFallback>
                       </Avatar>
                       <input
@@ -199,7 +206,6 @@ const EditEmployee = ({
                         onClick={() => avatarInputRef.current?.click()}
                       >
                         <Upload className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Upload</span>
                       </button>
                     </div>
                   </FormItem>
@@ -208,13 +214,18 @@ const EditEmployee = ({
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="name">Tên</Label>
+                      <Label htmlFor="name">{tAll("name")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="name" className="w-full" {...field} />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.name?.message &&
+                            (checkMessageFromResponse(errors.name?.type)
+                              ? errors.name?.message
+                              : tErrorMessage(errors.name?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -223,13 +234,18 @@ const EditEmployee = ({
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{tAll("email")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="email" className="w-full" {...field} />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.email?.message &&
+                            (checkMessageFromResponse(errors.email?.type)
+                              ? errors.email?.message
+                              : tErrorMessage(errors.email?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -238,10 +254,10 @@ const EditEmployee = ({
               <FormField
                 control={form.control}
                 name="role"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="role">Vai trò</Label>
+                      <Label htmlFor="role">{tAll("role")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Select
                           onValueChange={field.onChange}
@@ -249,7 +265,7 @@ const EditEmployee = ({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Chọn vai trò" />
+                              <SelectValue placeholder={t("selectRole")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -257,13 +273,18 @@ const EditEmployee = ({
                               if (role === Role.Guest) return null;
                               return (
                                 <SelectItem key={role} value={role}>
-                                  {role}
+                                  {tAll(getVietnameseRole(role))}
                                 </SelectItem>
                               );
                             })}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.role?.message &&
+                            (checkMessageFromResponse(errors.role?.type)
+                              ? errors.role?.message
+                              : tErrorMessage(errors.role?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -272,10 +293,10 @@ const EditEmployee = ({
               <FormField
                 control={form.control}
                 name="changePassword"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="email">Đổi mật khẩu</Label>
+                      <Label htmlFor="email">{t("changePassword")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Switch
                           checked={field.value}
@@ -290,7 +311,16 @@ const EditEmployee = ({
                             }
                           }}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.changePassword?.message &&
+                            (checkMessageFromResponse(
+                              errors.changePassword?.type,
+                            )
+                              ? errors.changePassword?.message
+                              : tErrorMessage(
+                                  errors.changePassword?.message as any,
+                                ))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -300,10 +330,10 @@ const EditEmployee = ({
                 <FormField
                   control={form.control}
                   name="password"
-                  render={({ field }) => (
+                  render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                        <Label htmlFor="password">Mật khẩu mới</Label>
+                        <Label htmlFor="password">{t("newPassword")}</Label>
                         <div className="col-span-3 w-full space-y-2">
                           <Input
                             id="password"
@@ -311,7 +341,14 @@ const EditEmployee = ({
                             type="password"
                             {...field}
                           />
-                          <FormMessage />
+                          <FormMessage>
+                            {errors.password?.message &&
+                              (checkMessageFromResponse(errors.password?.type)
+                                ? errors.password?.message
+                                : tErrorMessage(
+                                    errors.password?.message as any,
+                                  ))}
+                          </FormMessage>
                         </div>
                       </div>
                     </FormItem>
@@ -322,11 +359,11 @@ const EditEmployee = ({
                 <FormField
                   control={form.control}
                   name="confirmPassword"
-                  render={({ field }) => (
+                  render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid grid-cols-4 items-center justify-items-start gap-4">
                         <Label htmlFor="confirmPassword">
-                          Xác nhận mật khẩu mới
+                          {t("confirmNewPassword")}
                         </Label>
                         <div className="col-span-3 w-full space-y-2">
                           <Input
@@ -335,7 +372,16 @@ const EditEmployee = ({
                             type="password"
                             {...field}
                           />
-                          <FormMessage />
+                          <FormMessage>
+                            {errors.confirmPassword?.message &&
+                              (checkMessageFromResponse(
+                                errors.confirmPassword?.type,
+                              )
+                                ? errors.confirmPassword?.message
+                                : tErrorMessage(
+                                    errors.confirmPassword?.message as any,
+                                  ))}
+                          </FormMessage>
                         </div>
                       </div>
                     </FormItem>
@@ -347,7 +393,7 @@ const EditEmployee = ({
         </Form>
         <DialogFooter>
           <Button type="submit" form="edit-employee-form">
-            Lưu
+            {tAll("save")}
           </Button>
         </DialogFooter>
       </DialogContent>

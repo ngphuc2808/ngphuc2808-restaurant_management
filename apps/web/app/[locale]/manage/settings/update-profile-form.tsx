@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,8 +34,11 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
+import { envConfig } from "@/config";
 
 const UpdateProfileForm = () => {
+  const tAll = useTranslations("All");
+
   const [file, setFile] = useState<File | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -117,7 +121,7 @@ const UpdateProfileForm = () => {
       >
         <Card x-chunk="dashboard-07-chunk-0">
           <CardHeader>
-            <CardTitle>Thông tin cá nhân</CardTitle>
+            <CardTitle>{tAll("personalInformation")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6">
@@ -143,7 +147,7 @@ const UpdateProfileForm = () => {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              "http://localhost:3001/" + field.name,
+                              `${envConfig.NEXT_PUBLIC_URL}/` + file.name,
                             );
                           }
                         }}
@@ -154,20 +158,18 @@ const UpdateProfileForm = () => {
                         onClick={() => avatarInputRef.current?.click()}
                       >
                         <Upload className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Upload</span>
                       </button>
                     </div>
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid gap-3">
-                      <Label htmlFor="name">Tên</Label>
+                      <Label htmlFor="name">{tAll("name")}</Label>
                       <Input
                         id="name"
                         type="text"
@@ -179,13 +181,12 @@ const UpdateProfileForm = () => {
                   </FormItem>
                 )}
               />
-
               <div className=" items-center gap-2 md:ml-auto flex">
                 <Button variant="outline" size="sm" type="reset">
-                  Hủy
+                  {tAll("cancel")}
                 </Button>
                 <Button size="sm" type="submit">
-                  Lưu thông tin
+                  {tAll("save")}
                 </Button>
               </div>
             </div>

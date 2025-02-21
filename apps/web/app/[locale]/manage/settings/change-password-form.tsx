@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -31,6 +32,9 @@ import { Label } from "@repo/ui/components/label";
 import { toast } from "@repo/ui/hooks/use-toast";
 
 const ChangePasswordForm = () => {
+  const t = useTranslations("Settings");
+  const tAll = useTranslations("All");
+
   const changePasswordMutation = useChangePasswordMutation();
   const form = useForm<ChangePasswordBodyType>({
     resolver: zodResolver(ChangePasswordBody),
@@ -72,7 +76,7 @@ const ChangePasswordForm = () => {
       >
         <Card className="overflow-hidden" x-chunk="dashboard-07-chunk-4">
           <CardHeader>
-            <CardTitle>Đổi mật khẩu</CardTitle>
+            <CardTitle>{t("changePassword")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6">
@@ -82,7 +86,9 @@ const ChangePasswordForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid gap-3">
-                      <Label htmlFor="oldPassword">Mật khẩu cũ</Label>
+                      <Label htmlFor="oldPassword">
+                        {t("enterOldPassword")}
+                      </Label>
                       <Input
                         autoComplete="current-password"
                         id="oldPassword"
@@ -101,7 +107,7 @@ const ChangePasswordForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid gap-3">
-                      <Label htmlFor="password">Mật khẩu mới</Label>
+                      <Label htmlFor="password">{t("enterNewPassword")}</Label>
                       <Input
                         autoComplete="new-password"
                         id="password"
@@ -121,7 +127,7 @@ const ChangePasswordForm = () => {
                   <FormItem>
                     <div className="grid gap-3">
                       <Label htmlFor="confirmPassword">
-                        Nhập lại mật khẩu mới
+                        {t("rerenderPassword")}
                       </Label>
                       <Input
                         autoComplete="new-password"
@@ -137,10 +143,10 @@ const ChangePasswordForm = () => {
               />
               <div className=" items-center gap-2 md:ml-auto flex">
                 <Button variant="outline" size="sm" type="reset">
-                  Hủy
+                  {tAll("cancel")}
                 </Button>
                 <Button size="sm" type="submit">
-                  Lưu thông tin
+                  {tAll("save")}
                 </Button>
               </div>
             </div>

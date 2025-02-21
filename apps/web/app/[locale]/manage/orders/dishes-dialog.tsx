@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -43,52 +44,11 @@ import AutoPagination from "@/components/molecules/auto-pagination";
 
 type DishItem = DishListResType["data"][0];
 
-export const dishesColumns = () => {
-  const columns: ColumnDef<DishItem>[] = [
-    {
-      id: "dishName",
-      header: "Món ăn",
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-4">
-          <Image
-            src={row.original.image}
-            alt={row.original.name}
-            width={50}
-            height={50}
-            className="rounded-md object-cover w-[50px] h-[50px]"
-          />
-          <span>{row.original.name}</span>
-        </div>
-      ),
-      filterFn: (row, _, filterValue: string) => {
-        if (filterValue === undefined) return true;
-        return simpleMatchText(String(row.original.name), String(filterValue));
-      },
-    },
-    {
-      accessorKey: "price",
-      header: "Giá cả",
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {formatCurrency(row.getValue("price"))}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: "Trạng thái",
-      cell: ({ row }) => (
-        <div>{getVietnameseDishStatus(row.getValue("status"))}</div>
-      ),
-    },
-  ];
-
-  return columns;
-};
-
 const PAGE_SIZE = 10;
 
 const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
+  const tAll = useTranslations("All");
+
   const [open, setOpen] = useState(false);
   const dishListQuery = useDishListQuery();
   const data = dishListQuery.data?.payload.data ?? [];
@@ -101,9 +61,53 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<DishItem>[] = useMemo(() => {
+    return [
+      {
+        id: "dishName",
+        header: "Món ăn",
+        cell: ({ row }) => (
+          <div className="flex items-center space-x-4">
+            <Image
+              src={row.original.image}
+              alt={row.original.name}
+              width={50}
+              height={50}
+              className="rounded-md object-cover w-[50px] h-[50px]"
+            />
+            <span>{row.original.name}</span>
+          </div>
+        ),
+        filterFn: (row, _, filterValue: string) => {
+          if (filterValue === undefined) return true;
+          return simpleMatchText(
+            String(row.original.name),
+            String(filterValue),
+          );
+        },
+      },
+      {
+        accessorKey: "price",
+        header: "Giá cả",
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {formatCurrency(row.getValue("price"))}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: tAll("status"),
+        cell: ({ row }) => (
+          <div>{tAll(getVietnameseDishStatus(row.getValue("status")))}</div>
+        ),
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: dishesColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -146,7 +150,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
         </DialogHeader>
         <div>
           <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-2">
               <Input
                 placeholder="Lọc tên"
                 value={
@@ -203,7 +207,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={dishesColumns().length}
+                        colSpan={columns.length}
                         className="h-24 text-center"
                       >
                         No results.

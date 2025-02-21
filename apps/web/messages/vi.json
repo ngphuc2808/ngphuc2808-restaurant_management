@@ -1,25 +1,129 @@
 {
-  "ErrorMessage": {
-    "invalidEmail": "Email không hợp lệ",
-    "required": "Trường này không được để trống",
-    "minmaxPassword": "Mật khẩu phải từ 6 đến 100 ký tự"
-  },
   "Brand": {
     "title": "Nhà hàng Big Boy",
     "defaultTitle": "Big Boy"
+  },
+  "All": {
+    "logout": "Đăng xuất",
+    "add": "Thêm mới",
+    "edit": "Chỉnh sửa",
+    "search": "Tìm kiếm",
+    "searchValue": "Tìm kiếm {value}",
+    "delete": "Xóa",
+    "save": "Lưu",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy",
+    "reset": "Đặt lại",
+    "previous": "Trước",
+    "next": "Tiếp",
+    "back": "Quay về",
+    "more_pages": "Thêm trang",
+    "error": "Có lỗi xảy ra",
+    "email": "Email",
+    "role": "Vai trò",
+    "owner": "Quản lý",
+    "employee": "Nhân viên",
+    "avatar": "Ảnh đại diện",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "noData": "Không có dữ liệu",
+    "price": "Giá: {price}",
+    "dishes": "Món",
+    "status": "Trạng thái",
+    "available": "Có sẵn",
+    "notAvailable": "Không có sẵn",
+    "hidden": "Ẩn",
+    "reserved": "Đã đặt",
+    "delivered": "Đã phục vụ",
+    "paid": "Đã thanh toán",
+    "pending": "Chờ xử lý",
+    "processing": "Đang xử lý",
+    "rejected": "Từ chối",
+    "personalInformation": "Thông tin cá nhân",
+    "name": "Tên",
+    "showResultPagination": "Hiển thị {result} trong {total} kết quả",
+    "from": "Từ",
+    "to": "Đến"
+  },
+  "ErrorMessage": {
+    "invalidEmail": "Email không hợp lệ",
+    "required": "Trường này không được để trống",
+    "minCharacter": "Tối thiểu 2 ký tự",
+    "maxCharacter": "Tối đa 254 ký tự",
+    "minmaxPassword": "Mật khẩu phải từ 6 đến 100 ký tự",
+    "changePasswordDescription": "Hãy nhập mật khẩu mới và xác nhận mật khẩu mới",
+    "passwordNotMatch": "Mật khẩu không khớp",
+    "minPrice": "Giá phải lớn hơn 0"
+  },
+  "NotFound": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang bạn đang tìm kiếm không tồn tại"
+  },
+  "Error": {
+    "title": "Lỗi",
+    "description": "Hệ thống có vấn đề, vui lòng quay lại sau"
+  },
+  "OAuth": {
+    "title": "Chuyển hướng đăng nhập Google"
+  },
+  "RefreshToken": {
+    "title": "Làm mới token"
+  },
+  "TermOfService": {
+    "title": "Điều khoản dịch vụ",
+    "description": "Vui lòng đọc kỹ điều khoản dịch vụ trước khi sử dụng dịch vụ",
+    "introduce": "Giới thiệu",
+    "introduceDescription": "Chào mừng bạn đến với trang Điều khoản dịch vụ của chúng tôi. Khi sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các điều khoản và điều kiện dưới đây.",
+    "useTheService": "Sử dụng dịch vụ",
+    "useTheServiceDescription": "Bạn đồng ý sử dụng dịch vụ của chúng tôi chỉ cho các mục đích hợp pháp và không vi phạm bất kỳ luật lệ nào. Bạn không được sử dụng dịch vụ của chúng tôi để phát tán nội dung bất hợp pháp, gây hại hoặc vi phạm quyền riêng tư của người khác.",
+    "intellectualProperty": "Quyền sở hữu trí tuệ",
+    "intellectualPropertyDescription": "Tất cả nội dung và tài liệu trên trang web của chúng tôi, bao gồm văn bản, hình ảnh, đồ họa, logo, và phần mềm, đều thuộc quyền sở hữu của chúng tôi hoặc các bên cấp phép của chúng tôi và được bảo vệ bởi luật sở hữu trí tuệ.",
+    "changeTheTerms": "Thay đổi điều khoản",
+    "changeTheTermsDescription": "Chúng tôi có quyền thay đổi các điều khoản dịch vụ này bất kỳ lúc nào mà không cần thông báo trước. Việc tiếp tục sử dụng dịch vụ của bạn sau khi các thay đổi được đăng tải sẽ được coi là sự chấp nhận của bạn đối với các thay đổi đó.",
+    "contactUs": "Liên hệ với chúng tôi",
+    "contactUsDescription": "Nếu bạn có bất kỳ câu hỏi nào về các điều khoản dịch vụ này, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại được cung cấp trên trang web của chúng tôi."
+  },
+  "About": {
+    "title": "Về chúng tôi",
+    "description": "Tìm hiểu thêm về nhà hàng của chúng tôi",
+    "slogan": "Vị ngon, trọn khoảnh khắc",
+    "address": "Địa chỉ: 585 Nguyễn Thị Thập, Quận 7, TP.Hồ Chí Minh",
+    "ourStory": "Câu chuyện của chúng tôi",
+    "ourStoryDescription": "Big Boy được thành lập vào năm 2025 với một sứ mệnh đơn giản: phục vụ món ăn ngon, chất lượng cao để gắn kết mọi người lại với nhau. Niềm đam mê của chúng tôi đối với nguyên liệu đặc biệt và công thức sáng tạo đã đưa chúng tôi trở thành một tổ chức địa phương được yêu thích, nổi tiếng với cam kết tạo ra những bữa ăn nuôi dưỡng cơ thể và tâm hồn.",
+    "ourValue": "Giá trị của chúng tôi",
+    "ourValueDescription": "Tại trung tâm của Big Boy là sự cống hiến sâu sắc cho tính bền vững, cộng đồng và sự xuất sắc trong ẩm thực. Chúng tôi lấy nguyên liệu từ các nông dân và nhà sản xuất địa phương, đảm bảo sự tươi mới và hỗ trợ nền kinh tế địa phương. Đội ngũ của chúng tôi đam mê tạo ra những món ăn không chỉ làm hài lòng vị giác mà còn nuôi dưỡng cơ thể, với sự tập trung vào thực phẩm lành mạnh, không qua chế biến.",
+    "ourCommitment": "Cam kết của chúng tôi",
+    "ourCommitmentDescription": "Chúng tôi tin rằng món ăn ngon có sức mạnh gắn kết mọi người lại với nhau và tạo ra những kỷ niệm lâu dài. Đó là lý do tại sao chúng tôi cam kết cung cấp một trải nghiệm ẩm thực tuyệt vời, từ lúc bạn bước qua cửa cho đến miếng cuối cùng của bữa ăn. Các đầu bếp tài năng của chúng tôi làm việc không ngừng để tạo ra những món ăn thể hiện tốt nhất các nguyên liệu theo mùa, được lấy từ địa phương, đảm bảo rằng mỗi đĩa ăn là một lễ kỷ niệm của hương vị và chất lượng."
+  },
+  "PrivacyPolicy": {
+    "title": "Chính sách bảo mật",
+    "description": "Vui lòng đọc kỹ chính sách bảo mật trước khi sử dụng dịch vụ",
+    "dataCollected": "Dữ liệu thu thập",
+    "dataCollectedDescription": "Chúng tôi thu thập các thông tin cá nhân mà bạn cung cấp khi tạo tài khoản, đặt hàng hoặc liên hệ với chúng tôi. Các thông tin này có thể bao gồm tên. Ngoài ra, chúng tôi cũng thu thập một số thông tin tự động khi bạn truy cập trang web của chúng tôi, như địa chỉ IP và loại trình duyệt.",
+    "purposeOfUse": "Mục đích sử dụng",
+    "purposeOfUseDescription": {
+      "title": "Chúng tôi sử dụng thông tin cá nhân của bạn với các mục đích sau:",
+      "item1": "Để xử lý đơn hàng của bạn: Chúng tôi sử dụng thông tin liên hệ và thanh toán của bạn để xác nhận và xử lý đơn hàng, cũng như để gửi hóa đơn và thông tin giao hàng.",
+      "item2": "Để cung cấp dịch vụ khách hàng: Chúng tôi sử dụng thông tin liên hệ của bạn để trả lời các câu hỏi, giải quyết các vấn đề và cung cấp hỗ trợ kỹ thuật.",
+      "item3": "Để gửi các thông tin tiếp thị: Với sự đồng ý của bạn, chúng tôi có thể sử dụng địa chỉ email của bạn để gửi các thông tin về các sản phẩm, dịch vụ mới, khuyến mãi và sự kiện đặc biệt.",
+      "item4": "Để cải thiện dịch vụ của chúng tôi: Chúng tôi sử dụng dữ liệu tổng hợp và ẩn danh để phân tích xu hướng và cải thiện dịch vụ của chúng tôi."
+    }
   },
   "HomePage": {
     "title": "Trang chủ",
     "description": "Khát khao một trải nghiệm ẩm thực Mỹ cổ điển? Big Boy là lựa chọn hoàn hảo! Thưởng thức chiếc Big Boy burger biểu tượng, thơm ngon và đậm đà, cùng với những ly milkshake béo ngậy và khoai tây chiên giòn tan. Hoàn hảo cho các buổi gặp mặt gia đình và bạn bè!",
     "slogan": "Vị ngon, trọn khoảnh khắc",
-    "h2": "Đa dạng các món ăn"
+    "aVarietyOfDishes": "Đa dạng các món ăn"
   },
   "DishDetail": {
     "notFound": "Món ăn không tồn tại"
   },
   "LoginGuest": {
     "title": "Đăng nhập để gọi món",
-    "description": "Nhập thông tin đăng nhập để thực hiện gọi món"
+    "description": "Nhập thông tin đăng nhập để thực hiện gọi món",
+    "guestName": "Tên khách hàng",
+    "login": "Đăng nhập",
+    "tableNumber": "Số bàn: {number}"
   },
   "Login": {
     "title": "Đăng nhập",
@@ -30,19 +134,56 @@
   },
   "GuestMenu": {
     "title": "Thực đơn",
-    "description": "Chọn món ăn yêu thích của bạn"
+    "description": "Chọn món ăn yêu thích của bạn",
+    "order": "Đặt hàng",
+    "outOfFood": "Hết món"
   },
   "ManageAccounts": {
     "title": "Quản lý tài khoản",
-    "description": "Quản lý tài khoản nhân viên"
+    "description": "Quản lý tài khoản nhân viên",
+    "createAccount": "Tạo tài khoản",
+    "updateAccount": "Cập nhật tài khoản",
+    "requiredDescription": "Các trường tên, email, mật khẩu là bắt buộc",
+    "changePassword": "Đổi mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "selectRole": "Chọn vai trò",
+    "table": {
+      "avatar": "Ảnh đại diện",
+      "name": "Tên",
+      "email": "Email",
+      "actions": "Thao tác"
+    }
   },
   "Dashboard": {
     "title": "Bảng điều khiển",
-    "description": "Xem và phân tích dữ liệu bán hàng"
+    "description": "Xem và phân tích các chỉ số",
+    "totalRevenue": "Tổng doanh thu",
+    "guest": "Khách",
+    "orderDish": "Gọi món",
+    "order": "Đơn hàng",
+    "theTableIsServing": "Bàn đang phục vụ",
+    "revenue": "Doanh thu",
+    "rankingDishes": "Xếp hạng món ăn",
+    "theMostCalledDish": "Món ăn được gọi nhiều nhất",
+    "orderPaid": "Đơn đã thanh toán"
   },
   "Dishes": {
     "title": "Món ăn",
-    "description": "Quản lý món ăn"
+    "description": "Quản lý món ăn",
+    "dishDoesNotExist": "Món ăn không tồn tại",
+    "addDish": "Thêm món ăn",
+    "updateDish": "Cập nhật món ăn",
+    "requiredDescription": "Các trường tên, ảnh là bắt buộc",
+    "selectStatus": "Chọn trạng thái",
+    "table": {
+      "photo": "Ảnh",
+      "dishName": "Tên món ăn",
+      "price": "Giá cả",
+      "description": "Mô tả",
+      "status": "Trạng thái",
+      "actions": "Thao tác"
+    }
   },
   "Orders": {
     "title": "Đơn hàng",
@@ -50,11 +191,17 @@
   },
   "GuestOrders": {
     "title": "Đặt hàng",
-    "description": "Guest orders"
+    "description": "Guest orders",
+    "applicationPaid": "Đơn đã thanh toán",
+    "unusedApplication": "Đơn chưa thanh toán"
   },
-  "Setting": {
+  "Settings": {
     "title": "Cài đặt",
-    "description": "Quản lý cài đặt tài khoản của bạn"
+    "description": "Quản lý cài đặt tài khoản của bạn",
+    "changePassword": "Thay đổi mật khẩu",
+    "enterOldPassword": "Nhập mật khẩu cũ",
+    "enterNewPassword": "Nhập mật khẩu mới",
+    "rerenderPassword": "Nhập lại mật khẩu mới"
   },
   "Tables": {
     "title": "Bàn ăn",
@@ -65,7 +212,12 @@
     "en": "Tiếng Anh",
     "vi": "Tiếng Việt"
   },
-  "NavItem": {
+  "SwitchMode": {
+    "system": "Hệ thống",
+    "light": "Sáng",
+    "dark": "Tối"
+  },
+  "NavItems": {
     "home": "Trang chủ",
     "menu": "Thực đơn",
     "orders": "Đơn hàng",
@@ -74,8 +226,18 @@
     "manage": "Quản lý",
     "logoutDialog": {
       "logoutQuestion": "Bạn có chắc chắn muốn đăng xuất?",
-      "logoutCancel": "Hủy",
       "logoutConfirm": "Đăng xuất có thể dẫn đến mất dữ liệu đơn hàng của bạn"
     }
+  },
+  "SidebarItems": {
+    "home": "Trang chủ",
+    "general": "Tổng quan",
+    "dashboard": "Bảng điều khiển",
+    "dishes": "Món ăn",
+    "orders": "Đơn hàng",
+    "tables": "Bàn ăn",
+    "accounts": "Nhân viên",
+    "others": "Khác",
+    "settings": "Cài đặt"
   }
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
@@ -56,6 +58,8 @@ const EditOrder = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
+  const tAll = useTranslations("All");
+
   const [selectedDish, setSelectedDish] = useState<
     DishListResType["data"][0] | null
   >(null);
@@ -198,20 +202,20 @@ const EditOrder = ({
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <FormLabel>Trạng thái</FormLabel>
+                      <FormLabel>{tAll("status")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
                       >
                         <FormControl className="col-span-3">
                           <SelectTrigger className="w-[200px]">
-                            <SelectValue placeholder="Trạng thái" />
+                            <SelectValue placeholder={tAll("status")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           {OrderStatusValues.map((status) => (
                             <SelectItem key={status} value={status}>
-                              {getVietnameseOrderStatus(status)}
+                              {tAll(getVietnameseOrderStatus(status))}
                             </SelectItem>
                           ))}
                         </SelectContent>

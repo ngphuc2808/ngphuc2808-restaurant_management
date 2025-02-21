@@ -37,6 +37,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
 const MenuPage = async () => {
   let dishes: DishListResType["data"] = [];
+
   try {
     const result = await dishApiRequest.list();
     const {
@@ -47,12 +48,7 @@ const MenuPage = async () => {
     throw error;
   }
 
-  return (
-    <div className="max-w-[400px] mx-auto space-y-4">
-      <h1 className="text-center text-xl font-bold">🍕 Menu quán</h1>
-      <MenuOrder dishes={dishes} />
-    </div>
-  );
+  return <MenuOrder dishes={dishes} />;
 };
 
 export default MenuPage;

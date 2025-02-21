@@ -2,10 +2,10 @@ import { DishStatusValues } from "@/constants/type";
 import z from "zod";
 
 export const CreateDishBody = z.object({
-  name: z.string().min(1).max(256),
-  price: z.coerce.number().positive(),
+  name: z.string().min(1, "minCharacter").max(256, "maxCharacter"),
+  price: z.coerce.number().positive({ message: "minPrice" }),
   description: z.string().max(10000),
-  image: z.string().url(),
+  image: z.string({ message: "required" }).url(),
   status: z.enum(DishStatusValues).optional(),
 });
 

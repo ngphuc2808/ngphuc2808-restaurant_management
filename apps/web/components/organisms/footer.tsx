@@ -1,6 +1,10 @@
+import { useTranslations } from "next-intl";
+
 import { Link } from "@/i18n/routing";
 
 const Footer = () => {
+  const t = useTranslations();
+
   return (
     <footer className="w-full p-4 md:p-8 text-muted-foreground border-t">
       <div className=" flex flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
@@ -11,17 +15,17 @@ const Footer = () => {
               className="hover:underline"
               prefetch={false}
             >
-              Điều khoản dịch vụ
+              {t("TermOfService.title")}
             </Link>
             <Link
               href="/privacy-policy"
               className="hover:underline"
               prefetch={false}
             >
-              Chính sách bảo mật
+              {t("PrivacyPolicy.title")}
             </Link>
             <Link href="/about" className="hover:underline" prefetch={false}>
-              Về chúng tôi
+              {t("About.title")}
             </Link>
           </div>
         </div>

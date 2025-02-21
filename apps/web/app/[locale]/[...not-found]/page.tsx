@@ -1,14 +1,23 @@
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import Notfound from "@/app/[locale]/[...not-found]/not-found";
 
-export const metadata: Metadata = {
-  title: "404! Not found",
-  description: "404! Not found",
-  robots: {
-    index: false,
-  },
-};
+export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
+  const params = await props.params;
+
+  const { locale } = params;
+
+  const t = await getTranslations({ locale: locale, namespace: "NotFound" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    robots: {
+      index: false,
+    },
+  };
+}
 
 const NotfoundPage = () => {
   return <Notfound />;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { format, parse } from "date-fns";
 
@@ -29,10 +30,12 @@ const RevenueLineChart = ({
 }: {
   chartData: DashboardIndicatorResType["data"]["revenueByDate"];
 }) => {
+  const t = useTranslations("Dashboard");
+
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Doanh thu</CardTitle>
+        <CardTitle>{t("revenue")}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -59,7 +62,7 @@ const RevenueLineChart = ({
             />
             <Line
               dataKey="revenue"
-              name="Doanh thu"
+              name={t("revenue")}
               type="linear"
               stroke="var(--color-desktop)"
               strokeWidth={2}

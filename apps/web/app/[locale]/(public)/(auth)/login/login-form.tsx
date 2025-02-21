@@ -10,7 +10,11 @@ import { Link, useRouter } from "@/i18n/routing";
 import useAppStore from "@/store/app";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { useLoginMutation } from "@/queries/useAuth";
-import { generateSocketInstace, handleErrorApi } from "@/lib/utils";
+import {
+  checkMessageFromResponse,
+  generateSocketInstace,
+  handleErrorApi,
+} from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
@@ -48,13 +52,15 @@ const getOauthGoogleUrl = () => {
   const qs = new URLSearchParams(options);
   return `${rootUrl}?${qs.toString()}`;
 };
+
 const googleOauthUrl = getOauthGoogleUrl();
 
 const LoginForm = () => {
   const { setRole, setSocket } = useAppStore();
 
   const t = useTranslations("Login");
-  const errorMessageT = useTranslations("ErrorMessage");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
 
   const router = useRouter();
   const { searchParams, setSearchParams } = useSearchParamsLoader();
@@ -113,7 +119,7 @@ const LoginForm = () => {
                   render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">{tAll("email")}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -122,8 +128,10 @@ const LoginForm = () => {
                           {...field}
                         />
                         <FormMessage>
-                          {Boolean(errors.email?.message) &&
-                            errorMessageT(errors.email?.message as any)}
+                          {errors.email?.message &&
+                            (checkMessageFromResponse(errors.email?.type)
+                              ? errors.email?.message
+                              : tErrorMessage(errors.email?.message as any))}
                         </FormMessage>
                       </div>
                     </FormItem>
@@ -136,7 +144,7 @@ const LoginForm = () => {
                     <FormItem>
                       <div className="grid gap-2">
                         <div className="flex items-center">
-                          <Label htmlFor="password">Password</Label>
+                          <Label htmlFor="password">{tAll("password")}</Label>
                         </div>
                         <Input
                           id="password"
@@ -145,8 +153,10 @@ const LoginForm = () => {
                           {...field}
                         />
                         <FormMessage>
-                          {Boolean(errors.password?.message) &&
-                            errorMessageT(errors.password?.message as any)}
+                          {errors.password?.message &&
+                            (checkMessageFromResponse(errors.password?.type)
+                              ? errors.password?.message
+                              : tErrorMessage(errors.password?.message as any))}
                         </FormMessage>
                       </div>
                     </FormItem>

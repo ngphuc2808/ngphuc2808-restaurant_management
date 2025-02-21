@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +12,7 @@ import {
 } from "@/schemaValidations/account.schema";
 import { useAddAccountMutation } from "@/queries/useAccount";
 import { useUploadMediaMutation } from "@/queries/useMedia";
-import { handleErrorApi } from "@/lib/utils";
+import { checkMessageFromResponse, handleErrorApi } from "@/lib/utils";
 import {
   Avatar,
   AvatarFallback,
@@ -39,6 +40,10 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import { envConfig } from "@/config";
 
 const AddEmployee = () => {
+  const t = useTranslations("ManageAccounts");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const [file, setFile] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
@@ -114,16 +119,14 @@ const AddEmployee = () => {
         <Button size="sm" className="h-7 gap-1">
           <PlusCircle className="h-3.5 w-3.5" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Tạo tài khoản
+            {t("createAccount")}
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Tạo tài khoản</DialogTitle>
-          <DialogDescription>
-            Các trường tên, email, mật khẩu là bắt buộc
-          </DialogDescription>
+          <DialogTitle>{t("createAccount")}</DialogTitle>
+          <DialogDescription>{t("requiredDescription")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -143,7 +146,7 @@ const AddEmployee = () => {
                       <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
                         <AvatarImage src={previewAvatar} />
                         <AvatarFallback className="rounded-none">
-                          {name || "Avatar"}
+                          {name || tAll("avatar")}
                         </AvatarFallback>
                       </Avatar>
                       <input
@@ -167,23 +170,26 @@ const AddEmployee = () => {
                         onClick={() => avatarInputRef.current?.click()}
                       >
                         <Upload className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Upload</span>
                       </button>
                     </div>
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="name">Tên</Label>
+                      <Label htmlFor="name">{tAll("name")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="name" className="w-full" {...field} />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.name?.message &&
+                            (checkMessageFromResponse(errors.name?.type)
+                              ? errors.name?.message
+                              : tErrorMessage(errors.name?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -192,13 +198,18 @@ const AddEmployee = () => {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{tAll("email")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="email" className="w-full" {...field} />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.email?.message &&
+                            (checkMessageFromResponse(errors.email?.type)
+                              ? errors.email?.message
+                              : tErrorMessage(errors.email?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -207,10 +218,10 @@ const AddEmployee = () => {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="password">Mật khẩu</Label>
+                      <Label htmlFor="password">{tAll("password")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="password"
@@ -218,7 +229,12 @@ const AddEmployee = () => {
                           type="password"
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.password?.message &&
+                            (checkMessageFromResponse(errors.password?.type)
+                              ? errors.password?.message
+                              : tErrorMessage(errors.password?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -227,10 +243,12 @@ const AddEmployee = () => {
               <FormField
                 control={form.control}
                 name="confirmPassword"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                      <Label htmlFor="confirmPassword">
+                        {tAll("confirmPassword")}
+                      </Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="confirmPassword"
@@ -238,7 +256,16 @@ const AddEmployee = () => {
                           type="password"
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.confirmPassword?.message &&
+                            (checkMessageFromResponse(
+                              errors.confirmPassword?.type,
+                            )
+                              ? errors.confirmPassword?.message
+                              : tErrorMessage(
+                                  errors.confirmPassword?.message as any,
+                                ))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -249,7 +276,7 @@ const AddEmployee = () => {
         </Form>
         <DialogFooter>
           <Button type="submit" form="add-employee-form">
-            Thêm
+            {tAll("add")}
           </Button>
         </DialogFooter>
       </DialogContent>

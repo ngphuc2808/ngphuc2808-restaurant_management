@@ -97,11 +97,13 @@ const request = async <Response>(
       : options.baseUrl;
 
   const fullUrl = `${baseUrl}/${normalizePath(url)}`;
+  const locale = Cookies.get("NEXT_LOCALE");
   const res = await fetch(fullUrl, {
     ...options,
     headers: {
       ...baseHeaders,
       ...options?.headers,
+      locale,
     } as any,
     body,
     method,
@@ -122,7 +124,6 @@ const request = async <Response>(
       );
     } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
       if (isClient) {
-        const locale = Cookies.get("NEXT_LOCALE");
         if (!clientLogoutRequest) {
           clientLogoutRequest = fetch("/api/auth/logout", {
             method: "POST",
@@ -144,7 +145,6 @@ const request = async <Response>(
         const accessToken = (options?.headers as any)?.Authorization.split(
           "Bearer ",
         )[1];
-        const locale = Cookies.get("NEXT_LOCALE");
         redirect({
           href: `/login?accessToken=${accessToken}`,
           locale: locale ?? defaultLocale,

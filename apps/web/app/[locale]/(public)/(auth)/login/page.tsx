@@ -30,7 +30,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const LoginPage = async () => {
+const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <LoginForm />

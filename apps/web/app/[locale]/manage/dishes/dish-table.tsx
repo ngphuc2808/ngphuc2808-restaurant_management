@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -64,99 +64,9 @@ import SearchParamsLoader, {
   useSearchParamsLoader,
 } from "@/components/atoms/search-params-loader";
 import useDish from "@/store/dish";
+import { useTranslations } from "next-intl";
 
 type DishItem = DishListResType["data"][0];
-
-export const dishesColumns = () => {
-  const columns: ColumnDef<DishItem>[] = [
-    {
-      accessorKey: "id",
-      header: "ID",
-    },
-    {
-      accessorKey: "image",
-      header: "Ảnh",
-      cell: ({ row }) => (
-        <div>
-          <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
-            <AvatarImage src={row.getValue("image")} />
-            <AvatarFallback className="rounded-none">
-              {row.original.name}
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "name",
-      header: "Tên",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
-    },
-    {
-      accessorKey: "price",
-      header: "Giá cả",
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {formatCurrency(row.getValue("price"))}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "description",
-      header: "Mô tả",
-      cell: ({ row }) => (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(row.getValue("description")),
-          }}
-          className="whitespace-pre-line"
-        />
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: "Trạng thái",
-      cell: ({ row }) => (
-        <div>{getVietnameseDishStatus(row.getValue("status"))}</div>
-      ),
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: function Actions({ row }) {
-        const { setDishIdEdit, setDishDelete } = useDish();
-
-        const openEditDish = () => {
-          setDishIdEdit(row.original.id);
-        };
-
-        const openDeleteDish = () => {
-          setDishDelete(row.original);
-        };
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={openEditDish}>Sửa</DropdownMenuItem>
-              <DropdownMenuItem onClick={openDeleteDish}>Xóa</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-  ];
-
-  return columns;
-};
 
 const AlertDialogDeleteDish = ({
   dishDelete,
@@ -213,6 +123,9 @@ const AlertDialogDeleteDish = ({
 const PAGE_SIZE = 10;
 
 const DishTable = () => {
+  const t = useTranslations("Dishes");
+  const tAll = useTranslations("All");
+
   const { searchParams, setSearchParams } = useSearchParamsLoader();
   const page = searchParams?.get("page")
     ? Number(searchParams?.get("page"))
@@ -232,9 +145,101 @@ const DishTable = () => {
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<DishItem>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "id",
+        header: "ID",
+      },
+      {
+        accessorKey: "image",
+        header: t("table.photo"),
+        cell: ({ row }) => (
+          <div>
+            <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
+              <AvatarImage src={row.getValue("image")} />
+              <AvatarFallback className="rounded-none">
+                {row.original.name}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        ),
+      },
+      {
+        accessorKey: "name",
+        header: t("table.dishName"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("name")}</div>
+        ),
+      },
+      {
+        accessorKey: "price",
+        header: t("table.price"),
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {formatCurrency(row.getValue("price"))}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "description",
+        header: t("table.description"),
+        cell: ({ row }) => (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(row.getValue("description")),
+            }}
+            className="whitespace-pre-line"
+          />
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: t("table.status"),
+        cell: ({ row }) => (
+          <div>{tAll(getVietnameseDishStatus(row.getValue("status")))}</div>
+        ),
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: function Actions({ row }) {
+          const { setDishIdEdit, setDishDelete } = useDish();
+
+          const openEditDish = () => {
+            setDishIdEdit(row.original.id);
+          };
+
+          const openDeleteDish = () => {
+            setDishDelete(row.original);
+          };
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{t("table.actions")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={openEditDish}>
+                  {tAll("edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={openDeleteDish}>
+                  {tAll("delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: dishesColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -270,9 +275,9 @@ const DishTable = () => {
           dishDelete={dishDelete}
           setDishDelete={setDishDelete}
         />
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 gap-2">
           <Input
-            placeholder="Lọc tên"
+            placeholder={tAll("searchValue", { value: t("table.dishName") })}
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
@@ -323,10 +328,10 @@ const DishTable = () => {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={dishesColumns().length}
+                    colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tAll("noData")}
                   </TableCell>
                 </TableRow>
               )}
@@ -335,9 +340,10 @@ const DishTable = () => {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="text-xs text-muted-foreground py-4 flex-1 ">
-            Hiển thị{" "}
-            <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-            <strong>{data.length}</strong> kết quả
+            {tAll("showResultPagination", {
+              result: table.getPaginationRowModel().rows.length,
+              total: data.length,
+            })}
           </div>
           <div>
             <AutoPagination

@@ -139,7 +139,7 @@ const TablesDialog = ({
         </DialogHeader>
         <div>
           <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-2">
               <Input
                 placeholder="Số bàn"
                 value={

@@ -93,7 +93,7 @@ const orderTableColumns = (
           </div>
         );
       },
-      filterFn: (row, columnId, filterValue: string) => {
+      filterFn: (row, _, filterValue: string) => {
         if (filterValue === undefined) return true;
         return simpleMatchText(
           row.original.guest?.name ?? "Đã bị xóa",

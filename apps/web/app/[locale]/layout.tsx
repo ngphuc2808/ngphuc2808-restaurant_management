@@ -1,6 +1,7 @@
 import "@repo/ui/globals.css";
 
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -16,7 +17,6 @@ import ThemeProvider from "@/providers/theme-provider";
 import { Toaster } from "@repo/ui/components/toaster";
 import { baseOpenGraph } from "@/shared-metadata";
 import { Locale } from "@/config";
-import Notfound from "@/app/[locale]/[...not-found]/not-found";
 import GlobalScript from "@/components/atoms/global-script";
 
 const font = localFont({
@@ -51,7 +51,11 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
   const { locale } = params;
 
-  const t = await getTranslations({ locale, namespace: "Brand" });
+  const t = await getTranslations({
+    locale,
+    namespace: "Brand",
+  });
+
   return {
     title: {
       template: `%s | ${t("title")}`,
@@ -80,14 +84,7 @@ const RootLayout = async (
   const { children } = props;
 
   if (!routing.locales.includes(locale as Locale)) {
-    return (
-      <html lang={locale} suppressHydrationWarning>
-        <body className={`${font.className} ${font.variable}`}>
-          <Notfound />
-          <GlobalScript />
-        </body>
-      </html>
-    );
+    notFound();
   }
 
   setRequestLocale(locale);

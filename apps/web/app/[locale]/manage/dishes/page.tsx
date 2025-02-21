@@ -33,13 +33,15 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const DishesPage = () => {
+const DishesPage = async () => {
+  const t = await getTranslations("Dishes");
+
   return (
     <div className="space-y-2">
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
-          <CardTitle>Món ăn</CardTitle>
-          <CardDescription>Quản lý món ăn</CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <DishTable />

@@ -14,8 +14,8 @@ const DishPage = async (props: {
 
   const id = getIdFromSlugUrl(slug);
   const data = await wrapServerApi(() => dishApiRequest.getDish(Number(id)));
-  const dish = data?.payload?.data;
 
+  const dish = data?.payload?.data;
   return (
     <Modal>
       <DishDetail dish={dish} />

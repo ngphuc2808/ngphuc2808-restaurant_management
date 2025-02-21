@@ -191,7 +191,7 @@ const GuestsDialog = ({
                 Reset
               </Button>
             </div>
-            <div className="flex items-center py-4 gap-2">
+            <div className="flex items-center py-4 gap-2 gap-2">
               <Input
                 placeholder="Tên hoặc Id"
                 value={

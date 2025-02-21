@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@repo/ui/components/button";
 import {
   Pagination,
@@ -11,25 +13,26 @@ import {
   PaginationPrevious,
 } from "@repo/ui/components/pagination";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface Props {
+type Props = {
   page: number;
   pageSize: number;
   pathname?: string;
   isLink?: boolean;
   onClick?: (pageNumber: number) => void;
-}
+};
 
 const RANGE = 2;
 
-export default function AutoPagination({
+const AutoPagination = ({
   page,
   pageSize,
   pathname = "/",
   isLink = true,
   onClick = (pageNumber) => {},
-}: Props) {
+}: Props) => {
+  const tAll = useTranslations("All");
+
   const renderPagination = () => {
     let dotAfter = false;
     let dotBefore = false;
@@ -38,7 +41,7 @@ export default function AutoPagination({
         dotBefore = true;
         return (
           <PaginationItem>
-            <PaginationEllipsis />
+            <PaginationEllipsis title={tAll("more_pages")} />
           </PaginationItem>
         );
       }
@@ -49,7 +52,7 @@ export default function AutoPagination({
         dotAfter = true;
         return (
           <PaginationItem>
-            <PaginationEllipsis />
+            <PaginationEllipsis title={tAll("more_pages")} />
           </PaginationItem>
         );
       }
@@ -60,7 +63,6 @@ export default function AutoPagination({
       .map((_, index) => {
         const pageNumber = index + 1;
 
-        // Điều kiện để return về ...
         if (
           page <= RANGE * 2 + 1 &&
           pageNumber > page + RANGE &&
@@ -113,6 +115,7 @@ export default function AutoPagination({
         );
       });
   };
+
   return (
     <Pagination>
       <PaginationContent>
@@ -134,6 +137,7 @@ export default function AutoPagination({
                   e.nativeEvent.stopImmediatePropagation();
                 }
               }}
+              title={tAll("previous")}
             />
           )}
           {!isLink && (
@@ -145,12 +149,11 @@ export default function AutoPagination({
                 onClick(page - 1);
               }}
             >
-              <ChevronLeft className="w-5 h-5" /> Previous
+              <ChevronLeft className="w-5 h-5" /> {tAll("previous")}
             </Button>
           )}
         </PaginationItem>
         {renderPagination()}
-
         <PaginationItem>
           {isLink && (
             <PaginationNext
@@ -170,6 +173,7 @@ export default function AutoPagination({
                 }
               }}
               scroll={false}
+              title={tAll("next")}
             />
           )}
           {!isLink && (
@@ -181,11 +185,13 @@ export default function AutoPagination({
                 onClick(page + 1);
               }}
             >
-              Next <ChevronRight className="w-5 h-5" />
+              {tAll("next")} <ChevronRight className="w-5 h-5" />
             </Button>
           )}
         </PaginationItem>
       </PaginationContent>
     </Pagination>
   );
-}
+};
+
+export default AutoPagination;

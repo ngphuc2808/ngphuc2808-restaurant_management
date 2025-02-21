@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +13,11 @@ import {
 import { useUploadMediaMutation } from "@/queries/useMedia";
 import { useAddDishMutation } from "@/queries/useDish";
 import revalidateApiRequest from "@/apiRequests/revalidate";
-import { getVietnameseDishStatus, handleErrorApi } from "@/lib/utils";
+import {
+  checkMessageFromResponse,
+  getVietnameseDishStatus,
+  handleErrorApi,
+} from "@/lib/utils";
 import {
   Avatar,
   AvatarFallback,
@@ -22,6 +27,7 @@ import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -49,6 +55,10 @@ import { DishStatus, DishStatusValues } from "@/constants/type";
 import { envConfig } from "@/config";
 
 const AddDish = () => {
+  const t = useTranslations("Dishes");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const [file, setFile] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const addDishMutation = useAddDishMutation();
@@ -125,14 +135,16 @@ const AddDish = () => {
         <Button size="sm" className="h-7 gap-1">
           <PlusCircle className="h-3.5 w-3.5" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Thêm món ăn
+            {t("addDish")}
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Thêm món ăn</DialogTitle>
+          <DialogTitle>{t("addDish")}</DialogTitle>
+          <DialogDescription>{t("requiredDescription")}</DialogDescription>
         </DialogHeader>
+
         <Form {...form}>
           <form
             noValidate
@@ -147,13 +159,13 @@ const AddDish = () => {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="flex gap-2 items-start justify-start">
                       <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
                         <AvatarImage src={previewImage} />
                         <AvatarFallback className="rounded-none">
-                          {name || "Ảnh món ăn"}
+                          {name || t("table.photo")}
                         </AvatarFallback>
                       </Avatar>
                       <input
@@ -177,23 +189,32 @@ const AddDish = () => {
                         onClick={() => imageInputRef.current?.click()}
                       >
                         <Upload className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Upload</span>
                       </button>
                     </div>
+                    <FormMessage>
+                      {errors.image?.message &&
+                        (checkMessageFromResponse(errors.image?.type)
+                          ? errors.image?.message
+                          : tErrorMessage(errors.image?.message as any))}
+                    </FormMessage>
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="name">Tên món ăn</Label>
+                      <Label htmlFor="name">{t("table.dishName")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input id="name" className="w-full" {...field} />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.name?.message &&
+                            (checkMessageFromResponse(errors.name?.type)
+                              ? errors.name?.message
+                              : tErrorMessage(errors.name?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -202,10 +223,10 @@ const AddDish = () => {
               <FormField
                 control={form.control}
                 name="price"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="price">Giá</Label>
+                      <Label htmlFor="price">{t("table.price")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="price"
@@ -213,7 +234,12 @@ const AddDish = () => {
                           {...field}
                           type="number"
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.price?.message &&
+                            (checkMessageFromResponse(errors.price?.type)
+                              ? errors.price?.message
+                              : tErrorMessage(errors.price?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -222,17 +248,26 @@ const AddDish = () => {
               <FormField
                 control={form.control}
                 name="description"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="description">Mô tả sản phẩm</Label>
+                      <Label htmlFor="description">
+                        {t("table.description")}
+                      </Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Textarea
                           id="description"
                           className="w-full"
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.description?.message &&
+                            (checkMessageFromResponse(errors.description?.type)
+                              ? errors.description?.message
+                              : tErrorMessage(
+                                  errors.description?.message as any,
+                                ))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -241,10 +276,10 @@ const AddDish = () => {
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="description">Trạng thái</Label>
+                      <Label htmlFor="description">{t("table.status")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Select
                           onValueChange={field.onChange}
@@ -252,20 +287,24 @@ const AddDish = () => {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Chọn trạng thái" />
+                              <SelectValue placeholder={t("selectStatus")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {DishStatusValues.map((status) => (
                               <SelectItem key={status} value={status}>
-                                {getVietnameseDishStatus(status)}
+                                {tAll(getVietnameseDishStatus(status))}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-
-                      <FormMessage />
+                      <FormMessage>
+                        {errors.status?.message &&
+                          (checkMessageFromResponse(errors.status?.type)
+                            ? errors.status?.message
+                            : tErrorMessage(errors.status?.message as any))}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
@@ -275,7 +314,7 @@ const AddDish = () => {
         </Form>
         <DialogFooter>
           <Button type="submit" form="add-dish-form">
-            Thêm
+            {tAll("add")}
           </Button>
         </DialogFooter>
       </DialogContent>

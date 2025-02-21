@@ -1,15 +1,14 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { cache } from "react";
 
 import { Link } from "@/i18n/routing";
 import dishApiRequest from "@/apiRequests/dish";
-import { DishListResType } from "@/schemaValidations/dish.schema";
 import { formatCurrency, generateSlugUrl, wrapServerApi } from "@/lib/utils";
 import { htmlToTextForDescription } from "@/lib/server-utils";
 import { envConfig } from "@/config";
 import { baseOpenGraph } from "@/shared-metadata";
-import { cache } from "react";
 
 const getDishList = cache(() => wrapServerApi(() => dishApiRequest.list()));
 
@@ -19,6 +18,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   const { locale } = params;
 
   const t = await getTranslations({ locale, namespace: "HomePage" });
+
   const url = envConfig.NEXT_PUBLIC_URL + `/${locale}`;
 
   return {
@@ -38,6 +38,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 
 const HomePage = async () => {
   const t = await getTranslations("HomePage");
+  const tAll = await getTranslations("All");
 
   const dishList = await getDishList();
 
@@ -62,7 +63,9 @@ const HomePage = async () => {
         </div>
       </section>
       <section className="space-y-10 py-16">
-        <h2 className="text-center text-2xl font-bold">{t("h2")}</h2>
+        <h2 className="text-center text-2xl font-bold">
+          {t("aVarietyOfDishes")}
+        </h2>
         {dishList && dishList?.payload?.data?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             {dishList?.payload?.data.map((dish) => (
@@ -94,7 +97,7 @@ const HomePage = async () => {
             ))}
           </div>
         ) : (
-          <p className="text-center">Không có dữ liệu</p>
+          <p className="text-center">{tAll("noData")}</p>
         )}
       </section>
     </div>

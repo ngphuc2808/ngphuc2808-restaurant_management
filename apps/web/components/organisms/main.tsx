@@ -1,7 +1,3 @@
-"use client";
-
-import { useIsFetching, useIsMutating } from "@tanstack/react-query";
-
 type Props = {
   children: React.ReactNode;
   className?: string;

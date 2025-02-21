@@ -1,17 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useRouter } from "@/i18n/routing";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/components/select";
 import { Locale, locales } from "@/config";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@repo/ui/components/dropdown-menu";
+import { Button } from "@repo/ui/components/button";
 
 const SwitchLanguage = () => {
   const t = useTranslations("SwitchLanguage");
@@ -21,28 +21,40 @@ const SwitchLanguage = () => {
   const router = useRouter();
 
   return (
-    <Select
-      value={locale}
-      onValueChange={(value) => {
-        router.replace(pathname, {
-          locale: value as Locale,
-        });
-        router.refresh();
-      }}
-    >
-      <SelectTrigger className="w-[140px]" aria-label="Switch language">
-        <SelectValue placeholder={t("title")} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {locales.map((locale) => (
-            <SelectItem value={locale} key={locale}>
-              {t(locale)}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-10 h-10"
+        >
+          <Image
+            src={`/${locale}.png`}
+            alt={locale}
+            height={40}
+            width={40}
+            quality={80}
+            className="object-cover"
+          />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {locales.map((locale) => (
+          <DropdownMenuItem
+            key={locale}
+            onClick={() => {
+              router.replace(pathname, {
+                locale: locale as Locale,
+              });
+              router.refresh();
+            }}
+            className="cursor-pointer"
+          >
+            {t(locale)}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { endOfDay, format, startOfDay } from "date-fns";
 
@@ -20,6 +21,9 @@ const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 
 const DashboardMain = () => {
+  const t = useTranslations("Dashboard");
+  const tAll = useTranslations("All");
+
   const [fromDate, setFromDate] = useState(initFromDate);
   const [toDate, setToDate] = useState(initToDate);
   const { data } = useDashboardIndicator({
@@ -42,33 +46,37 @@ const DashboardMain = () => {
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         <div className="flex items-center">
-          <span className="mr-2">Từ</span>
+          <span className="mr-2">{tAll("from")}</span>
           <Input
             type="datetime-local"
             placeholder="Từ ngày"
             className="text-sm"
             value={format(fromDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
-            onChange={(event) => setFromDate(new Date(event.target.value))}
+            onChange={(event) =>
+              event.target.value && setFromDate(new Date(event.target.value))
+            }
           />
         </div>
         <div className="flex items-center">
-          <span className="mr-2">Đến</span>
+          <span className="mr-2">{tAll("to")}</span>
           <Input
             type="datetime-local"
             placeholder="Đến ngày"
             value={format(toDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
-            onChange={(event) => setToDate(new Date(event.target.value))}
+            onChange={(event) =>
+              event.target.value && setToDate(new Date(event.target.value))
+            }
           />
         </div>
         <Button className="" variant={"outline"} onClick={resetDateFilter}>
-          Reset
+          {tAll("reset")}
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Tổng doanh thu
+              {t("totalRevenue")}
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +97,7 @@ const DashboardMain = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Khách</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("guest")}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -107,12 +115,12 @@ const DashboardMain = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{guestCount}</div>
-            <p className="text-xs text-muted-foreground">Gọi món</p>
+            <p className="text-xs text-muted-foreground">{t("orderDish")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Đơn hàng</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("order")}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -134,7 +142,7 @@ const DashboardMain = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Bàn đang phục vụ
+              {t("theTableIsServing")}
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"

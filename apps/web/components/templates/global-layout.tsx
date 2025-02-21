@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const GlobalLayout = async ({ children }: Props) => {
+const GlobalLayout = ({ children }: Props) => {
   return (
     <div className="flex min-h-screen w-full flex-col relative">
       <GlobalHeader />

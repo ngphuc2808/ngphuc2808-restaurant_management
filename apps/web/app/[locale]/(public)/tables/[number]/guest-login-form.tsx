@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,8 @@ import { Label } from "@repo/ui/components/label";
 
 const GuestLoginForm = () => {
   const { setRole, setSocket } = useAppStore();
+
+  const t = useTranslations("LoginGuest");
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,7 +76,7 @@ const GuestLoginForm = () => {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Đăng nhập gọi món</CardTitle>
+        <CardTitle className="text-2xl">{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -89,7 +92,7 @@ const GuestLoginForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid gap-2">
-                      <Label htmlFor="name">Tên khách hàng</Label>
+                      <Label htmlFor="name">{t("guestName")}</Label>
                       <Input id="name" type="text" required {...field} />
                       <FormMessage />
                     </div>
@@ -98,7 +101,7 @@ const GuestLoginForm = () => {
               />
 
               <Button type="submit" className="w-full">
-                Đăng nhập
+                {t("login")}
               </Button>
             </div>
           </form>

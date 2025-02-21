@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo } from "react";
 
 import useAppStore from "@/store/app";
@@ -17,6 +18,9 @@ import { OrderStatus } from "@/constants/type";
 
 const OrdersCart = () => {
   const { socket } = useAppStore();
+
+  const t = useTranslations("GuestOrders");
+  const tAll = useTranslations("All");
 
   const { data, refetch } = useGuestGetOrderListQuery();
 
@@ -71,8 +75,8 @@ const OrdersCart = () => {
         quantity,
       } = data;
       toast({
-        description: `Món ${name} (SL: ${quantity}) vừa được cập nhật sang trạng thái "${getVietnameseOrderStatus(
-          data.status,
+        description: `Món ${name} (SL: ${quantity}) vừa được cập nhật sang trạng thái "${tAll(
+          getVietnameseOrderStatus(data.status),
         )}"`,
       });
       refetch();
@@ -96,7 +100,8 @@ const OrdersCart = () => {
   }, [socket, refetch]);
 
   return (
-    <>
+    <div className="max-w-[400px] mx-auto space-y-4">
+      <h1 className="text-center text-xl font-bold">{t("title")}</h1>
       {orders.map((order, index) => (
         <div key={order.id} className="flex gap-4">
           <div className="text-sm font-semibold">{index + 1}</div>
@@ -119,7 +124,7 @@ const OrdersCart = () => {
           </div>
           <div className="flex-shrink-0 ml-auto flex justify-center items-center">
             <Badge variant={"outline"}>
-              {getVietnameseOrderStatus(order.status)}
+              {tAll(getVietnameseOrderStatus(order.status))}
             </Badge>
           </div>
         </div>
@@ -127,18 +132,24 @@ const OrdersCart = () => {
       {paid.quantity !== 0 && (
         <div className="sticky bottom-0 bg-white">
           <div className="w-full flex space-x-4 text-xl font-semibold">
-            <span>Đơn đã thanh toán · {paid.quantity} món</span>
+            <span>
+              {t("applicationPaid")} · {paid.quantity}{" "}
+              {tAll("dishes").toLowerCase()}
+            </span>
             <span>{formatCurrency(paid.price)}</span>
           </div>
         </div>
       )}
       <div className="sticky bottom-0 bg-white">
         <div className="w-full flex space-x-4 text-xl font-semibold">
-          <span>Đơn chưa thanh toán · {waitingForPaying.quantity} món</span>
+          <span>
+            {t("unusedApplication")} · {waitingForPaying.quantity}{" "}
+            {tAll("dishes").toLowerCase()}
+          </span>
           <span>{formatCurrency(waitingForPaying.price)}</span>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

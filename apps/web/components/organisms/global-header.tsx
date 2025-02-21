@@ -11,7 +11,7 @@ import {
 import { Button } from "@repo/ui/components/button";
 import NavItems from "@/components/molecules/nav-items";
 import SwitchLanguage from "@/components/atoms/switch-language";
-import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
+import DarkModeToggle from "@/components/atoms/switch-mode";
 
 const GlobalHeader = () => {
   return (

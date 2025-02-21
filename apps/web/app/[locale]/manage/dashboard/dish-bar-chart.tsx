@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
@@ -60,6 +61,8 @@ const DishBarChart = ({
     "name" | "successOrders"
   >[];
 }) => {
+  const t = useTranslations("Dashboard");
+
   const chartDateColors = useMemo(
     () =>
       chartData.map((data, index) => {
@@ -74,8 +77,8 @@ const DishBarChart = ({
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Xếp hạng món ăn</CardTitle>
-        <CardDescription>Được gọi nhiều nhất</CardDescription>
+        <CardTitle>{t("rankingDishes")}</CardTitle>
+        <CardDescription>{t("theMostCalledDish")}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -91,7 +94,7 @@ const DishBarChart = ({
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Bar
               dataKey="successOrders"
-              name={"Đơn thanh toán: "}
+              name={`${t("orderPaid")}: `}
               layout="vertical"
               radius={5}
             />

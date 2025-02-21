@@ -67,16 +67,27 @@ export const formatCurrency = (number: number) => {
   }).format(number);
 };
 
+export const getVietnameseRole = (
+  role: Exclude<(typeof Role)[keyof typeof Role], typeof Role.Guest>,
+) => {
+  switch (role) {
+    case Role.Owner:
+      return "owner";
+    default:
+      return "employee";
+  }
+};
+
 export const getVietnameseDishStatus = (
   status: (typeof DishStatus)[keyof typeof DishStatus],
 ) => {
   switch (status) {
     case DishStatus.Available:
-      return "Có sẵn";
+      return "available";
     case DishStatus.Unavailable:
-      return "Không có sẵn";
+      return "notAvailable";
     default:
-      return "Ẩn";
+      return "hidden";
   }
 };
 
@@ -85,11 +96,11 @@ export const getVietnameseTableStatus = (
 ) => {
   switch (status) {
     case TableStatus.Available:
-      return "Có sẵn";
+      return "available";
     case TableStatus.Reserved:
-      return "Đã đặt";
+      return "reserved";
     default:
-      return "Ẩn";
+      return "hidden";
   }
 };
 
@@ -98,15 +109,15 @@ export const getVietnameseOrderStatus = (
 ) => {
   switch (status) {
     case OrderStatus.Delivered:
-      return "Đã phục vụ";
+      return "delivered";
     case OrderStatus.Paid:
-      return "Đã thanh toán";
+      return "paid";
     case OrderStatus.Pending:
-      return "Chờ xử lý";
+      return "pending";
     case OrderStatus.Processing:
-      return "Đang nấu";
+      return "processing";
     default:
-      return "Từ chối";
+      return "rejected";
   }
 };
 
@@ -251,4 +262,11 @@ export const generateSlugUrl = ({ name, id }: { name: string; id: number }) => {
 
 export const getIdFromSlugUrl = (slug: string) => {
   return Number(slug.split("-i.")[1]);
+};
+
+export const checkMessageFromResponse = (type: string) => {
+  if (type === "server") {
+    return true;
+  }
+  return false;
 };

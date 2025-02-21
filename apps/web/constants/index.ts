@@ -10,7 +10,6 @@ import {
 
 import { Role } from "./type";
 import { RoleType } from "@/types/jwt.types";
-import { envConfig } from "@/config";
 
 export const TIMEOUT = 1000;
 export const UNAUTHENTICATED_PATH = ["/login", "/refresh-token"];
@@ -22,31 +21,31 @@ export const menuItemsHomePage: {
   hideWhenLogin?: boolean;
 }[] = [
   {
-    title: "Trang chủ",
+    title: "home",
     href: "/",
   },
   {
-    title: "Menu",
+    title: "menu",
     href: "/guest/menu",
     roles: [Role.Guest],
   },
   {
-    title: "Đơn hàng",
+    title: "orders",
     href: "/guest/orders",
     roles: [Role.Guest],
   },
   {
-    title: "Đăng nhập",
+    title: "login",
     href: "/login",
     hideWhenLogin: true,
   },
   {
-    title: "Quản lý",
+    title: "manage",
     href: "/manage/dashboard",
     roles: [Role.Owner],
   },
   {
-    title: "Đơn hàng",
+    title: "orders",
     href: "/manage/orders",
     roles: [Role.Employee],
   },
@@ -55,40 +54,40 @@ export const menuItemsHomePage: {
 export const menuItems = {
   navGroups: [
     {
-      title: "General",
+      title: "general",
       items: [
         {
-          title: "Trang chủ",
+          title: "home",
           icon: Home,
           url: "/",
           roles: [Role.Owner, Role.Employee],
         },
         {
-          title: "Dashboard",
+          title: "dashboard",
           icon: LayoutDashboard,
           url: "/manage/dashboard",
           roles: [Role.Owner],
         },
         {
-          title: "Đơn hàng",
+          title: "orders",
           icon: ShoppingCart,
           url: "/manage/orders",
           roles: [Role.Owner, Role.Employee],
         },
         {
-          title: "Bàn ăn",
+          title: "tables",
           icon: Table,
           url: "/manage/tables",
           roles: [Role.Owner, Role.Employee],
         },
         {
-          title: "Món ăn",
+          title: "dishes",
           icon: Salad,
           url: "/manage/dishes",
           roles: [Role.Owner, Role.Employee],
         },
         {
-          title: "Nhân viên",
+          title: "accounts",
           icon: Users2,
           url: "/manage/accounts",
           roles: [Role.Owner],
@@ -96,12 +95,12 @@ export const menuItems = {
       ],
     },
     {
-      title: "Other",
+      title: "others",
       items: [
         {
-          title: "Cài đặt",
+          title: "settings",
           icon: Settings,
-          url: "/manage/setting",
+          url: "/manage/settings",
         },
       ],
     },

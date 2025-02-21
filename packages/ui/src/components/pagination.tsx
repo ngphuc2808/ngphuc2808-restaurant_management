@@ -36,6 +36,7 @@ const PaginationItem = forwardRef<HTMLLIElement, ComponentProps<"li">>(
 PaginationItem.displayName = "PaginationItem";
 
 type PaginationLinkProps = {
+  title?: string;
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
   ComponentProps<typeof Link>;
@@ -61,6 +62,7 @@ const PaginationLink = ({
 PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({
+  title,
   className,
   ...props
 }: ComponentProps<typeof PaginationLink>) => (
@@ -71,12 +73,13 @@ const PaginationPrevious = ({
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    <span>{title}</span>
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
+  title,
   className,
   ...props
 }: ComponentProps<typeof PaginationLink>) => (
@@ -86,13 +89,14 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Next</span>
+    <span>{title}</span>
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
 
 const PaginationEllipsis = ({
+  title,
   className,
   ...props
 }: ComponentProps<"span">) => (
@@ -102,7 +106,7 @@ const PaginationEllipsis = ({
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" />
-    <span className="sr-only">More pages</span>
+    <span className="sr-only">{title}</span>
   </span>
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";

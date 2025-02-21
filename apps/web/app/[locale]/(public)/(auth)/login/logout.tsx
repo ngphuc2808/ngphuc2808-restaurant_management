@@ -12,7 +12,7 @@ import {
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
 
-const LogoutComponent = () => {
+const Logout = () => {
   const { mutateAsync } = useLogoutMutation();
   const router = useRouter();
   const disconnectSocket = useAppStore((state) => state.disconnectSocket);
@@ -53,14 +53,14 @@ const LogoutComponent = () => {
   return null;
 };
 
-const Logout = memo(function LogoutInner() {
+const LogoutPage = memo(function LogoutInner() {
   return (
     <Suspense
       fallback={<LoaderCircle size={28} className="animate-spin m-auto" />}
     >
-      <LogoutComponent />
+      <Logout />
     </Suspense>
   );
 });
 
-export default Logout;
+export default LogoutPage;

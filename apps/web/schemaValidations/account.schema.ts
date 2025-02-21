@@ -30,18 +30,23 @@ export type AccountResType = z.TypeOf<typeof AccountRes>;
 
 export const CreateEmployeeAccountBody = z
   .object({
-    name: z.string().trim().min(2).max(256),
-    email: z.string().email(),
+    name: z.string().trim().min(2, "minCharacter").max(256, "maxCharacter"),
+    email: z.string().min(1, { message: "required" }).email({
+      message: "invalidEmail",
+    }),
     avatar: z.string().url().optional(),
-    password: z.string().min(6).max(100),
-    confirmPassword: z.string().min(6).max(100),
+    password: z.string().min(6, "minmaxPassword").max(100, "minmaxPassword"),
+    confirmPassword: z
+      .string()
+      .min(6, "minmaxPassword")
+      .max(100, "minmaxPassword"),
   })
   .strict()
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: "custom",
-        message: "Mật khẩu không khớp",
+        message: "passwordNotMatch",
         path: ["confirmPassword"],
       });
     }
@@ -53,12 +58,22 @@ export type CreateEmployeeAccountBodyType = z.TypeOf<
 
 export const UpdateEmployeeAccountBody = z
   .object({
-    name: z.string().trim().min(2).max(256),
-    email: z.string().email(),
+    name: z.string().trim().min(2, "minCharacter").max(256, "maxCharacter"),
+    email: z.string().min(1, { message: "required" }).email({
+      message: "invalidEmail",
+    }),
     avatar: z.string().url().optional(),
     changePassword: z.boolean().optional(),
-    password: z.string().min(6).max(100).optional(),
-    confirmPassword: z.string().min(6).max(100).optional(),
+    password: z
+      .string()
+      .min(6, "minmaxPassword")
+      .max(100, "minmaxPassword")
+      .optional(),
+    confirmPassword: z
+      .string()
+      .min(6, "minmaxPassword")
+      .max(100, "minmaxPassword")
+      .optional(),
     role: z.enum([Role.Owner, Role.Employee]).optional().default(Role.Employee),
   })
   .strict()
@@ -67,13 +82,13 @@ export const UpdateEmployeeAccountBody = z
       if (!password || !confirmPassword) {
         ctx.addIssue({
           code: "custom",
-          message: "Hãy nhập mật khẩu mới và xác nhận mật khẩu mới",
+          message: "changePasswordDescription",
           path: ["changePassword"],
         });
       } else if (confirmPassword !== password) {
         ctx.addIssue({
           code: "custom",
-          message: "Mật khẩu không khớp",
+          message: "passwordNotMatch",
           path: ["confirmPassword"],
         });
       }

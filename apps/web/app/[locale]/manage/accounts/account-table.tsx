@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -66,88 +67,6 @@ import SearchParamsLoader, {
 } from "@/components/atoms/search-params-loader";
 import useAccount from "@/store/account";
 
-export const accountColumns = () => {
-  const columns: ColumnDef<AccountType>[] = [
-    {
-      accessorKey: "id",
-      header: "ID",
-    },
-    {
-      accessorKey: "avatar",
-      header: "Avatar",
-      cell: ({ row }) => (
-        <div>
-          <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
-            <AvatarImage src={row.getValue("avatar")} />
-            <AvatarFallback className="rounded-none">
-              {row.original.name}
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "name",
-      header: "Tên",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
-    },
-    {
-      accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <CaretSortIcon className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: function Actions({ row }) {
-        const { setEmployeeIdEdit, setEmployeeDelete } = useAccount();
-
-        const openEditEmployee = () => {
-          setEmployeeIdEdit(row.original.id);
-        };
-
-        const openDeleteEmployee = () => {
-          setEmployeeDelete(row.original);
-        };
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={openEditEmployee}>
-                Sửa
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={openDeleteEmployee}>
-                Xóa
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-  ];
-
-  return columns;
-};
-
 const AlertDialogDeleteAccount = ({
   employeeDelete,
   setEmployeeDelete,
@@ -156,6 +75,7 @@ const AlertDialogDeleteAccount = ({
   setEmployeeDelete: (value: AccountListResType["data"][0] | undefined) => void;
 }) => {
   const { mutateAsync } = useDeleteAccountMutation();
+
   const deleteAccount = async () => {
     if (employeeDelete) {
       try {
@@ -212,6 +132,9 @@ const AccountTable = () => {
     setEmployeeDelete,
   } = useAccount();
 
+  const t = useTranslations("ManageAccounts");
+  const tAll = useTranslations("All");
+
   const { searchParams, setSearchParams } = useSearchParamsLoader();
   const page = searchParams?.get("page")
     ? Number(searchParams?.get("page"))
@@ -229,9 +152,90 @@ const AccountTable = () => {
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<AccountType>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "id",
+        header: "ID",
+      },
+      {
+        accessorKey: "avatar",
+        header: t("table.avatar"),
+        cell: ({ row }) => (
+          <div>
+            <Avatar className="aspect-square w-[100px] h-[100px] rounded-md object-cover">
+              <AvatarImage src={row.getValue("avatar")} />
+              <AvatarFallback className="rounded-none">
+                {row.original.name}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        ),
+      },
+      {
+        accessorKey: "name",
+        header: t("table.name"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("name")}</div>
+        ),
+      },
+      {
+        accessorKey: "email",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              {t("table.email")}
+              <CaretSortIcon className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: function Actions({ row }) {
+          const { setEmployeeIdEdit, setEmployeeDelete } = useAccount();
+
+          const openEditEmployee = () => {
+            setEmployeeIdEdit(row.original.id);
+          };
+
+          const openDeleteEmployee = () => {
+            setEmployeeDelete(row.original);
+          };
+
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{t("table.actions")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={openEditEmployee}>
+                  {tAll("edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={openDeleteEmployee}>
+                  {tAll("delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: accountColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -271,9 +275,9 @@ const AccountTable = () => {
           employeeDelete={employeeDelete}
           setEmployeeDelete={setEmployeeDelete}
         />
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 gap-2">
           <Input
-            placeholder="Filter emails..."
+            placeholder={tAll("searchValue", { value: t("table.email") })}
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("email")?.setFilterValue(event.target.value)
@@ -324,10 +328,10 @@ const AccountTable = () => {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={accountColumns().length}
+                    colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tAll("noData")}
                   </TableCell>
                 </TableRow>
               )}
@@ -336,9 +340,10 @@ const AccountTable = () => {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="text-xs text-muted-foreground py-4 flex-1 ">
-            Hiển thị{" "}
-            <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-            <strong>{data.length}</strong> kết quả
+            {tAll("showResultPagination", {
+              result: table.getPaginationRowModel().rows.length,
+              total: data.length,
+            })}
           </div>
           <div>
             <AutoPagination

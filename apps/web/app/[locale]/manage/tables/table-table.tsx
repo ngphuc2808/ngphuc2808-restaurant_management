@@ -246,7 +246,7 @@ const TableTable = () => {
           tableDelete={tableDelete}
           setTableDelete={setTableDelete}
         />
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 gap-2">
           <Input
             placeholder="Lọc số bàn"
             value={

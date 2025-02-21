@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
@@ -37,17 +38,19 @@ const NavBadge = ({ children }: { children: ReactNode }) => (
 );
 
 const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
+  const t = useTranslations("SidebarItems");
   const { setOpenMobile } = useSidebar();
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
         isActive={checkIsActive(href, item)}
-        tooltip={item.title}
+        tooltip={t(item.title as any)}
       >
         <Link href={item.url} onClick={() => setOpenMobile(false)}>
           {item.icon && <item.icon />}
-          <span>{item.title}</span>
+          <span>{t(item.title as any)}</span>
           {item.badge && <NavBadge>{item.badge}</NavBadge>}
         </Link>
       </SidebarMenuButton>
@@ -62,7 +65,9 @@ const SidebarMenuCollapsible = ({
   item: NavCollapsible;
   href: string;
 }) => {
+  const t = useTranslations("SidebarItems");
   const { setOpenMobile } = useSidebar();
+
   return (
     <Collapsible
       asChild
@@ -71,9 +76,9 @@ const SidebarMenuCollapsible = ({
     >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title}>
+          <SidebarMenuButton tooltip={t(item.title as any)}>
             {item.icon && <item.icon />}
-            <span>{item.title}</span>
+            <span>{t(item.title as any)}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
@@ -88,7 +93,7 @@ const SidebarMenuCollapsible = ({
                 >
                   <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
                     {subItem.icon && <subItem.icon />}
-                    <span>{subItem.title}</span>
+                    <span>{t(subItem.title as any)}</span>
                     {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
                   </Link>
                 </SidebarMenuSubButton>
@@ -108,23 +113,25 @@ const SidebarMenuCollapsedDropdown = ({
   item: NavCollapsible;
   href: string;
 }) => {
+  const t = useTranslations("SidebarItems");
+
   return (
     <SidebarMenuItem>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <SidebarMenuButton
-            tooltip={item.title}
+            tooltip={t(item.title as any)}
             isActive={checkIsActive(href, item)}
           >
             {item.icon && <item.icon />}
-            <span>{item.title}</span>
+            <span>{t(item.title as any)}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" align="start" sideOffset={4}>
           <DropdownMenuLabel>
-            {item.title} {item.badge ? `(${item.badge})` : ""}
+            {t(item.title as any)} {item.badge ? `(${item.badge})` : ""}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {item.items.map((sub) => (
@@ -134,7 +141,9 @@ const SidebarMenuCollapsedDropdown = ({
                 className={`${checkIsActive(href, sub) ? "bg-secondary" : ""}`}
               >
                 {sub.icon && <sub.icon />}
-                <span className="max-w-52 text-wrap">{sub.title}</span>
+                <span className="max-w-52 text-wrap">
+                  {t(sub.title as any)}
+                </span>
                 {sub.badge && (
                   <span className="ml-auto text-xs">{sub.badge}</span>
                 )}
@@ -150,12 +159,14 @@ const SidebarMenuCollapsedDropdown = ({
 const NavGroup = ({ title, items }: NavGroupType) => {
   const { role } = useAppStore();
 
+  const t = useTranslations("SidebarItems");
+
   const pathname = usePathname();
   const { state } = useSidebar();
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
+      <SidebarGroupLabel>{t(title as any)}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
           const key = `${item.title}-${item.url}`;

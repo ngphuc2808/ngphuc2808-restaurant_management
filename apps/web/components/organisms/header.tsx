@@ -1,9 +1,7 @@
-"use client";
-
 import { Separator } from "@repo/ui/components/separator";
 import { SidebarTrigger } from "@repo/ui/components/sidebar";
 import SwitchLanguage from "@/components/atoms/switch-language";
-import DarkModeToggle from "@/components/atoms/dark-mode-toggle";
+import DarkModeToggle from "@/components/atoms/switch-mode";
 import DropdownAvatar from "@/components/atoms/dropdown-avatar";
 
 const Header = () => {

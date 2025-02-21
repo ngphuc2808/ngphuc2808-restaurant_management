@@ -34,12 +34,7 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
 }
 
 const OrdersGuestPage = () => {
-  return (
-    <div className="max-w-[400px] mx-auto space-y-4">
-      <h1 className="text-center text-xl font-bold">Đơn hàng</h1>
-      <OrdersCart />
-    </div>
-  );
+  return <OrdersCart />;
 };
 
 export default OrdersGuestPage;
