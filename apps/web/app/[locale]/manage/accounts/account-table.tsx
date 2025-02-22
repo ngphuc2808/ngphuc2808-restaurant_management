@@ -107,11 +107,9 @@ const AlertDialogDeleteAccount = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{t("deleteAccount")}</AlertDialogTitle>
           <AlertDialogDescription>
-            <span className="bg-foreground text-primary-foreground rounded px-1">
-              {t("deleteDescription", {
-                account: employeeDelete?.name,
-              })}
-            </span>
+            {t("deleteDescription", {
+              account: employeeDelete?.name,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

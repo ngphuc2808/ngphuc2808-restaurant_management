@@ -107,12 +107,9 @@ const AlertDialogDeleteDish = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{t("deleteDish")}</AlertDialogTitle>
           <AlertDialogDescription>
-            <span className="bg-foreground text-primary-foreground rounded px-1">
-              {dishDelete?.name}
-              {t("deleteDescription", {
-                name: dishDelete?.name,
-              })}
-            </span>
+            {t("deleteDescription", {
+              name: dishDelete?.name,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

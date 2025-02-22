@@ -98,11 +98,9 @@ const AlertDialogDeleteTable = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{t("deleteTable")}</AlertDialogTitle>
           <AlertDialogDescription>
-            <span className="bg-foreground text-primary-foreground rounded px-1">
-              {t("deleteDescription", {
-                number: tableDelete?.number,
-              })}
-            </span>
+            {t("deleteDescription", {
+              number: tableDelete?.number,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
