@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 import { cn } from "@repo/ui/lib/utils";
 import { SidebarProvider } from "@repo/ui/components/sidebar";
 import AppSidebar from "@/components/organisms/app-sidebar";
@@ -10,12 +8,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AdminLayout = async ({ children }: Props) => {
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
+const AdminLayout = ({ children }: Props) => {
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen>
       <AppSidebar />
       <div
         id="content"

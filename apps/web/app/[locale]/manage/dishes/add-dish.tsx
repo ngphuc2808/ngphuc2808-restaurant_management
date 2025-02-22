@@ -150,9 +150,7 @@ const AddDish = () => {
             noValidate
             className="grid auto-rows-max items-start gap-4 md:gap-8"
             id="add-dish-form"
-            onSubmit={form.handleSubmit(onSubmit, (e) => {
-              console.log(e);
-            })}
+            onSubmit={form.handleSubmit(onSubmit, console.log)}
             onReset={reset}
           >
             <div className="grid gap-4 py-4">

@@ -60,6 +60,13 @@ const MenuOrder = ({ dishes }: Props) => {
     }
   };
 
+  if (dishes.length === 0)
+    return (
+      <div>
+        <h1 className="text-2xl lg:text-3xl font-semibold">{tAll("noData")}</h1>
+      </div>
+    );
+
   return (
     <div className="max-w-[400px] mx-auto space-y-4">
       <h1 className="text-center text-xl font-bold">🍕 {t("title")}</h1>

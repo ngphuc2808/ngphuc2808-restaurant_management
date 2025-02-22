@@ -74,6 +74,9 @@ const AlertDialogDeleteAccount = ({
   employeeDelete: AccountListResType["data"][0] | undefined;
   setEmployeeDelete: (value: AccountListResType["data"][0] | undefined) => void;
 }) => {
+  const t = useTranslations("ManageAccounts");
+  const tAll = useTranslations("All");
+
   const { mutateAsync } = useDeleteAccountMutation();
 
   const deleteAccount = async () => {
@@ -102,19 +105,19 @@ const AlertDialogDeleteAccount = ({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Xóa nhân viên?</AlertDialogTitle>
+          <AlertDialogTitle>{t("deleteAccount")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Tài khoản{" "}
             <span className="bg-foreground text-primary-foreground rounded px-1">
-              {employeeDelete?.name}
-            </span>{" "}
-            sẽ bị xóa vĩnh viễn
+              {t("deleteDescription", {
+                account: employeeDelete?.name,
+              })}
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{tAll("cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={deleteAccount}>
-            Continue
+            {tAll("continue")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

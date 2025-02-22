@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +12,7 @@ import {
 } from "@/schemaValidations/table.schema";
 import { useGetTableQuery, useUpdateTableMutation } from "@/queries/useTable";
 import {
+  checkMessageFromResponse,
   getTableLink,
   getVietnameseTableStatus,
   handleErrorApi,
@@ -19,6 +21,7 @@ import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -43,7 +46,6 @@ import { Switch } from "@repo/ui/components/switch";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 import { toast } from "@repo/ui/hooks/use-toast";
 import QRCodeTable from "@/app/[locale]/manage/tables/qrcode-table";
-import { useLocale } from "next-intl";
 
 const EditTable = ({
   id,
@@ -54,6 +56,10 @@ const EditTable = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
+  const t = useTranslations("Tables");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const updateTableMutation = useUpdateTableMutation();
 
   const locale = useLocale();
@@ -121,7 +127,8 @@ const EditTable = ({
         }}
       >
         <DialogHeader>
-          <DialogTitle>Cập nhật bàn ăn</DialogTitle>
+          <DialogTitle>{t("updateTable")}</DialogTitle>
+          <DialogDescription>{t("requiredDescription")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -133,7 +140,7 @@ const EditTable = ({
             <div className="grid gap-4 py-4">
               <FormItem>
                 <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                  <Label htmlFor="name">Số hiệu bàn</Label>
+                  <Label htmlFor="name">{t("table.tableNumber")}</Label>
                   <div className="col-span-3 w-full space-y-2">
                     <Input
                       id="number"
@@ -142,17 +149,16 @@ const EditTable = ({
                       value={data?.payload.data.number ?? 0}
                       readOnly
                     />
-                    <FormMessage />
                   </div>
                 </div>
               </FormItem>
               <FormField
                 control={form.control}
                 name="capacity"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="price">Sức chứa (người)</Label>
+                      <Label htmlFor="price">{t("table.capacity")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="capacity"
@@ -160,7 +166,12 @@ const EditTable = ({
                           {...field}
                           type="number"
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.capacity?.message &&
+                            (checkMessageFromResponse(errors.capacity?.type)
+                              ? errors.capacity?.message
+                              : tErrorMessage(errors.capacity?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -169,10 +180,10 @@ const EditTable = ({
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="description">Trạng thái</Label>
+                      <Label htmlFor="description">{t("table.status")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Select
                           onValueChange={field.onChange}
@@ -180,20 +191,24 @@ const EditTable = ({
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Chọn trạng thái" />
+                              <SelectValue placeholder={t("selectStatus")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {TableStatusValues.map((status) => (
                               <SelectItem key={status} value={status}>
-                                {getVietnameseTableStatus(status)}
+                                {tAll(getVietnameseTableStatus(status))}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-
-                      <FormMessage />
+                      <FormMessage>
+                        {errors.status?.message &&
+                          (checkMessageFromResponse(errors.status?.type)
+                            ? errors.status?.message
+                            : tErrorMessage(errors.status?.message as any))}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
@@ -201,10 +216,10 @@ const EditTable = ({
               <FormField
                 control={form.control}
                 name="changeToken"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="price">Đổi QR Code</Label>
+                      <Label htmlFor="price">{t("changeQrCode")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <div className="flex items-center space-x-2">
                           <Switch
@@ -214,15 +229,21 @@ const EditTable = ({
                           />
                         </div>
                       </div>
-
-                      <FormMessage />
+                      <FormMessage>
+                        {errors.changeToken?.message &&
+                          (checkMessageFromResponse(errors.changeToken?.type)
+                            ? errors.changeToken?.message
+                            : tErrorMessage(
+                                errors.changeToken?.message as any,
+                              ))}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
               />
               <FormItem>
                 <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                  <Label>QR Code</Label>
+                  <Label>{t("table.qrCode")}</Label>
                   <div className="col-span-3 w-full space-y-2">
                     {data && (
                       <QRCodeTable
@@ -235,7 +256,7 @@ const EditTable = ({
               </FormItem>
               <FormItem>
                 <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                  <Label>URL gọi món</Label>
+                  <Label>{t("urlOrdering")}</Label>
                   <div className="col-span-3 w-full space-y-2">
                     {data && (
                       <Link
@@ -262,7 +283,7 @@ const EditTable = ({
         </Form>
         <DialogFooter>
           <Button type="submit" form="edit-table-form">
-            Lưu
+            {tAll("save")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import ChangePasswordForm from "@/app/[locale]/manage/settings/change-password-form";
 import UpdateProfileForm from "@/app/[locale]/manage/settings/update-profile-form";
@@ -27,7 +27,12 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const SettingPage = async () => {
+const SettingPage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   const t = await getTranslations("Settings");
 
   return (

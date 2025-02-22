@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +16,11 @@ import { CreateOrdersBodyType } from "@/schemaValidations/order.schema";
 import { useDishListQuery } from "@/queries/useDish";
 import { useCreateOrderMutation } from "@/queries/useOrder";
 import { useCreateGuestMutation } from "@/queries/useAccount";
-import { formatCurrency, handleErrorApi } from "@/lib/utils";
+import {
+  checkMessageFromResponse,
+  formatCurrency,
+  handleErrorApi,
+} from "@/lib/utils";
 import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -41,11 +46,14 @@ import GuestsDialog from "@/app/[locale]/manage/orders/guests-dialog";
 import Quantity from "@/app/[locale]/guest/menu/quantity";
 import TablesDialog from "@/app/[locale]/manage/orders/tables-dialog";
 
+type GuestType = GetListGuestsResType["data"][0];
+
 const AddOrder = () => {
+  const t = useTranslations("Orders");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const [open, setOpen] = useState(false);
-  const [selectedGuest, setSelectedGuest] = useState<
-    GetListGuestsResType["data"][0] | null
-  >(null);
+  const [selectedGuest, setSelectedGuest] = useState<GuestType | null>(null);
   const [isNewGuest, setIsNewGuest] = useState(true);
   const [orders, setOrders] = useState<CreateOrdersBodyType["orders"]>([]);
   const { data } = useDishListQuery();
@@ -69,7 +77,7 @@ const AddOrder = () => {
       tableNumber: 0,
     },
   });
-  const name = form.watch("name");
+
   const tableNumber = form.watch("tableNumber");
 
   const handleQuantityChange = (dishId: number, quantity: number) => {
@@ -87,19 +95,19 @@ const AddOrder = () => {
     });
   };
 
-  const handleOrder = async () => {
+  const onSubmit = async (value: GuestLoginBodyType) => {
     try {
       let guestId = selectedGuest?.id;
       if (isNewGuest) {
         const guestRes = await createGuestMutation.mutateAsync({
-          name,
+          name: value.name,
           tableNumber,
         });
         guestId = guestRes.payload.data.id;
       }
       if (!guestId) {
         toast({
-          description: "Hãy chọn một khách hàng",
+          description: t("pleaseSelectAGuest"),
         });
         return;
       }
@@ -138,16 +146,16 @@ const AddOrder = () => {
         <Button size="sm" className="h-7 gap-1">
           <PlusCircle className="h-3.5 w-3.5" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Tạo đơn hàng
+            {t("createOrder")}
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Tạo đơn hàng</DialogTitle>
+          <DialogTitle>{t("createOrder")}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-          <Label htmlFor="isNewGuest">Khách hàng mới</Label>
+          <Label htmlFor="isNewGuest">{t("newGuest")}</Label>
           <div className="col-span-3 flex items-center">
             <Switch
               id="isNewGuest"
@@ -160,20 +168,26 @@ const AddOrder = () => {
           <Form {...form}>
             <form
               noValidate
+              onSubmit={form.handleSubmit(onSubmit, console.log)}
               className="grid auto-rows-max items-start gap-4 md:gap-8"
-              id="add-employee-form"
+              id="add-order-form"
             >
               <div className="grid gap-4 py-4">
                 <FormField
                   control={form.control}
                   name="name"
-                  render={({ field }) => (
+                  render={({ field, formState: { errors } }) => (
                     <FormItem>
                       <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                        <Label htmlFor="name">Tên khách hàng</Label>
+                        <Label htmlFor="name">{t("guestName")}</Label>
                         <div className="col-span-3 w-full space-y-2">
                           <Input id="name" className="w-full" {...field} />
-                          <FormMessage />
+                          <FormMessage>
+                            {errors.name?.message &&
+                              (checkMessageFromResponse(errors.name?.type)
+                                ? errors.name?.message
+                                : tErrorMessage(errors.name?.message as any))}
+                          </FormMessage>
                         </div>
                       </div>
                     </FormItem>
@@ -185,7 +199,7 @@ const AddOrder = () => {
                   render={({ field }) => (
                     <FormItem>
                       <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                        <Label htmlFor="tableNumber">Chọn bàn</Label>
+                        <Label htmlFor="tableNumber">{t("selectTable")}</Label>
                         <div className="col-span-3 w-full space-y-2">
                           <div className="flex items-center gap-4">
                             <div>{field.value}</div>
@@ -213,12 +227,14 @@ const AddOrder = () => {
         )}
         {!isNewGuest && selectedGuest && (
           <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-            <Label htmlFor="selectedGuest">Khách đã chọn</Label>
+            <Label htmlFor="selectedGuest">{t("guestSelected")}</Label>
             <div className="col-span-3 w-full gap-4 flex items-center">
               <div>
                 {selectedGuest.name} (#{selectedGuest.id})
               </div>
-              <div>Bàn: {selectedGuest.tableNumber}</div>
+              <div>
+                {t("table.tableNumber")}: {selectedGuest.tableNumber}
+              </div>
             </div>
           </div>
         )}
@@ -234,7 +250,7 @@ const AddOrder = () => {
               <div className="flex-shrink-0 relative">
                 {dish.status === DishStatus.Unavailable && (
                   <span className="absolute inset-0 flex items-center justify-center text-sm rounded-md bg-slate-600/50 text-white">
-                    Hết hàng
+                    {t("outOfStock")}
                   </span>
                 )}
                 <Image
@@ -267,10 +283,13 @@ const AddOrder = () => {
         <DialogFooter>
           <Button
             className="w-full justify-between"
-            onClick={handleOrder}
+            type="submit"
+            form="add-order-form"
             disabled={orders.length === 0}
           >
-            <span>Đặt hàng · {orders.length} món</span>
+            <span>
+              {t("orderDish")} · {orders.length} {t("dish").toLowerCase()}
+            </span>
             <span>{formatCurrency(totalPrice)}</span>
           </Button>
         </DialogFooter>

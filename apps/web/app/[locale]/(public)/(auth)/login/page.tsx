@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { htmlToTextForDescription } from "@/lib/server-utils";
 import { envConfig } from "@/config";
@@ -30,7 +30,12 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const LoginPage = () => {
+const LoginPage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <LoginForm />

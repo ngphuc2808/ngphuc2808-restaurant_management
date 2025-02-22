@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/routing";
 import useAppStore from "@/store/app";
 import { useLogoutMutation } from "@/queries/useAuth";
@@ -22,6 +23,8 @@ import {
 
 const DropdownAvatar = () => {
   const { setRole, disconnectSocket } = useAppStore();
+
+  const t = useTranslations("Settings");
 
   const router = useRouter();
 
@@ -68,11 +71,11 @@ const DropdownAvatar = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href={"/manage/settings"} className="cursor-pointer">
-            Cài đặt
+            {t("title")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>Đăng xuất</DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>{t("logout")}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

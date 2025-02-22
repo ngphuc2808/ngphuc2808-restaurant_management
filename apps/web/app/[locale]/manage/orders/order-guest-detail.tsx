@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 import {
@@ -30,6 +31,9 @@ const OrderGuestDetail = ({
   orders: Orders;
   onPaySuccess?: (data: PayGuestOrdersResType) => void;
 }) => {
+  const t = useTranslations("Orders");
+  const tAll = useTranslations("All");
+
   const ordersFilterToPurchase = guest
     ? orders.filter(
         (order) =>
@@ -60,22 +64,22 @@ const OrderGuestDetail = ({
       {guest && (
         <>
           <div className="space-x-1">
-            <span className="font-semibold">Tên:</span>
+            <span className="font-semibold">{tAll("name")}:</span>
             <span>{guest.name}</span>
             <span className="font-semibold">(#{guest.id})</span>
             <span>|</span>
-            <span className="font-semibold">Bàn:</span>
+            <span className="font-semibold">{t("table.tableNumber")}:</span>
             <span>{guest.tableNumber}</span>
           </div>
           <div className="space-x-1">
-            <span className="font-semibold">Ngày đăng ký:</span>
+            <span className="font-semibold">{t("registrationDate")}:</span>
             <span>{formatDateTimeToLocaleString(guest.createdAt)}</span>
           </div>
         </>
       )}
 
       <div className="space-y-1">
-        <div className="font-semibold">Đơn hàng:</div>
+        <div className="font-semibold">{t("title")}:</div>
         {orders.map((order, index) => {
           return (
             <div key={order.id} className="flex gap-2 items-center text-xs">
@@ -111,7 +115,10 @@ const OrderGuestDetail = ({
               >
                 {order.dishSnapshot.name}
               </span>
-              <span className="font-semibold" title={`Tổng: ${order.quantity}`}>
+              <span
+                className="font-semibold"
+                title={`${t("total")}: ${order.quantity}`}
+              >
                 x{order.quantity}
               </span>
               <span className="italic">
@@ -119,18 +126,18 @@ const OrderGuestDetail = ({
               </span>
               <span
                 className="hidden sm:inline"
-                title={`Tạo: ${formatDateTimeToLocaleString(
+                title={`${t("create")}: ${formatDateTimeToLocaleString(
                   order.createdAt,
-                )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
+                )} | ${t("update")}: ${formatDateTimeToLocaleString(order.updatedAt)}
           `}
               >
                 {formatDateTimeToLocaleString(order.createdAt)}
               </span>
               <span
                 className="sm:hidden"
-                title={`Tạo: ${formatDateTimeToLocaleString(
+                title={`${t("create")}: ${formatDateTimeToLocaleString(
                   order.createdAt,
-                )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
+                )} | ${t("update")}: ${formatDateTimeToLocaleString(order.updatedAt)}
           `}
               >
                 {formatDateTimeToTimeString(order.createdAt)}
@@ -140,7 +147,7 @@ const OrderGuestDetail = ({
         })}
       </div>
       <div className="space-x-1">
-        <span className="font-semibold">Chưa thanh toán:</span>
+        <span className="font-semibold">{t("paid")}:</span>
         <Badge>
           <span>
             {formatCurrency(
@@ -152,7 +159,7 @@ const OrderGuestDetail = ({
         </Badge>
       </div>
       <div className="space-x-1">
-        <span className="font-semibold">Đã thanh toán:</span>
+        <span className="font-semibold">{t("unpaid")}:</span>
         <Badge variant={"outline"}>
           <span>
             {formatCurrency(
@@ -163,7 +170,6 @@ const OrderGuestDetail = ({
           </span>
         </Badge>
       </div>
-
       <div>
         <Button
           className="w-full"
@@ -172,7 +178,7 @@ const OrderGuestDetail = ({
           disabled={ordersFilterToPurchase.length === 0}
           onClick={pay}
         >
-          Thanh toán tất cả ({ordersFilterToPurchase.length} đơn)
+          {t("payAll", { total: ordersFilterToPurchase.length })}
         </Button>
       </div>
     </div>

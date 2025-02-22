@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -39,52 +40,6 @@ import AutoPagination from "@/components/molecules/auto-pagination";
 
 type GuestItem = GetListGuestsResType["data"][0];
 
-export const guestsColumns = () => {
-  const columns: ColumnDef<GuestItem>[] = [
-    {
-      accessorKey: "name",
-      header: "Tên",
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {row.getValue("name")} | (#{row.original.id})
-        </div>
-      ),
-      filterFn: (row, columnId, filterValue: string) => {
-        if (filterValue === undefined) return true;
-        return simpleMatchText(
-          row.original.name + String(row.original.id),
-          String(filterValue),
-        );
-      },
-    },
-    {
-      accessorKey: "tableNumber",
-      header: "Số bàn",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("tableNumber")}</div>
-      ),
-      filterFn: (row, columnId, filterValue: string) => {
-        if (filterValue === undefined) return true;
-        return simpleMatchText(
-          String(row.original.tableNumber),
-          String(filterValue),
-        );
-      },
-    },
-    {
-      accessorKey: "createdAt",
-      header: () => <div>Tạo</div>,
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-4 text-sm">
-          {formatDateTimeToLocaleString(row.getValue("createdAt"))}
-        </div>
-      ),
-    },
-  ];
-
-  return columns;
-};
-
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
@@ -94,6 +49,9 @@ const GuestsDialog = ({
 }: {
   onChoose: (guest: GuestItem) => void;
 }) => {
+  const t = useTranslations("Orders");
+  const tAll = useTranslations("All");
+
   const [open, setOpen] = useState(false);
   const [fromDate, setFromDate] = useState(initFromDate);
   const [toDate, setToDate] = useState(initToDate);
@@ -111,9 +69,53 @@ const GuestsDialog = ({
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<GuestItem>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "name",
+        header: t("guestDialog.name"),
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {row.getValue("name")} | (#{row.original.id})
+          </div>
+        ),
+        filterFn: (row, columnId, filterValue: string) => {
+          if (filterValue === undefined) return true;
+          return simpleMatchText(
+            row.original.name + String(row.original.id),
+            String(filterValue),
+          );
+        },
+      },
+      {
+        accessorKey: "tableNumber",
+        header: t("guestDialog.tableNumber"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("tableNumber")}</div>
+        ),
+        filterFn: (row, columnId, filterValue: string) => {
+          if (filterValue === undefined) return true;
+          return simpleMatchText(
+            String(row.original.tableNumber),
+            String(filterValue),
+          );
+        },
+      },
+      {
+        accessorKey: "createdAt",
+        header: t("guestDialog.createdAt"),
+        cell: ({ row }) => (
+          <div className="flex items-center space-x-4 text-sm">
+            {formatDateTimeToLocaleString(row.getValue("createdAt"))}
+          </div>
+        ),
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: guestsColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -153,34 +155,38 @@ const GuestsDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Chọn khách</Button>
+        <Button variant="outline">{t("selectGuest")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px] max-h-full overflow-auto">
         <DialogHeader>
-          <DialogTitle>Chọn khách hàng</DialogTitle>
+          <DialogTitle>{t("selectGuest2")}</DialogTitle>
         </DialogHeader>
         <div>
           <div className="w-full">
             <div className="flex flex-wrap gap-2">
               <div className="flex items-center">
-                <span className="mr-2">Từ</span>
+                <span className="mr-2">{tAll("from")}</span>
                 <Input
                   type="datetime-local"
-                  placeholder="Từ ngày"
+                  placeholder={tAll("fromDate")}
                   className="text-sm"
                   value={format(fromDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
                   onChange={(event) =>
+                    event.target.value &&
                     setFromDate(new Date(event.target.value))
                   }
                 />
               </div>
               <div className="flex items-center">
-                <span className="mr-2">Đến</span>
+                <span className="mr-2">{tAll("to")}</span>
                 <Input
                   type="datetime-local"
-                  placeholder="Đến ngày"
+                  placeholder={tAll("toDate")}
                   value={format(toDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
-                  onChange={(event) => setToDate(new Date(event.target.value))}
+                  onChange={(event) =>
+                    event.target.value &&
+                    setToDate(new Date(event.target.value))
+                  }
                 />
               </div>
               <Button
@@ -188,12 +194,14 @@ const GuestsDialog = ({
                 variant={"outline"}
                 onClick={resetDateFilter}
               >
-                Reset
+                {tAll("reset")}
               </Button>
             </div>
-            <div className="flex items-center py-4 gap-2 gap-2">
+            <div className="flex items-center py-4 gap-2">
               <Input
-                placeholder="Tên hoặc Id"
+                placeholder={tAll("searchValue", {
+                  value: t("nameOrId"),
+                })}
                 value={
                   (table.getColumn("name")?.getFilterValue() as string) ?? ""
                 }
@@ -203,7 +211,7 @@ const GuestsDialog = ({
                 className="w-[170px]"
               />
               <Input
-                placeholder="Số bàn"
+                placeholder={t("tableNumber")}
                 value={
                   (table
                     .getColumn("tableNumber")
@@ -214,7 +222,7 @@ const GuestsDialog = ({
                     .getColumn("tableNumber")
                     ?.setFilterValue(event.target.value)
                 }
-                className="w-[80px]"
+                className="w-[150px]"
               />
             </div>
             <div className="rounded-md border">
@@ -261,10 +269,10 @@ const GuestsDialog = ({
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={guestsColumns().length}
+                        colSpan={columns.length}
                         className="h-24 text-center"
                       >
-                        No results.
+                        {tAll("noData")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -273,9 +281,10 @@ const GuestsDialog = ({
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
               <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                Hiển thị{" "}
-                <strong>{table.getPaginationRowModel().rows.length}</strong>{" "}
-                trong <strong>{data.length}</strong> kết quả
+                {tAll("showResultPagination", {
+                  result: table.getPaginationRowModel().rows.length,
+                  total: data.length,
+                })}
               </div>
               <div>
                 <AutoPagination

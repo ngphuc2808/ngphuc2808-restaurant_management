@@ -5,6 +5,7 @@
   },
   "All": {
     "logout": "Logout",
+    "change": "Change",
     "add": "Add",
     "edit": "Update",
     "search": "Search",
@@ -14,6 +15,7 @@
     "confirm": "Confirm",
     "reset": "Reset",
     "cancel": "Cancel",
+    "continue": "Continue",
     "previous": "Previous",
     "next": "Next",
     "back": "Back",
@@ -43,7 +45,12 @@
     "name": "Name",
     "showResultPagination": "Showing {result} of {total} results",
     "from": "From",
-    "to": "To"
+    "fromDate": "From date",
+    "to": "To",
+    "toDate": "To date",
+    "deleted": "Deleted",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
   },
   "ErrorMessage": {
     "invalidEmail": "Invalid email",
@@ -53,7 +60,9 @@
     "minmaxPassword": "Password must be between 6 and 100 characters",
     "changePasswordDescription": "Please enter new password and re-enter new password",
     "passwordNotMatch": "Password does not match",
-    "minPrice": "Minimum price is 0"
+    "minPrice": "Minimum price is 0",
+    "minTableNumber": "Table number must be greater than 0",
+    "minCapacity": "Capacity must be greater than 0"
   },
   "NotFound": {
     "title": "Not Found",
@@ -148,8 +157,10 @@
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password",
     "selectRole": "Select role",
-    "owner": "Quản lý",
-    "employee": "Nhân viên",
+    "owner": "Owner",
+    "employee": "Employee",
+    "deleteAccount": "Delete account",
+    "deleteDescription": "Account {account} will be permanently deleted, are you sure to delete this account?",
     "table": {
       "avatar": "Avatar",
       "name": "Name",
@@ -185,11 +196,69 @@
       "description": "Description",
       "status": "Status",
       "actions": "Actions"
-    }
+    },
+    "deleteDish": "Delete dish",
+    "deleteDescription": "Dish {name} will be permanently deleted, are you sure to delete this dish?"
   },
   "Orders": {
     "title": "Orders",
-    "description": "Manage orders"
+    "description": "Manage orders",
+    "guestName": "Guest name",
+    "tableNumber": "Table number",
+    "createSocket": "Guest {name} at table {table} has just created {quantity} orders",
+    "updateSocket": "Item {name} (total: {quantity}) has just been updated to the state {status}",
+    "paymentSocket": "Guest {name} at table {table} has just paid for {quantity} orders",
+    "ready": "Ready",
+    "order": "Order",
+    "servingGuests": "Serving {number} guests",
+    "createOrder": "Create order",
+    "updateOrder": "Update order",
+    "requiredDescription": "Guest name fields are required",
+    "newGuest": "New guest",
+    "selectTable": "Select table",
+    "guestSelected": "Guest selected",
+    "outOfStock": "Out of stock",
+    "table": {
+      "tableNumber": "Table number",
+      "guest": "Guest",
+      "dish": "Dish",
+      "status": "Status",
+      "processor": "Processor",
+      "createUpdate": "Create / Update",
+      "actions": "Actions"
+    },
+    "registrationDate": "Registration date",
+    "total": "Total",
+    "create": "Create",
+    "update": "Update",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "payAll": "Pay all ({total}",
+    "guestSittingAt": "Guest sitting at table {table}",
+    "orderDish": "Order",
+    "dishes": "Dish",
+    "dish": "Dish",
+    "pleaseSelectAGuest": "Please select a guest",
+    "selectGuest": "Select guest",
+    "selectGuest2": "Select guest",
+    "nameOrId": "Name or ID",
+    "quantity": "Quantity",
+    "selectDish": "Select dish",
+    "guestDialog": {
+      "name": "Name",
+      "tableNumber": "Table number",
+      "createdAt": "Created at"
+    },
+    "tableDialog": {
+      "tableNumber": "Table number",
+      "capacity": "Capacity",
+      "status": "Status"
+    },
+    "dishesDialog": {
+      "dish": "Dish",
+      "price": "Price",
+      "status": "Status"
+    }
   },
   "GuestOrders": {
     "title": "Orders",
@@ -199,6 +268,7 @@
   },
   "Settings": {
     "title": "Settings",
+    "logout": "Logout",
     "description": "Manage your account settings",
     "changePassword": "Change password",
     "enterOldPassword": "Enter old password",
@@ -207,7 +277,22 @@
   },
   "Tables": {
     "title": "Tables",
-    "description": "Manage tables"
+    "description": "Manage tables",
+    "addTable": "Add table",
+    "updateTable": "Update table",
+    "requiredDescription": "Table number, capacity fields are required",
+    "selectStatus": "Select status",
+    "changeQrCode": "Change QR code",
+    "urlOrdering": "URL ordering",
+    "table": {
+      "tableNumber": "Table number",
+      "capacity": "Capacity",
+      "status": "Status",
+      "qrCode": "QR code",
+      "actions": "Actions"
+    },
+    "deleteTable": "Delete table",
+    "deleteDescription": "Table {number} will be permanently deleted, are you sure to delete this table?"
   },
   "SwitchLanguage": {
     "title": "Switch language",

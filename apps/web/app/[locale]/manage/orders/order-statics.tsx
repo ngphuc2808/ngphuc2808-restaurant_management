@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Users } from "lucide-react";
 
@@ -41,6 +42,9 @@ const OrderStatics = ({
   tableList: TableListResType["data"];
   servingGuestByTableNumber: ServingGuestByTableNumber;
 }) => {
+  const t = useTranslations("Orders");
+  const tAll = useTranslations("All");
+
   const [selectedTableNumber, setSelectedTableNumber] = useState<number>(0);
   const selectedServingGuest = servingGuestByTableNumber[selectedTableNumber];
   return (
@@ -57,7 +61,9 @@ const OrderStatics = ({
           {selectedServingGuest && (
             <DialogHeader>
               <DialogTitle>
-                Khách đang ngồi tại bàn {selectedTableNumber}
+                {t("guestSittingAt", {
+                  table: selectedTableNumber,
+                })}
               </DialogTitle>
             </DialogHeader>
           )}
@@ -149,7 +155,9 @@ const OrderStatics = ({
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      Đang phục vụ: {servingGuestCount} khách
+                      {t("servingGuests", {
+                        number: servingGuestCount,
+                      })}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -162,7 +170,7 @@ const OrderStatics = ({
               />
               {isEmptyTable && (
                 <div className="flex justify-between items-center text-sm">
-                  Ready
+                  {t("ready")}
                 </div>
               )}
               {!isEmptyTable && (
@@ -176,8 +184,9 @@ const OrderStatics = ({
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        {getVietnameseOrderStatus(OrderStatus.Pending)}:{" "}
-                        {countObject[OrderStatus.Pending] ?? 0} đơn
+                        {tAll(getVietnameseOrderStatus(OrderStatus.Pending))}:{" "}
+                        {countObject[OrderStatus.Pending] ?? 0}{" "}
+                        {t("order").toLowerCase()}
                       </TooltipContent>
                     </Tooltip>
 
@@ -191,8 +200,9 @@ const OrderStatics = ({
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        {getVietnameseOrderStatus(OrderStatus.Processing)}:{" "}
-                        {countObject[OrderStatus.Processing] ?? 0} đơn
+                        {tAll(getVietnameseOrderStatus(OrderStatus.Processing))}
+                        : {countObject[OrderStatus.Processing] ?? 0}{" "}
+                        {t("order").toLowerCase()}
                       </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -203,8 +213,9 @@ const OrderStatics = ({
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        {getVietnameseOrderStatus(OrderStatus.Delivered)}:{" "}
-                        {countObject[OrderStatus.Delivered] ?? 0} đơn
+                        {tAll(getVietnameseOrderStatus(OrderStatus.Delivered))}:{" "}
+                        {countObject[OrderStatus.Delivered] ?? 0}{" "}
+                        {t("order").toLowerCase()}
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -217,7 +228,8 @@ const OrderStatics = ({
       <div className="flex justify-start items-end gap-4 flex-wrap py-4">
         {OrderStatusValues.map((status) => (
           <Badge variant="secondary" key={status}>
-            {getVietnameseOrderStatus(status)}: {statics.status[status] ?? 0}
+            {tAll(getVietnameseOrderStatus(status))}:{" "}
+            {statics.status[status] ?? 0}
           </Badge>
         ))}
       </div>

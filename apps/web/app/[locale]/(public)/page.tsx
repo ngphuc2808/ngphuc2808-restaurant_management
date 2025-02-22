@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cache } from "react";
 
 import { Link } from "@/i18n/routing";
@@ -36,7 +36,12 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const HomePage = async () => {
+const HomePage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   const t = await getTranslations("HomePage");
   const tAll = await getTranslations("All");
 

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { htmlToTextForDescription } from "@/lib/server-utils";
 import OrdersCart from "@/app/[locale]/guest/orders/orders-cart";
@@ -33,7 +33,14 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const OrdersGuestPage = () => {
+const OrdersGuestPage = async (props: {
+  params: Promise<{ locale: string }>;
+}) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   return <OrdersCart />;
 };
 

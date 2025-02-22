@@ -41,12 +41,14 @@ import {
   TableRow,
 } from "@repo/ui/components/table";
 import AutoPagination from "@/components/molecules/auto-pagination";
+import { DishStatus } from "@/constants/type";
 
 type DishItem = DishListResType["data"][0];
 
 const PAGE_SIZE = 10;
 
 const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
+  const t = useTranslations("Orders");
   const tAll = useTranslations("All");
 
   const [open, setOpen] = useState(false);
@@ -65,7 +67,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
     return [
       {
         id: "dishName",
-        header: "Món ăn",
+        header: t("dishesDialog.dish"),
         cell: ({ row }) => (
           <div className="flex items-center space-x-4">
             <Image
@@ -88,7 +90,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
       },
       {
         accessorKey: "price",
-        header: "Giá cả",
+        header: t("dishesDialog.price"),
         cell: ({ row }) => (
           <div className="capitalize">
             {formatCurrency(row.getValue("price"))}
@@ -97,7 +99,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
       },
       {
         accessorKey: "status",
-        header: tAll("status"),
+        header: t("dishesDialog.status"),
         cell: ({ row }) => (
           <div>{tAll(getVietnameseDishStatus(row.getValue("status")))}</div>
         ),
@@ -142,17 +144,19 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Thay đổi</Button>
+        <Button variant="outline">{tAll("change")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-full overflow-auto">
         <DialogHeader>
-          <DialogTitle>Chọn món ăn</DialogTitle>
+          <DialogTitle>{t("selectDish")}</DialogTitle>
         </DialogHeader>
         <div>
           <div className="w-full">
             <div className="flex items-center py-4 gap-2">
               <Input
-                placeholder="Lọc tên"
+                placeholder={tAll("searchValue", {
+                  value: tAll("name"),
+                })}
                 value={
                   (table.getColumn("dishName")?.getFilterValue() as string) ??
                   ""
@@ -191,7 +195,10 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
                       <TableRow
                         key={row.id}
                         data-state={row.getIsSelected() && "selected"}
-                        onClick={() => choose(row.original)}
+                        onClick={() =>
+                          row.original.status === DishStatus.Available &&
+                          choose(row.original)
+                        }
                         className="cursor-pointer"
                       >
                         {row.getVisibleCells().map((cell) => (
@@ -210,7 +217,7 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
                         colSpan={columns.length}
                         className="h-24 text-center"
                       >
-                        No results.
+                        {tAll("noData")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -219,9 +226,10 @@ const DishesDialog = ({ onChoose }: { onChoose: (dish: DishItem) => void }) => {
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
               <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                Hiển thị{" "}
-                <strong>{table.getPaginationRowModel().rows.length}</strong>{" "}
-                trong <strong>{data.length}</strong> kết quả
+                {tAll("showResultPagination", {
+                  result: table.getPaginationRowModel().rows.length,
+                  total: data.length,
+                })}
               </div>
               <div>
                 <AutoPagination

@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import {
   Card,
@@ -34,7 +33,12 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const AccountPage = async () => {
+const AccountPage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   const t = await getTranslations("ManageAccounts");
 
   return (

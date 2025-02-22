@@ -49,6 +49,8 @@ import {
 } from "@/queries/useOrder";
 import { toast } from "@repo/ui/hooks/use-toast";
 
+type DistType = DishListResType["data"][0];
+
 const EditOrder = ({
   id,
   setId,
@@ -58,11 +60,11 @@ const EditOrder = ({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) => {
+  const t = useTranslations("Orders");
   const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
 
-  const [selectedDish, setSelectedDish] = useState<
-    DishListResType["data"][0] | null
-  >(null);
+  const [selectedDish, setSelectedDish] = useState<DistType | null>(null);
   const updateOrderMutation = useUpdateOrderMutation();
   const { data } = useGetOrderDetailQuery({
     id: id as number,
@@ -130,7 +132,7 @@ const EditOrder = ({
     >
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Cập nhật đơn hàng</DialogTitle>
+          <DialogTitle>{t("updateOrder")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -145,7 +147,7 @@ const EditOrder = ({
                 name="dishId"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center justify-items-start gap-4">
-                    <FormLabel>Món ăn</FormLabel>
+                    <FormLabel>{t("dishes")}</FormLabel>
                     <div className="flex items-center col-span-2 space-x-4">
                       <Avatar className="aspect-square w-[50px] h-[50px] rounded-md object-cover">
                         <AvatarImage src={selectedDish?.image} />
@@ -165,14 +167,13 @@ const EditOrder = ({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="quantity"
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="quantity">Số lượng</Label>
+                      <Label htmlFor="quantity">{t("quantity")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="quantity"
@@ -230,7 +231,7 @@ const EditOrder = ({
         </Form>
         <DialogFooter>
           <Button type="submit" form="edit-order-form">
-            Lưu
+            {tAll("save")}
           </Button>
         </DialogFooter>
       </DialogContent>

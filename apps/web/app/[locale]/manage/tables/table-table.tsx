@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -58,81 +59,6 @@ import useTable from "@/store/table";
 
 type TableItem = TableListResType["data"][0];
 
-export const tablesColumns = () => {
-  const columns: ColumnDef<TableItem>[] = [
-    {
-      accessorKey: "number",
-      header: "Số bàn",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("number")}</div>
-      ),
-      filterFn: (rows, _, filterValue) => {
-        if (!filterValue) return true;
-        return String(filterValue) === String(rows.getValue("number"));
-      },
-    },
-    {
-      accessorKey: "capacity",
-      header: "Sức chứa",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("capacity")}</div>
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: "Trạng thái",
-      cell: ({ row }) => (
-        <div>{getVietnameseTableStatus(row.getValue("status"))}</div>
-      ),
-    },
-    {
-      accessorKey: "token",
-      header: "QR Code",
-      cell: ({ row }) => (
-        <div>
-          <QRCodeTable
-            token={row.getValue("token")}
-            tableNumber={row.getValue("number")}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: function Actions({ row }) {
-        const { setTableIdEdit, setTableDelete } = useTable();
-
-        const openEditTable = () => {
-          setTableIdEdit(row.original.number);
-        };
-
-        const openDeleteTable = () => {
-          setTableDelete(row.original);
-        };
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={openEditTable}>Sửa</DropdownMenuItem>
-              <DropdownMenuItem onClick={openDeleteTable}>Xóa</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-  ];
-
-  return columns;
-};
-
 const AlertDialogDeleteTable = ({
   tableDelete,
   setTableDelete,
@@ -140,6 +66,9 @@ const AlertDialogDeleteTable = ({
   tableDelete: TableItem | undefined;
   setTableDelete: (value: TableItem | undefined) => void;
 }) => {
+  const t = useTranslations("Tables");
+  const tAll = useTranslations("All");
+
   const { mutateAsync } = useDeleteTableMutation();
   const deleteTable = async () => {
     if (tableDelete) {
@@ -167,18 +96,20 @@ const AlertDialogDeleteTable = ({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Xóa bàn ăn?</AlertDialogTitle>
+          <AlertDialogTitle>{t("deleteTable")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Bàn{" "}
             <span className="bg-foreground text-primary-foreground rounded px-1">
-              {tableDelete?.number}
-            </span>{" "}
-            sẽ bị xóa vĩnh viễn
+              {t("deleteDescription", {
+                number: tableDelete?.number,
+              })}
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteTable}>Continue</AlertDialogAction>
+          <AlertDialogCancel>{tAll("cancel")}</AlertDialogCancel>
+          <AlertDialogAction onClick={deleteTable}>
+            {tAll("continue")}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -188,6 +119,9 @@ const AlertDialogDeleteTable = ({
 const PAGE_SIZE = 10;
 
 const TableTable = () => {
+  const t = useTranslations("Tables");
+  const tAll = useTranslations("All");
+
   const { searchParams, setSearchParams } = useSearchParamsLoader();
   const page = searchParams?.get("page")
     ? Number(searchParams?.get("page"))
@@ -208,9 +142,85 @@ const TableTable = () => {
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<TableItem>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "number",
+        header: t("table.tableNumber"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("number")}</div>
+        ),
+        filterFn: (rows, _, filterValue) => {
+          if (!filterValue) return true;
+          return String(filterValue) === String(rows.getValue("number"));
+        },
+      },
+      {
+        accessorKey: "capacity",
+        header: t("table.capacity"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("capacity")}</div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: t("table.status"),
+        cell: ({ row }) => (
+          <div>{tAll(getVietnameseTableStatus(row.getValue("status")))}</div>
+        ),
+      },
+      {
+        accessorKey: "token",
+        header: t("table.qrCode"),
+        cell: ({ row }) => (
+          <div>
+            <QRCodeTable
+              token={row.getValue("token")}
+              tableNumber={row.getValue("number")}
+            />
+          </div>
+        ),
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: function Actions({ row }) {
+          const { setTableIdEdit, setTableDelete } = useTable();
+
+          const openEditTable = () => {
+            setTableIdEdit(row.original.number);
+          };
+
+          const openDeleteTable = () => {
+            setTableDelete(row.original);
+          };
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{t("table.actions")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={openEditTable}>
+                  {tAll("edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={openDeleteTable}>
+                  {tAll("delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: tablesColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -248,7 +258,7 @@ const TableTable = () => {
         />
         <div className="flex items-center py-4 gap-2">
           <Input
-            placeholder="Lọc số bàn"
+            placeholder={tAll("searchValue", { value: t("table.tableNumber") })}
             value={
               (table.getColumn("number")?.getFilterValue() as string) ?? ""
             }
@@ -301,10 +311,10 @@ const TableTable = () => {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={tablesColumns().length}
+                    colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tAll("noData")}
                   </TableCell>
                 </TableRow>
               )}
@@ -313,9 +323,10 @@ const TableTable = () => {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="text-xs text-muted-foreground py-4 flex-1 ">
-            Hiển thị{" "}
-            <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-            <strong>{data.length}</strong> kết quả
+            {tAll("showResultPagination", {
+              result: table.getPaginationRowModel().rows.length,
+              total: data.length,
+            })}
           </div>
           <div>
             <AutoPagination

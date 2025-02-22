@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 
 import { TableListResType } from "@/schemaValidations/table.schema";
 import { useTableListQuery } from "@/queries/useTable";
@@ -40,41 +41,6 @@ import AutoPagination from "@/components/molecules/auto-pagination";
 
 type TableItem = TableListResType["data"][0];
 
-export const tablesColumns = () => {
-  const columns: ColumnDef<TableItem>[] = [
-    {
-      accessorKey: "number",
-      header: "Số bàn",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("number")}</div>
-      ),
-      filterFn: (row, columnId, filterValue: string) => {
-        if (filterValue === undefined) return true;
-        return simpleMatchText(
-          String(row.original.number),
-          String(filterValue),
-        );
-      },
-    },
-    {
-      accessorKey: "capacity",
-      header: "Sức chứa",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("capacity")}</div>
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: "Trạng thái",
-      cell: ({ row }) => (
-        <div>{getVietnameseTableStatus(row.getValue("status"))}</div>
-      ),
-    },
-  ];
-
-  return columns;
-};
-
 const PAGE_SIZE = 10;
 
 const TablesDialog = ({
@@ -82,6 +48,9 @@ const TablesDialog = ({
 }: {
   onChoose: (table: TableItem) => void;
 }) => {
+  const t = useTranslations("Orders");
+  const tAll = useTranslations("All");
+
   const [open, setOpen] = useState(false);
   const tableListQuery = useTableListQuery();
   const data = tableListQuery.data?.payload.data ?? [];
@@ -94,9 +63,42 @@ const TablesDialog = ({
     pageSize: PAGE_SIZE,
   });
 
+  const columns: ColumnDef<TableItem>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: "number",
+        header: t("tableDialog.tableNumber"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("number")}</div>
+        ),
+        filterFn: (row, columnId, filterValue: string) => {
+          if (filterValue === undefined) return true;
+          return simpleMatchText(
+            String(row.original.number),
+            String(filterValue),
+          );
+        },
+      },
+      {
+        accessorKey: "capacity",
+        header: t("tableDialog.capacity"),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("capacity")}</div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: t("tableDialog.status"),
+        cell: ({ row }) => (
+          <div>{tAll(getVietnameseTableStatus(row.getValue("status")))}</div>
+        ),
+      },
+    ];
+  }, []);
+
   const table = useReactTable({
     data,
-    columns: tablesColumns(),
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -131,24 +133,24 @@ const TablesDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Thay đổi</Button>
+        <Button variant="outline">{tAll("change")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-full overflow-auto">
         <DialogHeader>
-          <DialogTitle>Chọn bàn</DialogTitle>
+          <DialogTitle>{t("selectTable")}</DialogTitle>
         </DialogHeader>
         <div>
           <div className="w-full">
             <div className="flex items-center py-4 gap-2">
               <Input
-                placeholder="Số bàn"
+                placeholder={t("tableNumber")}
                 value={
                   (table.getColumn("number")?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
                   table.getColumn("number")?.setFilterValue(event.target.value)
                 }
-                className="w-[80px]"
+                className="w-[150px]"
               />
             </div>
             <div className="rounded-md border">
@@ -206,10 +208,10 @@ const TablesDialog = ({
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={tablesColumns().length}
+                        colSpan={columns.length}
                         className="h-24 text-center"
                       >
-                        No results.
+                        {tAll("noData")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -218,9 +220,10 @@ const TablesDialog = ({
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
               <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                Hiển thị{" "}
-                <strong>{table.getPaginationRowModel().rows.length}</strong>{" "}
-                trong <strong>{data.length}</strong> kết quả
+                {tAll("showResultPagination", {
+                  result: table.getPaginationRowModel().rows.length,
+                  total: data.length,
+                })}
               </div>
               <div>
                 <AutoPagination

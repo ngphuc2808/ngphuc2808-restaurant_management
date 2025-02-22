@@ -25,7 +25,6 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
     const guestByTableNumber: ServingGuestByTableNumber = {};
     orderList.forEach((order) => {
       statics.status[order.status] = statics.status[order.status] + 1;
-      // Nếu table và guest chưa bị xóa
       if (order.tableNumber !== null && order.guestId !== null) {
         if (!statics.table[order.tableNumber]) {
           statics.table[order.tableNumber] = {};
@@ -40,7 +39,6 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
         };
       }
 
-      // Tính toán cho orderObjectByGuestId
       if (order.guestId) {
         if (!orderObjectByGuestId[order.guestId]) {
           orderObjectByGuestId[order.guestId] = [];
@@ -49,7 +47,6 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
         orderObjectByGuestId[order.guestId]!.push(order);
       }
 
-      // Tính toán cho guestByTableNumber
       if (order.tableNumber && order.guestId) {
         if (!guestByTableNumber[order.tableNumber]) {
           guestByTableNumber[order.tableNumber] = {};
@@ -60,8 +57,6 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
       }
     });
 
-    // Cần phải lọc lại 1 lần nữa mới chuẩn
-    // Những guest nào mà không còn phục vụ nữa sẽ bị loại bỏ
     const servingGuestByTableNumber: ServingGuestByTableNumber = {};
     for (const tableNumber in guestByTableNumber) {
       const guestObject = guestByTableNumber[tableNumber]!;

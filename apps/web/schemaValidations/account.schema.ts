@@ -119,7 +119,7 @@ export const ChangePasswordBody = z
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: "custom",
-        message: "Mật khẩu mới không khớp",
+        message: "passwordNotMatch",
         path: ["confirmPassword"],
       });
     }

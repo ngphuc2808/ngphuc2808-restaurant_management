@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
 import { useRouter } from "@/i18n/routing";
@@ -31,6 +32,8 @@ type Props = {
 
 const NavUser = ({ user }: Props) => {
   const { setRole, disconnectSocket } = useAppStore();
+
+  const t = useTranslations("Settings");
 
   const router = useRouter();
 
@@ -82,7 +85,7 @@ const NavUser = ({ user }: Props) => {
           >
             <DropdownMenuItem className="cursor-pointer" onClick={logout}>
               <LogOut />
-              Đăng xuất
+              {t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

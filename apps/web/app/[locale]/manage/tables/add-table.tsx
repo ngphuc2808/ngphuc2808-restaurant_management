@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,11 +11,16 @@ import {
   CreateTableBodyType,
 } from "@/schemaValidations/table.schema";
 import { useAddTableMutation } from "@/queries/useTable";
-import { getVietnameseTableStatus, handleErrorApi } from "@/lib/utils";
+import {
+  checkMessageFromResponse,
+  getVietnameseTableStatus,
+  handleErrorApi,
+} from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -40,6 +46,10 @@ import { toast } from "@repo/ui/hooks/use-toast";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 
 const AddTable = () => {
+  const t = useTranslations("Tables");
+  const tAll = useTranslations("All");
+  const tErrorMessage = useTranslations("ErrorMessage");
+
   const [open, setOpen] = useState(false);
   const addTableMutation = useAddTableMutation();
   const form = useForm<CreateTableBodyType>({
@@ -71,6 +81,7 @@ const AddTable = () => {
       });
     }
   };
+
   return (
     <Dialog
       onOpenChange={(value) => {
@@ -85,20 +96,19 @@ const AddTable = () => {
         <Button size="sm" className="h-7 gap-1">
           <PlusCircle className="h-3.5 w-3.5" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Thêm bàn
+            {t("title")}
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
         <DialogHeader>
-          <DialogTitle>Thêm bàn</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("requiredDescription")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
             noValidate
-            onSubmit={form.handleSubmit(onSubmit, (e) => {
-              console.log(e);
-            })}
+            onSubmit={form.handleSubmit(onSubmit, console.log)}
             onReset={reset}
             className="grid auto-rows-max items-start gap-4 md:gap-8"
             id="add-table-form"
@@ -107,10 +117,10 @@ const AddTable = () => {
               <FormField
                 control={form.control}
                 name="number"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="name">Số hiệu bàn</Label>
+                      <Label htmlFor="name">{t("table.tableNumber")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="number"
@@ -118,7 +128,12 @@ const AddTable = () => {
                           className="w-full"
                           {...field}
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.number?.message &&
+                            (checkMessageFromResponse(errors.number?.type)
+                              ? errors.number?.message
+                              : tErrorMessage(errors.number?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -127,10 +142,10 @@ const AddTable = () => {
               <FormField
                 control={form.control}
                 name="capacity"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="price">Lượng khách cho phép</Label>
+                      <Label htmlFor="price">{t("table.capacity")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Input
                           id="capacity"
@@ -138,7 +153,12 @@ const AddTable = () => {
                           {...field}
                           type="number"
                         />
-                        <FormMessage />
+                        <FormMessage>
+                          {errors.capacity?.message &&
+                            (checkMessageFromResponse(errors.capacity?.type)
+                              ? errors.capacity?.message
+                              : tErrorMessage(errors.capacity?.message as any))}
+                        </FormMessage>
                       </div>
                     </div>
                   </FormItem>
@@ -147,10 +167,10 @@ const AddTable = () => {
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                      <Label htmlFor="description">Trạng thái</Label>
+                      <Label htmlFor="description">{t("table.status")}</Label>
                       <div className="col-span-3 w-full space-y-2">
                         <Select
                           onValueChange={field.onChange}
@@ -158,20 +178,24 @@ const AddTable = () => {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Chọn trạng thái" />
+                              <SelectValue placeholder={t("selectStatus")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {TableStatusValues.map((status) => (
                               <SelectItem key={status} value={status}>
-                                {getVietnameseTableStatus(status)}
+                                {tAll(getVietnameseTableStatus(status))}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-
-                      <FormMessage />
+                      <FormMessage>
+                        {errors.status?.message &&
+                          (checkMessageFromResponse(errors.status?.type)
+                            ? errors.status?.message
+                            : tErrorMessage(errors.status?.message as any))}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
@@ -181,7 +205,7 @@ const AddTable = () => {
         </Form>
         <DialogFooter>
           <Button type="submit" form="add-table-form">
-            Thêm
+            {tAll("add")}
           </Button>
         </DialogFooter>
       </DialogContent>

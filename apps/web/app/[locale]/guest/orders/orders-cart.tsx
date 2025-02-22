@@ -20,6 +20,7 @@ const OrdersCart = () => {
   const { socket } = useAppStore();
 
   const t = useTranslations("GuestOrders");
+  const tOrders = useTranslations("Orders");
   const tAll = useTranslations("All");
 
   const { data, refetch } = useGuestGetOrderListQuery();
@@ -73,11 +74,14 @@ const OrdersCart = () => {
       const {
         dishSnapshot: { name },
         quantity,
+        status,
       } = data;
       toast({
-        description: `Món ${name} (SL: ${quantity}) vừa được cập nhật sang trạng thái "${tAll(
-          getVietnameseOrderStatus(data.status),
-        )}"`,
+        description: tOrders("updateSocket", {
+          name,
+          quantity,
+          status: tAll(getVietnameseOrderStatus(status)),
+        }),
       });
       refetch();
     }
@@ -85,7 +89,11 @@ const OrdersCart = () => {
     function onPayment(data: PayGuestOrdersResType["data"]) {
       const { guest } = data[0]!;
       toast({
-        description: `${guest?.name} tại bàn ${guest?.tableNumber} thanh toán thành công ${data.length} đơn`,
+        description: tOrders("paymentSocket", {
+          name: guest?.name,
+          table: guest?.tableNumber,
+          quantity: data.length,
+        }),
       });
       refetch();
     }

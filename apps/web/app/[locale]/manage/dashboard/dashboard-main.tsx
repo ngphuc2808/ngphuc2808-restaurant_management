@@ -49,7 +49,7 @@ const DashboardMain = () => {
           <span className="mr-2">{tAll("from")}</span>
           <Input
             type="datetime-local"
-            placeholder="Từ ngày"
+            placeholder={tAll("fromDate")}
             className="text-sm"
             value={format(fromDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
             onChange={(event) =>
@@ -61,7 +61,7 @@ const DashboardMain = () => {
           <span className="mr-2">{tAll("to")}</span>
           <Input
             type="datetime-local"
-            placeholder="Đến ngày"
+            placeholder={tAll("toDate")}
             value={format(toDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
             onChange={(event) =>
               event.target.value && setToDate(new Date(event.target.value))

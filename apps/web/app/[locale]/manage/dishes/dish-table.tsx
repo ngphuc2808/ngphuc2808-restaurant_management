@@ -75,6 +75,9 @@ const AlertDialogDeleteDish = ({
   dishDelete: DishItem | undefined;
   setDishDelete: (value: DishItem | undefined) => void;
 }) => {
+  const t = useTranslations("Dishes");
+  const tAll = useTranslations("All");
+
   const { mutateAsync } = useDeleteDishMutation();
   const deleteDish = async () => {
     if (dishDelete) {
@@ -102,18 +105,21 @@ const AlertDialogDeleteDish = ({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Xóa món ăn?</AlertDialogTitle>
+          <AlertDialogTitle>{t("deleteDish")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Món{" "}
             <span className="bg-foreground text-primary-foreground rounded px-1">
               {dishDelete?.name}
-            </span>{" "}
-            sẽ bị xóa vĩnh viễn
+              {t("deleteDescription", {
+                name: dishDelete?.name,
+              })}
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteDish}>Continue</AlertDialogAction>
+          <AlertDialogCancel>{tAll("cancel")}</AlertDialogCancel>
+          <AlertDialogAction onClick={deleteDish}>
+            {tAll("continue")}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import Notfound from "@/app/[locale]/[...not-found]/not-found";
 
@@ -19,7 +19,12 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const NotfoundPage = () => {
+const NotfoundPage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
   return <Notfound />;
 };
 

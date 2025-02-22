@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { htmlToTextForDescription } from "@/lib/server-utils";
 import {
@@ -33,13 +33,22 @@ export async function generateMetadata(props: GlobalProps): Promise<Metadata> {
   };
 }
 
-const OrdersManagePage = () => {
+const OrdersManagePage = async (props: {
+  params: Promise<{ locale: string }>;
+}) => {
+  const params = await props.params;
+  const { locale } = params;
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations("Orders");
+
   return (
     <div className="space-y-2">
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
-          <CardTitle>Đơn hàng</CardTitle>
-          <CardDescription>Quản lý đơn hàng</CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <OrderTable />

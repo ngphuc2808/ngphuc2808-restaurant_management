@@ -1,7 +1,5 @@
-import HomePage from "@/app/[locale]/(public)/page";
-
 const Default = () => {
-  return <HomePage />;
+  return null;
 };
 
 export default Default;

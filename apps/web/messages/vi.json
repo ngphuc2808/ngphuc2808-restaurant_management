@@ -5,6 +5,7 @@
   },
   "All": {
     "logout": "Đăng xuất",
+    "change": "Thay đổi",
     "add": "Thêm mới",
     "edit": "Chỉnh sửa",
     "search": "Tìm kiếm",
@@ -13,6 +14,7 @@
     "save": "Lưu",
     "confirm": "Xác nhận",
     "cancel": "Hủy",
+    "continue": "Tiếp tục",
     "reset": "Đặt lại",
     "previous": "Trước",
     "next": "Tiếp",
@@ -43,7 +45,12 @@
     "name": "Tên",
     "showResultPagination": "Hiển thị {result} trong {total} kết quả",
     "from": "Từ",
-    "to": "Đến"
+    "fromDate": "Từ ngày",
+    "to": "Đến",
+    "toDate": "Đến ngày",
+    "deleted": "Đã bị xóa",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật"
   },
   "ErrorMessage": {
     "invalidEmail": "Email không hợp lệ",
@@ -53,7 +60,9 @@
     "minmaxPassword": "Mật khẩu phải từ 6 đến 100 ký tự",
     "changePasswordDescription": "Hãy nhập mật khẩu mới và xác nhận mật khẩu mới",
     "passwordNotMatch": "Mật khẩu không khớp",
-    "minPrice": "Giá phải lớn hơn 0"
+    "minPrice": "Giá phải lớn hơn 0",
+    "minTableNumber": "Số bàn phải lớn hơn 0",
+    "minCapacity": "Sức chứa phải lớn hơn 0"
   },
   "NotFound": {
     "title": "Không tìm thấy trang",
@@ -148,6 +157,8 @@
     "newPassword": "Mật khẩu mới",
     "confirmNewPassword": "Xác nhận mật khẩu mới",
     "selectRole": "Chọn vai trò",
+    "deleteAccount": "Xóa tài khoản",
+    "deleteDescription": "Tài khoản {account} sẽ bị xóa vĩnh viễn, bạn có chắc chắn muốn xóa tài khoản này?",
     "table": {
       "avatar": "Ảnh đại diện",
       "name": "Tên",
@@ -183,11 +194,69 @@
       "description": "Mô tả",
       "status": "Trạng thái",
       "actions": "Thao tác"
-    }
+    },
+    "deleteDish": "Xóa món ăn",
+    "deleteDescription": "Món ăn {name} sẽ bị xóa vĩnh viễn, bạn có chắc chắn muốn xóa món ăn này?"
   },
   "Orders": {
     "title": "Đơn hàng",
-    "description": "Quản lý đơn hàng"
+    "description": "Quản lý đơn hàng",
+    "guestName": "Tên khách",
+    "tableNumber": "Số bàn",
+    "createSocket": "Khách {name} tại bàn {table} vừa đặt {quantity} đơn",
+    "updateSocket": "Món {name} (SL: {quantity}) vừa được cập nhật sang trạng thái {status}",
+    "paymentSocket": "Khách {name} tại bàn {table} thanh toán thành công {quantity} đơn",
+    "ready": "Sẵn sàng",
+    "order": "Đơn",
+    "servingGuests": "Đang phục vụ {number} khách",
+    "createOrder": "Tạo đơn hàng",
+    "updateOrder": "Cập nhật đơn hàng",
+    "requiredDescription": "Trường tên khách hàng là bắt buộc",
+    "newGuest": "Khách hàng mới",
+    "selectTable": "Chọn bàn",
+    "guestSelected": "Khách đã chọn",
+    "outOfStock": "Hết hàng",
+    "table": {
+      "tableNumber": "Bàn",
+      "guest": "Khách hàng",
+      "dish": "Món ăn",
+      "status": "Trạng thái",
+      "processor": "Người xử lý",
+      "createUpdate": "Ngày tạo/Cập nhật",
+      "actions": "Thao tác"
+    },
+    "registrationDate": "Ngày đăng ký",
+    "total": "Tổng",
+    "create": "Tạo",
+    "update": "Cập nhật",
+    "paid": "Đã thanh toán",
+    "unpaid": "Chưa thanh toán",
+    "payAll": "Thanh toán tất cả ({total} đơn)",
+    "guestSittingAt": "Khách ngồi tại bàn {table}",
+    "orderDish": "Đặt hàng",
+    "dishes": "Món ăn",
+    "dish": "Món",
+    "pleaseSelectAGuest": "Vui lòng chọn một khách hàng",
+    "selectGuest": "Chọn khách",
+    "selectGuest2": "Chọn khách hàng",
+    "nameOrId": "Tên hoặc ID",
+    "quantity": "Số lượng",
+    "selectDish": "Chọn món ăn",
+    "guestDialog": {
+      "name": "Tên",
+      "tableNumber": "Số bàn",
+      "createdAt": "Ngày tạo"
+    },
+    "tableDialog": {
+      "tableNumber": "Số bàn",
+      "capacity": "Sức chứa",
+      "status": "Trạng thái"
+    },
+    "dishesDialog": {
+      "dish": "Món ăn",
+      "price": "Giá cả",
+      "status": "Trạng thái"
+    }
   },
   "GuestOrders": {
     "title": "Đặt hàng",
@@ -197,6 +266,7 @@
   },
   "Settings": {
     "title": "Cài đặt",
+    "logout": "Đăng xuất",
     "description": "Quản lý cài đặt tài khoản của bạn",
     "changePassword": "Thay đổi mật khẩu",
     "enterOldPassword": "Nhập mật khẩu cũ",
@@ -205,7 +275,22 @@
   },
   "Tables": {
     "title": "Bàn ăn",
-    "description": "Quản lý bàn ăn"
+    "description": "Quản lý bàn ăn",
+    "addTable": "Thêm bàn",
+    "updateTable": "Cập nhật bàn",
+    "requiredDescription": "Các trường số bàn, sức chứa là bắt buộc",
+    "selectStatus": "Chọn trạng thái",
+    "changeQrCode": "Thay đổi mã QR",
+    "urlOrdering": "Đường dẫn gọi món",
+    "table": {
+      "tableNumber": "Số bàn",
+      "capacity": "Sức chứa",
+      "status": "Trạng thái",
+      "qrCode": "Mã QR",
+      "actions": "Thao tác"
+    },
+    "deleteTable": "Xóa bàn",
+    "deleteDescription": "Bàn {number} sẽ bị xóa vĩnh viễn, bạn có chắc chắn muốn xóa bàn này?"
   },
   "SwitchLanguage": {
     "title": "Chuyển ngôn ngữ",
