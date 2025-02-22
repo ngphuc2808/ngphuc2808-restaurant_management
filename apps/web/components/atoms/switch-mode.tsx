@@ -19,7 +19,7 @@ const DarkModeToggle = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild aria-label="mode">
         <Button
           variant="outline"
           size="icon"

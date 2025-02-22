@@ -182,6 +182,7 @@ const GuestsDialog = ({
                 <Input
                   type="datetime-local"
                   placeholder={tAll("toDate")}
+                  className="text-sm"
                   value={format(toDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
                   onChange={(event) =>
                     event.target.value &&

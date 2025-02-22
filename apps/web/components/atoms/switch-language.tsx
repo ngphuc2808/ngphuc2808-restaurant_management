@@ -22,7 +22,7 @@ const SwitchLanguage = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild aria-label="locale">
         <Button
           variant="outline"
           size="icon"
