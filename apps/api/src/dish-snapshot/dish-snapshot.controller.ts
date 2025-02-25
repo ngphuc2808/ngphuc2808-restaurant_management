@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DishSnapshotService } from './dish-snapshot.service';
 import { CreateDishSnapshotDto } from './dto/create-dish-snapshot.dto';
 import { UpdateDishSnapshotDto } from './dto/update-dish-snapshot.dto';
@@ -23,7 +31,10 @@ export class DishSnapshotController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDishSnapshotDto: UpdateDishSnapshotDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateDishSnapshotDto: UpdateDishSnapshotDto,
+  ) {
     return this.dishSnapshotService.update(+id, updateDishSnapshotDto);
   }
 

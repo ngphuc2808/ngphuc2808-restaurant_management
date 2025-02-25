@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RefreshTokenService } from './refresh-token.service';
 import { CreateRefreshTokenDto } from './dto/create-refresh-token.dto';
 import { UpdateRefreshTokenDto } from './dto/update-refresh-token.dto';
@@ -23,7 +31,10 @@ export class RefreshTokenController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRefreshTokenDto: UpdateRefreshTokenDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRefreshTokenDto: UpdateRefreshTokenDto,
+  ) {
     return this.refreshTokenService.update(+id, updateRefreshTokenDto);
   }
 
