@@ -13,7 +13,7 @@ import * as ms from 'ms';
 
 import { Account } from '@prisma/client';
 import { PrismaService } from '@/prisma.service';
-import { CreateAccountDto } from '@/auth/dto/create-account.dto';
+import { AccountDto } from '@/auth/dto/account.dto';
 import { LoginDto } from '@/auth/dto/login.dto';
 import { TokenDto } from '@/auth/dto/token.dto';
 import { RefreshTokenIdsStorage } from '@/auth/refresh-token-ids.storage';
@@ -29,8 +29,8 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async createAccount(createAccountDto: CreateAccountDto): Promise<Account> {
-    const { email, password, name, avatar, role, ownerId } = createAccountDto;
+  async createAccount(accountDto: AccountDto): Promise<Account> {
+    const { email, password, name, avatar, role, ownerId } = accountDto;
 
     const existingAccount = await this.prisma.account.findUnique({
       where: { email },

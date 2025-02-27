@@ -12,7 +12,11 @@ import {
 
 import { Role } from '@/constants/type';
 
-export class CreateAccountDto {
+export class AccountDto {
+  @IsNumber()
+  @IsOptional()
+  id?: number;
+
   @IsString()
   @IsNotEmpty()
   @MinLength(2)

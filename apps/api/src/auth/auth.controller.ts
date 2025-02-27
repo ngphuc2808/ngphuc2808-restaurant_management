@@ -18,15 +18,15 @@ import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { LoginDto } from '@/auth/dto/login.dto';
 import { TokenDto } from '@/auth/dto/token.dto';
 import { RefreshTokenDto } from '@/auth/dto/refresh-token.dto';
-import { CreateAccountDto } from '@/auth/dto/create-account.dto';
+import { AccountDto } from '@/auth/dto/account.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() createAccountDto: CreateAccountDto) {
-    return this.authService.createAccount(createAccountDto);
+  async register(@Body() accountDto: AccountDto) {
+    return this.authService.createAccount(accountDto);
   }
 
   @Public()
